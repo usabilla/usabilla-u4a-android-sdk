@@ -1,3 +1,5 @@
+ [ ![Download](https://api.bintray.com/packages/usabilla/maven/ubform/images/download.svg) ](https://bintray.com/usabilla/maven/ubform/_latestVersion)
+
 # Usabilla FeedbackSDK for Android
 This repository contains the FeedbackSDK for Android.
 
@@ -5,7 +7,7 @@ This repository contains the FeedbackSDK for Android.
 Download the packaged `.aar` library and include it in your project according to the IDE of your choice.
 
 ## Gradle instructions
-The Usabilla SDK are currently served through [JCenter](https://dl.bintray.com/usabilla/maven/com/usabilla/sdk/ubform/):
+The Usabilla SDK are currently served through [JCenter](https://bintray.com/usabilla/maven/ubform/view):
  - make sure `jcenter()` is included in your repositories
  - add `compile 'com.usabilla.sdk:ubform:VERSION_NUMBER'` to the dependencies of your gradle build script.
 
