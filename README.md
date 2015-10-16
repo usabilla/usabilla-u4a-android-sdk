@@ -3,6 +3,10 @@
 # Usabilla FeedbackSDK for Android
 This repository contains the FeedbackSDK for Android.
 
+# WARNING
+Version 2.0.0 is incompatible with the implementation of version 1.*
+Please check MainActivity.java to see how the SDK could be used.
+
 ## Manual instructions
 Download the packaged `.aar` library and include it in your project according to the IDE of your choice.
 
@@ -12,20 +16,19 @@ The Usabilla SDK are currently served through [JCenter](https://bintray.com/usab
  - add `compile 'com.usabilla.sdk:ubform:VERSION_NUMBER'` to the dependencies of your gradle build script.
 
 ## Integration instructions
- - import the SDK in your activity `import com.usabilla.sdk.ubform.*;`
- - Invoke a new Intent: `Intent usabillaIntent = new Intent(MyActivity.this, ubForm.class);`
- - Pass along your APP_ID obtained from the Usabilla backend `usabillaIntent.putExtra("appId", "APP_ID");`
- - Start the new activity `startActivity(usabillaIntent);`
+ - import the SDK in your activity `import com.usabilla.sdk.ubform.UBFormClient;`
+ - onCreate init the UbFormClient passing the current activity with `new UBFormClient(this)`
+ - call `openFeedbackForm` passing your APP_ID to show the form
+
+The *UbFormClient* exposes a couple of interesting methods:
+ - setShakeFeedbackForm(APP_ID)
+ - openFeedbackForm(APP_ID)
+ - takeScreenshot()
+together with `onResume` and `onPause` that needs to be called from the corresponding overrides.
 
 ## Screenshot
-In order to attach a screenshot to the feedback item you can either use our SDK to auto generate a snapshot of the current view:
-```
-    ubScreenshot.getInstance().takeScreenshot(getWindow().getDecorView().getRootView());
-```
-Or you can simply pass a bitmap:
-```
-    ubScreenshot.getInstance().setScreenshotBmp(YOUR_BITMAP);
-```
+In order to attach a screenshot to the feedback item you can either let our SDK generate it for you by calling `client.takeScreenshot()`
+or you can pass it the view you want to screenshot.
 
 ## Custom variables
 You can pass along custom variables that will be attached to the feedback users send.
@@ -38,8 +41,19 @@ Currently custom variables are represented by a JSON object attached to the acti
     } catch (JSONException e) {
         // OPS
     }
-    usabillaIntent.putExtra("customVars", customVars.toString());
+    openFeedbackForm(APP_ID, customVars)
 ```
 
 ## Shake gesture
-At the moment our SDK does not facilitate a "shake to give feedback" gesture. This will be available in the following version.
+You can activate the feedback form on shake passing your APP_ID to `setShakeFeedbackForm`.
+
+## AndroidManifest
+A few lines of code need to be added to the AndroidManifest.xml to define the ubForm activity:
+```
+    <activity
+        android:name="com.usabilla.sdk.ubform.ui.FeedbackFormActivity"
+        android:theme="@style/Theme.AppCompat.Light"
+        android:label="ubForm" >
+    </activity>
+```
+**note:** you need the android:theme definition if you're using a custom theme in your app, especially if you don't use a `windowActionBar`.
