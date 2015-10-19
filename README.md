@@ -4,7 +4,7 @@
 This repository contains the FeedbackSDK for Android.
 
 # WARNING
-Version 2.0.0 is incompatible with the implementation of version 1.*
+Version 2.0.0+ is incompatible with the implementation of version 1.*
 Please check MainActivity.java to see how the SDK could be used.
 
 ## Manual instructions
@@ -46,14 +46,3 @@ Currently custom variables are represented by a JSON object attached to the acti
 
 ## Shake gesture
 You can activate the feedback form on shake passing your APP_ID to `setShakeFeedbackForm`.
-
-## AndroidManifest
-A few lines of code need to be added to the AndroidManifest.xml to define the ubForm activity:
-```
-    <activity
-        android:name="com.usabilla.sdk.ubform.ui.FeedbackFormActivity"
-        android:theme="@style/Theme.AppCompat.Light"
-        android:label="ubForm" >
-    </activity>
-```
-**note:** you need the android:theme definition if you're using a custom theme in your app, especially if you don't use a `windowActionBar`.
