@@ -14,14 +14,15 @@ public class MainActivity extends ActionBarActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-
-        client = new UBFormClient(this);
-        client.setShakeFeedbackForm("xxxYOUR_APP_IDxxx");
-
         setContentView(R.layout.activity_main);
 
 
+        client = new UBFormClient(this);
+
+        //Opens the form when the user shakes the device
+        client.setShakeFeedbackForm("xxxYOUR_APP_IDxxx");
+
+        //Opens the form when the user presses the button
         this.findViewById(R.id.btnRunForm).setOnClickListener(new Button.OnClickListener() {
             public void onClick(View v) {
                 client.takeScreenshot();
@@ -29,12 +30,6 @@ public class MainActivity extends ActionBarActivity {
             }
         });
 
-        this.findViewById(R.id.btnAll).setOnClickListener(new Button.OnClickListener() {
-            public void onClick(View v) {
-                client.takeScreenshot();
-                client.openFeedbackForm("xxxYOUR_APP_IDxxx");
-            }
-        });
     }
 
     @Override

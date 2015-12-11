@@ -7,13 +7,15 @@ This repository contains the FeedbackSDK for Android.
 Version 2.0.0+ is incompatible with the implementation of version 1.*
 Please check MainActivity.java to see how the SDK could be used.
 
+**Starting from version 2.0.3 the SDK uses AppCompatActivity declared in appcompat-v7:23+. Using a version of appcompat-v7 lower that 23 will cause the SDK to crash**
+
 ## Manual instructions
 Download the packaged `.aar` library and include it in your project according to the IDE of your choice.
 
 ## Gradle instructions
 The Usabilla SDK are currently served through [JCenter](https://bintray.com/usabilla/maven/ubform/view):
  - make sure `jcenter()` is included in your repositories
- - add `compile 'com.usabilla.sdk:ubform:VERSION_NUMBER'` to the dependencies of your gradle build script.
+ - add `compile 'com.usabilla.sdk:ubform:2.0.3'` to the dependencies of your gradle build script.
 
 ## Integration instructions
  - import the SDK in your activity `import com.usabilla.sdk.ubform.UBFormClient;`
@@ -25,6 +27,7 @@ The *UbFormClient* exposes a couple of interesting methods:
  - openFeedbackForm(APP_ID)
  - takeScreenshot()
 together with `onResume` and `onPause` that needs to be called from the corresponding overrides.
+
 
 ## Screenshot
 In order to attach a screenshot to the feedback item you can either let our SDK generate it for you by calling `client.takeScreenshot()`
