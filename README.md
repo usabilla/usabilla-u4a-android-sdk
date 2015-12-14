@@ -9,29 +9,67 @@ Please check MainActivity.java to see how the SDK could be used.
 
 **Starting from version 2.0.3 the SDK uses AppCompatActivity declared in appcompat-v7:23+. Using a version of appcompat-v7 lower that 23 will cause the SDK to crash**
 
-## Manual instructions
-Download the packaged `.aar` library and include it in your project according to the IDE of your choice.
+# Installation
 
 ## Gradle instructions
 The Usabilla SDK are currently served through [JCenter](https://bintray.com/usabilla/maven/ubform/view):
- - make sure `jcenter()` is included in your repositories
- - add `compile 'com.usabilla.sdk:ubform:2.0.3'` to the dependencies of your gradle build script.
+- make sure `jcenter()` is included in your repositories
+- add `compile 'com.usabilla.sdk:ubform:2.0.3'` to the dependencies of your gradle build script.
 
-## Integration instructions
- - import the SDK in your activity `import com.usabilla.sdk.ubform.UBFormClient;`
- - onCreate init the UbFormClient passing the current activity with `new UBFormClient(this)`
- - call `openFeedbackForm` passing your APP_ID to show the form
+## Manual instructions
+Download the packaged `.aar` library and include it in your project according to the IDE of your choice.
 
-The *UbFormClient* exposes a couple of interesting methods:
- - setShakeFeedbackForm(APP_ID)
- - openFeedbackForm(APP_ID)
- - takeScreenshot()
-together with `onResume` and `onPause` that needs to be called from the corresponding overrides.
+## How to get started
+### On the web
+- Create a new app on your [Usabilla](https://app.usabilla.com/member/) Live for Apps section.
+- Copy th AppId from the app you wish to use in your SDK.
 
+### On the SDK
+- import the SDK in your activity `import com.usabilla.sdk.ubform.UBFormClient;`
+- init the UbFormClient in the onCreate() method of your activity.
+- call `openFeedbackForm` passing your AppId to show the form you created in the web interface.
+- use `setShakeFeedbackForm` to automatically open the form if the device is shaken.
+- remember to call onResume and onPause on the UbFormClient according to the state of your activity.
+
+```
+public class MainActivity{
+
+    private UBFormClient client;
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_main);
+
+        client = new UBFormClient(this);
+        //Open the feedback form on device shake
+        client.setShakeFeedbackForm("AppId");
+
+        this.findViewById(R.id.feedbackButton).setOnClickListener(new Button.OnClickListener() {
+            public void onClick(View v) {
+                client.takeScreenshot();
+                client.openFeedbackForm("AppID");
+            }
+        });
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        client.onResume();
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        client.onPause();
+    }
+}
+```
 
 ## Screenshot
 In order to attach a screenshot to the feedback item you can either let our SDK generate it for you by calling `client.takeScreenshot()`
-or you can pass it the view you want to screenshot.
+or you can pass it as the view you want to screenshot.
 
 ## Custom variables
 You can pass along custom variables that will be attached to the feedback users send.
@@ -42,10 +80,7 @@ Currently custom variables are represented by a JSON object attached to the acti
         customVars.put("user", "mario");
         customVars.put("uid", 12345);
     } catch (JSONException e) {
-        // OPS
+        // WHOPS
     }
-    openFeedbackForm(APP_ID, customVars)
+    openFeedbackForm(AppId, customVars)
 ```
-
-## Shake gesture
-You can activate the feedback form on shake passing your APP_ID to `setShakeFeedbackForm`.
