@@ -84,3 +84,8 @@ Currently custom variables are represented by a JSON object attached to the acti
     }
     openFeedbackForm(AppId, customVars)
 ```
+## ProGuard 
+If you are using Proguard, add the following line to your configuration
+```
+    -keep class com.usabilla.sdk.ubform.data.** { *; }
+```
