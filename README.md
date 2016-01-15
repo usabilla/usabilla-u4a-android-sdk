@@ -3,11 +3,14 @@
 # Usabilla FeedbackSDK for Android
 This repository contains the FeedbackSDK for Android.
 
+
+Take a look at our [Wiki](https://github.com/usabilla/usabilla-u4a-android-sdk/wiki) for a complete and in depth guide on how to install and customize the SDK.
+
 # WARNING
 Version 2.0.0+ is incompatible with the implementation of version 1.*
 Please check MainActivity.java to see how the SDK could be used.
 
-**Starting from version 2.0.3 the SDK uses AppCompatActivity declared in appcompat-v7:23+. Using a version of appcompat-v7 lower that 23 will cause the SDK to crash**
+**Starting from version 2.1.0 the SDK uses AppCompatActivity declared in support:appcompat-v7:22.1+. Please make sure you are using a version of support:appcompat-v7 that contains AppCompatActivity**
 
 ## Manual instructions
 Download the packaged `.aar` library and include it in your project according to the IDE of your choice.

@@ -1,4 +1,10 @@
-v 1.5
+v 2.1.0
+* Enabled colors, images and fonts customization via SDK
+* Downgraded Appcompat-v7 to 22.1.0
+* Various bug fixes and improvements
+
+
+v 2.0.3
 * Added star rating: It’s now possible to choose between the emoticons or a more traditional 5 star rating.
 * Raised minimum api level to 16
 * Updated Appcompat-v7 to 23.1.1
