@@ -6,7 +6,7 @@ This repository contains the FeedbackSDK for Android.
 
 Take a look at our [Wiki](https://github.com/usabilla/usabilla-u4a-android-sdk/wiki) for a complete and in depth guide on how to install and customize the SDK.
 
-# WARNING
+## WARNING
 Version 2.0.0+ is incompatible with the implementation of version 1.*
 Please check MainActivity.java to see how the SDK could be used.
 
@@ -17,7 +17,7 @@ Please check MainActivity.java to see how the SDK could be used.
 ## Gradle instructions
 The Usabilla SDK are currently served through [JCenter](https://bintray.com/usabilla/maven/ubform/view):
 - make sure `jcenter()` is included in your repositories
-- add `compile 'com.usabilla.sdk:ubform:2.0.3'` to the dependencies of your gradle build script.
+- add `compile 'com.usabilla.sdk:ubform:2.1.+'` to the dependencies of your gradle build script.
 
 ## Manual instructions
 Download the packaged `.aar` library and include it in your project according to the IDE of your choice.
