@@ -1,3 +1,6 @@
+v 2.1.1
+* Custom variables are now correctly reported
+
 v 2.1.0
 * Enabled colors, images and fonts customization via SDK
 * Downgraded Appcompat-v7 to 22.1.0
