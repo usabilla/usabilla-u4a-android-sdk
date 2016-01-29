@@ -1,3 +1,9 @@
+v2.1.5
+* It is now possible to override  all the text in the sdks and provide a custom localization
+* The SDK can now redirect the users to the Play Store to review your app if they gave a positive rating
+* Various bug fixes and improvements
+
+
 v 2.1.1
 * Custom variables are now correctly reported
 
