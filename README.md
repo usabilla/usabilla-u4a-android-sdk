@@ -1,6 +1,6 @@
  [ ![Download](https://api.bintray.com/packages/usabilla/maven/ubform/images/download.svg) ](https://bintray.com/usabilla/maven/ubform/_latestVersion)
 
-# Usabilla for Apps - Andoird SDK
+# Usabilla for Apps - Android SDK
 This repository contains the SDK for Android.
 
 
