@@ -1,7 +1,7 @@
  [ ![Download](https://api.bintray.com/packages/usabilla/maven/ubform/images/download.svg) ](https://bintray.com/usabilla/maven/ubform/_latestVersion)
 
-# Usabilla FeedbackSDK for Android
-This repository contains the FeedbackSDK for Android.
+# Usabilla for Apps - Andoird SDK
+This repository contains the SDK for Android.
 
 
 Take a look at our [Wiki](https://github.com/usabilla/usabilla-u4a-android-sdk/wiki) for a complete and in depth guide on how to install and customize the SDK.
