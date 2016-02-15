@@ -1,3 +1,7 @@
+v2.1.6
+* It is now possible to specify a custom image as the feedback screenshot
+* It is now possible to force the user to submit a screenshot
+
 v2.1.5
 * It is now possible to override  all the text in the sdks and provide a custom localization
 * The SDK can now redirect the users to the Play Store to review your app if they gave a positive rating
