@@ -1,3 +1,7 @@
+v2.2.0
+* Upgraded target SDK version to 23
+* Removed deprecated Apache HTTP library.
+
 v2.1.6
 * It is now possible to specify a custom image as the feedback screenshot
 * It is now possible to force the user to submit a screenshot
