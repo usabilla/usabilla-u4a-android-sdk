@@ -90,5 +90,10 @@ Currently custom variables are represented by a JSON object attached to the acti
 ## ProGuard 
 If you are using Proguard, add the following line to your configuration
 ```
-    -keep class com.usabilla.sdk.ubform.data.** { *; }
+     -keep class com.usabilla.sdk.ubform.data.** { *; }
+     -keepattributes Signature
+     -keepattributes *Annotation*
+     -keep class sun.misc.Unsafe { *; }
+     -keep class com.google.gson.examples.android.model.** { *; }
+
 ```
