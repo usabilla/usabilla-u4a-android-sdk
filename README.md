@@ -17,7 +17,7 @@ Please check MainActivity.java to see how the SDK could be used.
 ## Gradle instructions
 The Usabilla SDK are currently served through [JCenter](https://bintray.com/usabilla/maven/ubform/view):
 - make sure `jcenter()` is included in your repositories
-- add `compile 'com.usabilla.sdk:ubform:2.2.+'` to the dependencies of your gradle build script.
+- add `compile 'com.usabilla.sdk:ubform:2.3.+'` to the dependencies of your gradle build script.
 
 ## Manual instructions
 Download the packaged `.aar` library and include it in your project according to the IDE of your choice.
@@ -91,6 +91,8 @@ Currently custom variables are represented by a JSON object attached to the acti
 If you are using Proguard, add the following line to your configuration
 ```
      -keep class com.usabilla.sdk.ubform.data.** { *; }
+    
+     # Only necessary in version 2.2.x and below.
      -keepattributes Signature
      -keepattributes *Annotation*
      -keep class sun.misc.Unsafe { *; }
