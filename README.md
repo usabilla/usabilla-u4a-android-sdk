@@ -1,7 +1,7 @@
  [ ![Download](https://api.bintray.com/packages/usabilla/maven/ubform/images/download.svg) ](https://bintray.com/usabilla/maven/ubform/_latestVersion)
 
-# Usabilla FeedbackSDK for Android
-This repository contains the FeedbackSDK for Android.
+# Usabilla for Apps - Android SDK
+This repository contains the SDK for Android.
 
 
 Take a look at our [Wiki](https://github.com/usabilla/usabilla-u4a-android-sdk/wiki) for a complete and in depth guide on how to install and customize the SDK.
@@ -17,7 +17,7 @@ Please check MainActivity.java to see how the SDK could be used.
 ## Gradle instructions
 The Usabilla SDK are currently served through [JCenter](https://bintray.com/usabilla/maven/ubform/view):
 - make sure `jcenter()` is included in your repositories
-- add `compile 'com.usabilla.sdk:ubform:2.1.+'` to the dependencies of your gradle build script.
+- add `compile 'com.usabilla.sdk:ubform:2.3.+'` to the dependencies of your gradle build script.
 
 ## Manual instructions
 Download the packaged `.aar` library and include it in your project according to the IDE of your choice.
@@ -90,5 +90,12 @@ Currently custom variables are represented by a JSON object attached to the acti
 ## ProGuard 
 If you are using Proguard, add the following line to your configuration
 ```
-    -keep class com.usabilla.sdk.ubform.data.** { *; }
+     -keep class com.usabilla.sdk.ubform.data.** { *; }
+    
+     # Only necessary in version 2.2.x and below.
+     -keepattributes Signature
+     -keepattributes *Annotation*
+     -keep class sun.misc.Unsafe { *; }
+     -keep class com.google.gson.examples.android.model.** { *; }
+
 ```
