@@ -1,3 +1,14 @@
+v 2.3.1
+* updated appcompat-v7 to 23.4.0
+* updated support-annotations to 23.4.0
+* updated support-v4 to 23.4.0
+* Bug fixes and stability improvements
+
+v2.3.0
+* Removed GSON dependency, GSON rule in pro guard file can also be omitted
+* Removed the popup at the end of the feedback. Now there is a dedicated page instead, with all the previous content disposed in a more user friendly way.
+* Various bug fixes and improvements
+
 v2.2.0
 * Upgraded target SDK version to 23
 * Removed deprecated Apache HTTP library.
