@@ -1,3 +1,9 @@
+v 2.3.4
+* Fixed a crash that could occur while restoring the fragmen after savedInstanceState
+* Improved support to the Marshmallow permission request system. Fixed a crash that could occur while choosing a screenshot with third party media application
+* Prefixed all resource names to avoid conflict with hosting application
+
+
 v 2.3.1
 * updated appcompat-v7 to 23.4.0
 * updated support-annotations to 23.4.0
