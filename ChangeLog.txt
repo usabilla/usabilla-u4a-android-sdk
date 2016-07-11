@@ -1,3 +1,6 @@
+v 2.3.4.1
+* Added the possibility to automatically take a screenshot when opening the form though the shake listener
+
 v 2.3.4
 * Fixed a crash that could occur while restoring the fragmen after savedInstanceState
 * Improved support to the Marshmallow permission request system. Fixed a crash that could occur while choosing a screenshot with third party media application
