@@ -1,3 +1,7 @@
+v 2.3.4.2
+* Fixed application title not being correctly displayed in the action bar
+* Fixed custom font not being correctly applied to the picker component
+
 v 2.3.4.1
 * Added the possibility to automatically take a screenshot when opening the form though the shake listener
 
