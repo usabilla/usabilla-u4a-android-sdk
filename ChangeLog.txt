@@ -1,3 +1,7 @@
+v 2.3.5
+* Fixed redirect to play store not working correctly
+* Fixed a crash that might occur if the uses minimises the app during the loading of the form
+
 v 2.3.4.2
 * Fixed application title not being correctly displayed in the action bar
 * Fixed custom font not being correctly applied to the picker component
