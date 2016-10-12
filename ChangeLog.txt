@@ -1,3 +1,9 @@
+v 3.0
+* This SDK moves from activities to fragments and introduces many major changes. See the Wiki for details on the new implementation
+* Reworked theme customisation. Each form now has its own configuration object.
+* Colour customisation from the Usabilla web interface is now supported
+
+
 v 2.3.5
 * Fixed redirect to play store not working correctly
 * Fixed a crash that might occur if the uses minimises the app during the loading of the form
@@ -10,7 +16,7 @@ v 2.3.4.1
 * Added the possibility to automatically take a screenshot when opening the form though the shake listener
 
 v 2.3.4
-* Fixed a crash that could occur while restoring the fragmen after savedInstanceState
+* Fixed a crash that could occur while restoring the fragment after savedInstanceState
 * Improved support to the Marshmallow permission request system. Fixed a crash that could occur while choosing a screenshot with third party media application
 * Prefixed all resource names to avoid conflict with hosting application
 
