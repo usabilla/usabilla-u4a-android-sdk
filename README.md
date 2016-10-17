@@ -40,23 +40,24 @@ This is an example of how your activity should look like:
 ```
 public class MainActivity implements UBFormInterface {
 
-    private UBFormClient client;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         UBFormClient.initClient(getApplicationContext());
-
-             UBFormClient.loadFeedbackForm("57adda5864ad10cab9875b91", getApplicationContext(), MainActivity.this);
+        UBFormClient.loadFeedbackForm("57adda5864ad10cab9875b91", getApplicationContext(), MainActivity.this);
 
     }
 
-  @Override
+    //This will be called when the form has finished loading and is ready to be displayed
+    @Override
     public void formLoadedSuccessfully(Form form, boolean b) {
        //your code
     }
 
+    //This will be called in case the form ID was not found in our server or there was some kind of error during the request
+    //It will return a default form
     @Override
     public void formFailedLoading(Form form) {
       //your code
