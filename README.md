@@ -71,7 +71,7 @@ public class MainActivity implements UBFormInterface {
 }
 ```
 
-### Screenshot
+## Screenshot
 You can decide wether or not to attach a screenshot in your form.
 In order to attach a screenshot to the feedback item you can either:
 * Let our SDK generate a screenshot of the currently displayed screen you by calling `client.takeScreenshot()`
@@ -80,6 +80,18 @@ In order to attach a screenshot to the feedback item you can either:
 
 By default, the user can remove any screenshot attached to the feedback form.  
 You can force the user to submit a screenshot in his feedback form by calling `UBFormClient.setIsScreenshotForced(true);`.   
+
+## Communication with the SDK 
+The SDK communicates with the main app trough a broadcasts.
+Specifically, the SDK will send out these broadcasts:
+- `"com.usabilla.closeForm"` when the user wants the form to be closed or to disappear
+- `"com.usabilla.redirectToPlayStore"` when the user wants to open the Play Store on the app's page
+
+It is possible to hide the default navigation and cancel button in the SDK and provide your own (ex. in the action bar). To do so you must:
+- set `form.hideDefaultNavigationButton(true);`  and `form.hideCancelButton(true);`
+- call `form.getTextForMainButton()` to get the text for your navigation button.
+- when the user presses your navigation button, call `form.navigationButtonPushed()`. This method will also return the text for the navigation button (it could change from "Next" to "Submit")
+
 
 
 ## ProGuard 
