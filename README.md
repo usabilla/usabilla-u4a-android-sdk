@@ -82,7 +82,7 @@ By default, the user can remove any screenshot attached to the feedback form.
 You can force the user to submit a screenshot in his feedback form by calling `UBFormClient.setIsScreenshotForced(true);`.   
 
 ## Communication with the App 
-The SDK communicates with the main app trough a broadcasts.
+The SDK communicates with the main app trough broadcasts.
 Specifically, the SDK will send out these broadcasts:
 - `"com.usabilla.closeForm"` when the user wants the form to be closed or to disappear
 - `"com.usabilla.redirectToPlayStore"` when the user wants to open the Play Store on the app's page
