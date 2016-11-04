@@ -17,7 +17,7 @@ Please check the wiki to see how to implement the SDK.
 ## Gradle instructions
 The Usabilla SDK are currently served through [JCenter](https://bintray.com/usabilla/maven/ubform/view):
 - make sure `jcenter()` is included in your repositories
-- add `compile 'com.usabilla.sdk:ubform:3.0'` to the dependencies of your gradle build script.
+- add `compile 'com.usabilla.sdk:ubform:3.1.+'` to the dependencies of your gradle build script.
 
 ## Manual instructions
 Download the packaged `.aar` library and include it in your project according to the IDE of your choice.
