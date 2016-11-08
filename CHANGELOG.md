@@ -1,3 +1,11 @@
+## 3.1.2
+#### Fixed
+- Fixed the wrong callback method being called with the default form. The default form will be now correctly returned only on the `formFailedLoading` method.
+
+#### Updated
+- Added padding to top and bottom of scrollview
+
+
 ## 3.1.1
 #### Added
 - It is now possible to set most text fields (like submit, cancel, redirect to play store) from the web interface
