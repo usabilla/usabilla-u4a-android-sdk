@@ -6,6 +6,20 @@ This repository contains the SDK for Android.
 
 Take a look at our [Wiki](https://github.com/usabilla/usabilla-u4a-android-sdk/wiki) for a complete and in depth guide on how to install and customize the SDK.
 
+## Latest changes in v3.2.1
+#### Added
+- Added possibility to change the size of the fonts. See the wiki for more info.
+
+#### Updated
+- Switched to ContextCompat for loading resources
+- Polished the UI of the form. Components are now more aligned with material design guidelines
+- Updated screenshot component
+- Updated dependencies `appcompat-v7`, `support-annotations`, `support-v4` and `support:design` to `25.0.1`
+
+#### Removed
+- Removed 10 buttons version of the NPS component. Now it defaults to slider.
+
+
 ## Old SDK versions
 Version 3.+ is incompatible with the implementation of version 2.*
 Please check the wiki to see how to implement the SDK.
