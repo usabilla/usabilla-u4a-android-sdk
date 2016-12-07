@@ -1,3 +1,16 @@
+## 3.2.1
+#### Added
+- Added possibility to change the size of the fonts. See the wiki for more info.
+
+#### Updated
+- Switched to ContextCompat for loading resources
+- Polished the UI of the form. Components are now more aligned with material design guidelines
+- Updated screenshot component
+- Updated dependencies `appcompat-v7`, `support-annotations`, `support-v4` and `support:design` to `25.0.1`
+
+#### Removed
+- Removed 10 buttons version of the NPS component. Now it defaults to slider.
+
 ## 3.1.2
 #### Fixed
 - Fixed the wrong callback method being called with the default form. The default form will be now correctly returned only on the `formFailedLoading` method.
