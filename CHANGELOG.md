@@ -1,3 +1,16 @@
+## 3.3.0
+#### Added
+- Possibility to set the titles in bold.
+- New field error message, displayed under the title when the user tries to submit an incomplete form.
+
+#### Updated
+- Revamped and polished UI and animations following material guidelines.
+- `miniTextSize` and its getter / setter have been renamed to `miniFontSize``, to align the naming with the other properties.
+- Updated support libraries to `v25.1.0`.
+
+#### Removed
+- It's not possible anymore to force a user to submit a screenshot.
+
 ## 3.2.1
 #### Added
 - Added possibility to change the size of the fonts. See the wiki for more info.
