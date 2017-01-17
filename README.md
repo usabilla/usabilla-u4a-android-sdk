@@ -6,7 +6,7 @@ This repository contains the SDK for Android.
 
 Take a look at our [Wiki](https://github.com/usabilla/usabilla-u4a-android-sdk/wiki) for a complete and in depth guide on how to install and customize the SDK.
 
-## Latest changes in v3.3.0
+## Latest changes in v3.3.1
 #### Added
 - Possibility to set the titles in bold.
 - New field error message, displayed under the title when the user tries to submit an incomplete form.
