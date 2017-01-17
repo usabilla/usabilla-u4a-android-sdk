@@ -6,18 +6,18 @@ This repository contains the SDK for Android.
 
 Take a look at our [Wiki](https://github.com/usabilla/usabilla-u4a-android-sdk/wiki) for a complete and in depth guide on how to install and customize the SDK.
 
-## Latest changes in v3.2.1
+## Latest changes in v3.3.0
 #### Added
-- Added possibility to change the size of the fonts. See the wiki for more info.
+- Possibility to set the titles in bold.
+- New field error message, displayed under the title when the user tries to submit an incomplete form.
 
 #### Updated
-- Switched to ContextCompat for loading resources
-- Polished the UI of the form. Components are now more aligned with material design guidelines
-- Updated screenshot component
-- Updated dependencies `appcompat-v7`, `support-annotations`, `support-v4` and `support:design` to `25.0.1`
+- Revamped and polished UI and animations following material guidelines.
+- `miniTextSize` and its getter / setter have been renamed to `miniFontSize``, to align the naming with the other properties.
+- Updated support libraries to `v25.1.0`.
 
 #### Removed
-- Removed 10 buttons version of the NPS component. Now it defaults to slider.
+- It's not possible anymore to force a user to submit a screenshot.
 
 
 ## Old SDK versions
@@ -31,7 +31,7 @@ Please check the wiki to see how to implement the SDK.
 ## Gradle instructions
 The Usabilla SDK are currently served through [JCenter](https://bintray.com/usabilla/maven/ubform/view):
 - make sure `jcenter()` is included in your repositories
-- add `compile 'com.usabilla.sdk:ubform:3.2.+'` to the dependencies of your gradle build script.
+- add `compile 'com.usabilla.sdk:ubform:3.3.+'` to the dependencies of your gradle build script.
 
 ## Manual instructions
 Download the packaged `.aar` library and include it in your project according to the IDE of your choice.
@@ -60,7 +60,7 @@ public class MainActivity implements UBFormInterface {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         UBFormClient.initClient(getApplicationContext());
-        UBFormClient.loadFeedbackForm("57adda5864ad10cab9875b91", getApplicationContext(), MainActivity.this);
+        UBFormClient.loadFeedbackForm("FORM ID", getApplicationContext(), MainActivity.this);
 
     }
 
@@ -92,8 +92,6 @@ In order to attach a screenshot to the feedback item you can either:
 * Take a screenshot of a particular view using `UBFormClient.takeScreenshot(view)`
 * Specify a custom image to be used as screenshot using `UBFormClient.setCustomScreenshot(bitmap);`
 
-By default, the user can remove any screenshot attached to the feedback form.  
-You can force the user to submit a screenshot in his feedback form by calling `UBFormClient.setIsScreenshotForced(true);`.   
 
 ## Communication with the App 
 The SDK communicates with the main app trough broadcasts.
