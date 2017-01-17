@@ -1,4 +1,4 @@
-## 3.3.0
+## 3.3.1
 #### Added
 - Possibility to set the titles in bold.
 - New field error message, displayed under the title when the user tries to submit an incomplete form.
