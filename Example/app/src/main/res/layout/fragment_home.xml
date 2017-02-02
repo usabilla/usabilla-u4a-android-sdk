@@ -1,0 +1,37 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.usabilla.demoapplication.Fragments.HomeFragment">
+
+    <TextView
+        android:id="@+id/text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:layout_margin="25dp"
+        android:text="Welcome to the Usabilla Demo Application. Select how you would like to display a form" />
+
+    <Button
+        android:id="@+id/newActivityButton"
+        style="@style/Widget.AppCompat.Button.Colored"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/text"
+        android:layout_centerHorizontal="true"
+        android:layout_margin="25dp"
+        android:text="Open form in new activity" />
+
+    <Button
+        android:id="@+id/lateralFormButton"
+        style="@style/Widget.AppCompat.Button.Colored"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/newActivityButton"
+        android:layout_centerHorizontal="true"
+        android:layout_margin="25dp"
+        android:text="Slide form in" />
+
+
+</RelativeLayout>
