@@ -47,8 +47,9 @@ Download the packaged `.aar` library and include it in your project according to
 * Implement the `UBFormInterface` in your activity or fragment
 * Call `openFeedbackForm` passing your Form ID to show the form you created in the web interface.
 * The SDK will return an instance of `Form`, which is a subclass of `android.support.v4.app.Fragment`
+* The form needs to be placed somewhere in your layout. A good approach is to insert a `FrameLayout` in your layout and use it to host the form. It is also possible to have a dedicated activity for the form. For a practical example, see the example application in this repository.
 
- 
+
 This is an example of how your activity should look like:
 
 ```
