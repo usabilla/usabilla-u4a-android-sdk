@@ -100,6 +100,10 @@ Specifically, the SDK will send out these broadcasts:
 - `"com.usabilla.closeForm"` when the user wants the form to be closed or to disappear
 - `"com.usabilla.redirectToPlayStore"` when the user wants to open the Play Store on the app's page
 
+To receive these broadcast use the `LocalBroadcastManager` as such   
+
+`LocalBroadcastManager.getInstance(getApplicationContext()).registerReceiver(closeButtonReceiver, new IntentFilter("com.usabilla.closeForm"));`
+
 ## External Navigation
 It is possible to hide the default navigation and cancel button in the SDK and provide your own (ex. in the action bar). 
 
