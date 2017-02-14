@@ -100,6 +100,10 @@ Specifically, the SDK will send out these broadcasts:
 - `"com.usabilla.closeForm"` when the user wants the form to be closed or to disappear
 - `"com.usabilla.redirectToPlayStore"` when the user wants to open the Play Store on the app's page
 
+To receive these broadcast use the `LocalBroadcastManager` as such   
+
+`LocalBroadcastManager.getInstance(getApplicationContext()).registerReceiver(closeButtonReceiver, new IntentFilter("com.usabilla.closeForm"));`
+
 ## Submission status
  
  The `"com.usabilla.closeForm"` broadcast bundles some information regarding what the user has done with the form.
