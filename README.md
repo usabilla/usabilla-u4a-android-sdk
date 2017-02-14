@@ -6,19 +6,12 @@ This repository contains the SDK for Android.
 
 Take a look at our [Wiki](https://github.com/usabilla/usabilla-u4a-android-sdk/wiki) for a complete and in depth guide on how to install and customize the SDK.
 
-## Latest changes in v3.3.1
+## Latest changes in v3.4.0
 #### Added
-- Possibility to set the titles in bold.
-- New field error message, displayed under the title when the user tries to submit an incomplete form.
-
-#### Updated
-- Revamped and polished UI and animations following material guidelines.
-- `miniTextSize` and its getter / setter have been renamed to `miniFontSize``, to align the naming with the other properties.
-- Updated support libraries to `v25.1.0`.
+- The close form broadcast now contains informations relative to the feedback the user has submitted. See the ReadMe for more information
 
 #### Removed
-- It's not possible anymore to force a user to submit a screenshot.
-
+- Removed unused parameter `boolean active` from `public void formLoadedSuccessfully(Form form)`
 
 ## Old SDK versions
 Version 3.+ is incompatible with the implementation of version 2.*
