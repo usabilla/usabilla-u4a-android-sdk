@@ -1,3 +1,11 @@
+## 3.4.0
+
+#### Added
+- The close form broadcast now contains informations relative to the feedback the user has submitted. See the ReadMe for more information
+
+#### Removed
+- Removed unused parameter `boolean active` from `public void formLoadedSuccessfully(Form form)`
+
 ## 3.3.1
 #### Added
 - Possibility to set the titles in bold.

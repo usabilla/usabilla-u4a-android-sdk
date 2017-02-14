@@ -100,6 +100,33 @@ Specifically, the SDK will send out these broadcasts:
 - `"com.usabilla.closeForm"` when the user wants the form to be closed or to disappear
 - `"com.usabilla.redirectToPlayStore"` when the user wants to open the Play Store on the app's page
 
+## Submission status
+ 
+ The `"com.usabilla.closeForm"` broadcast bundles some information regarding what the user has done with the form.
+ The broadcast will contain a pareled array of FeedbackResult under the `feedbackResults` key.
+
+ A FeedbackResult object contains:
+ * The `rating` left by the user (smilies or star rating). If the user hasn't set one, the default value will be 0.
+ * A `sent` boolean that is true if the form has been submitted, false otherwise.
+ * An `abandonedPageIndex`, containig the page the user left the form from. If the form has been submitted this value will be -1.
+
+
+A possible implementation of the broadcasts receiver looks like this:
+
+ ```
+ usabillaCloser = new BroadcastReceiver() {
+            @Override
+            public void onReceive(Context context, Intent intent) {
+                FeedbackResult[] result = (FeedbackResult[]) intent.getParcelableArrayExtra("feedbackResults");
+                for (FeedbackResult aResult : result)
+                    Log.i("feedback results", "Rating left: " + aResult.getRating() + " form was sent: " + aResult.isSent() + " dropped out in page number: " + aResult.getAbandonedPageIndex());
+            }
+        };
+ ```
+
+ The broadcast bundles an array because the user might submit the form multiple time, but this broadcast will be called only when the form needs to be removed from the UI.
+
+
 ## External Navigation
 It is possible to hide the default navigation and cancel button in the SDK and provide your own (ex. in the action bar). 
 
