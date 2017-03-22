@@ -1,3 +1,10 @@
+## 3.4.1
+
+#### Updated
+
+- Updated Volley to 'com.android.volley:volley:1.0.0'
+- Update the support:design library to 25.3.0
+
 ## 3.4.0
 
 #### Added

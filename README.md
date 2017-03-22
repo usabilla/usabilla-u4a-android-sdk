@@ -6,12 +6,13 @@ This repository contains the SDK for Android.
 
 Take a look at our [Wiki](https://github.com/usabilla/usabilla-u4a-android-sdk/wiki) for a complete and in depth guide on how to install and customize the SDK.
 
-## Latest changes in v3.4.0
-#### Added
-- The close form broadcast now contains informations relative to the feedback the user has submitted. See the ReadMe for more information
+## Latest changes in v3.4.1
 
-#### Removed
-- Removed unused parameter `boolean active` from `public void formLoadedSuccessfully(Form form)`
+#### Updated
+
+- Updated Volley to 'com.android.volley:volley:1.0.0'
+- Update the support:design library to 25.3.0
+
 
 ## Old SDK versions
 Version 3.+ is incompatible with the implementation of version 2.*
@@ -24,7 +25,7 @@ Please check the wiki to see how to implement the SDK.
 ## Gradle instructions
 The Usabilla SDK are currently served through [JCenter](https://bintray.com/usabilla/maven/ubform/view):
 - make sure `jcenter()` is included in your repositories
-- add `compile 'com.usabilla.sdk:ubform:3.3.+'` to the dependencies of your gradle build script.
+- add `compile 'com.usabilla.sdk:ubform:3.4.+'` to the dependencies of your gradle build script.
 
 ## Manual instructions
 Download the packaged `.aar` library and include it in your project according to the IDE of your choice.
