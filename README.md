@@ -6,12 +6,10 @@ This repository contains the SDK for Android.
 
 Take a look at our [Wiki](https://github.com/usabilla/usabilla-u4a-android-sdk/wiki) for a complete and in depth guide on how to install and customize the SDK.
 
-## Latest changes in v3.4.1
+## Latest changes in v3.4.2
 
-#### Updated
-
-- Updated Volley to 'com.android.volley:volley:1.0.0'
-- Update the support:design library to 25.3.0
+#### Fixed
+- Fixed color customisation not applied correctly to the form footer
 
 
 ## Old SDK versions

@@ -1,3 +1,8 @@
+## 3.4.2
+
+#### Fixed
+- Fixed color customisation not applied correctly to the form footer
+
 ## 3.4.1
 
 #### Updated
