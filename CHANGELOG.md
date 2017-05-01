@@ -1,3 +1,10 @@
+## 3.4.3
+
+#### Fixed 
+- The screenshot is now correctly reset after the form has been sumbitted
+- Labels in the slider component do not overlap eachother anymore
+- Icons in the mood component always resize properly
+
 ## 3.4.2
 
 #### Fixed

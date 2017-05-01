@@ -6,10 +6,12 @@ This repository contains the SDK for Android.
 
 Take a look at our [Wiki](https://github.com/usabilla/usabilla-u4a-android-sdk/wiki) for a complete and in depth guide on how to install and customize the SDK.
 
-## Latest changes in v3.4.2
+## Latest changes in v3.4.3
 
-#### Fixed
-- Fixed color customisation not applied correctly to the form footer
+#### Fixed 
+- The screenshot is now correctly reset after the form has been sumbitted
+- Labels in the slider component do not overlap eachother anymore
+- Icons in the mood component always resize properly
 
 
 ## Old SDK versions
