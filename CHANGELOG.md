@@ -1,6 +1,14 @@
+## 3.4.4
+
+#### Fixed
+- Error when multiple ending pages were present in the form
+
+#### Added
+- Add possibility to preload a Form for off-line use
+
 ## 3.4.3
 
-#### Fixed 
+#### Fixed
 - The screenshot is now correctly reset after the form has been sumbitted
 - Labels in the slider component do not overlap eachother anymore
 - Icons in the mood component always resize properly

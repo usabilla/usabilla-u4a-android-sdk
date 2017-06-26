@@ -6,12 +6,13 @@ This repository contains the SDK for Android.
 
 Take a look at our [Wiki](https://github.com/usabilla/usabilla-u4a-android-sdk/wiki) for a complete and in depth guide on how to install and customize the SDK.
 
-## Latest changes in v3.4.3
+## Latest changes in v3.4.4
 
-#### Fixed 
-- The screenshot is now correctly reset after the form has been sumbitted
-- Labels in the slider component do not overlap eachother anymore
-- Icons in the mood component always resize properly
+#### Fixed
+- Error when multiple ending pages were present in the form
+
+#### Added
+- Add possibility to preload a Form for off-line use
 
 
 ## Old SDK versions
@@ -55,8 +56,12 @@ public class MainActivity implements UBFormInterface {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         UBFormClient.initClient(getApplicationContext());
-        UBFormClient.loadFeedbackForm("FORM ID", getApplicationContext(), MainActivity.this);
 
+        // optional preload form for off-line use
+        UBFormClient.preloadFeedbackForm("FORM ID", getApplicationContext());
+
+        // normal loading on demand
+        UBFormClient.loadFeedbackForm("FORM ID", getApplicationContext(), MainActivity.this);
     }
 
     //This will be called when the form has finished loading and is ready to be displayed
@@ -80,6 +85,17 @@ public class MainActivity implements UBFormInterface {
 }
 ```
 
+## Preloading
+If you know you will need to display a feedback form when the user is offline, you can preload it a cache it in the SDK to make it available at any given moment.
+To preload a form use
+
+`UBFormClient.preloadFeedbackForm("FORM ID", getApplicationContext());`
+
+This will fetch the latest version of the form and cache it in the SDK.
+When you will request that form, if there is no network connectivity, the SDK will use the cached version and your user will be able to submit his feedback
+
+Feedback submitted while offline will be sent when connectivity is restored.
+
 ## Screenshot
 You can decide wether or not to attach a screenshot in your form.
 In order to attach a screenshot to the feedback item you can either:
@@ -88,7 +104,7 @@ In order to attach a screenshot to the feedback item you can either:
 * Specify a custom image to be used as screenshot using `UBFormClient.setCustomScreenshot(bitmap);`
 
 
-## Communication with the App 
+## Communication with the App
 The SDK communicates with the main app trough broadcasts.
 Specifically, the SDK will send out these broadcasts:
 - `"com.usabilla.closeForm"` when the user wants the form to be closed or to disappear
@@ -99,7 +115,7 @@ To receive these broadcast use the `LocalBroadcastManager` as such
 `LocalBroadcastManager.getInstance(getApplicationContext()).registerReceiver(closeButtonReceiver, new IntentFilter("com.usabilla.closeForm"));`
 
 ## Submission status
- 
+
  The `"com.usabilla.closeForm"` broadcast bundles some information regarding what the user has done with the form.
  The broadcast will contain a pareled array of FeedbackResult under the `feedbackResults` key.
 
@@ -126,7 +142,7 @@ A possible implementation of the broadcasts receiver looks like this:
 
 
 ## External Navigation
-It is possible to hide the default navigation and cancel button in the SDK and provide your own (ex. in the action bar). 
+It is possible to hide the default navigation and cancel button in the SDK and provide your own (ex. in the action bar).
 
 To do so you must:
 - set `form.hideDefaultNavigationButton(true);`  and `form.hideCancelButton(true);`
@@ -135,7 +151,7 @@ To do so you must:
 
 
 
-## ProGuard 
+## ProGuard
 If you are using Proguard, add the following line to your configuration
 ```
     -keep class com.usabilla.sdk.ubform.data.** { *; }
