@@ -24,7 +24,7 @@ Please check the wiki to see how to implement the SDK.
 # Installation
 
 ## Supported version
-The Usabilla SDK required the minSdkVersion to be 16.
+The Usabilla SDK required the minSdkVersion of the application to be 16 (Android 4.1).
 
 ## Gradle instructions
 The Usabilla SDK are currently served through [JCenter](https://bintray.com/usabilla/maven/ubform/view):
