@@ -159,3 +159,10 @@ If you are using Proguard, add the following line to your configuration
 ```
     -keep class com.usabilla.sdk.ubform.data.** { *; }
 ```
+
+## Resource ProGuard
+If you are using resource proguards in your project, add these files to your configuration(whitelist) to keep these resources 
+```
+"R.drawable.mood_1", "R.drawable.mood_2", "R.drawable.mood_3", "R.drawable.mood_4", "R.drawable.mood_5", 
+"R.drawable.smile_1", "R.drawable.smile_2", "R.drawable.smile_3", "R.drawable.smile_4","R.drawable.smile_5"
+```

@@ -75,17 +75,22 @@ public class FormInActivty extends AppCompatActivity implements UBFormInterface 
 
     @Override
     public void formLoadedSuccessfully(Form form, boolean b) {
-        this.form = form;
+        try{
+            this.form = form;
 
-        //I will use the action bar to hold the navigation button
-        form.hideDefaultNavigationButton(true);
-        form.hideCancelButton(true);
+            //I will use the action bar to hold the navigation button
+            form.hideDefaultNavigationButton(true);
+            form.hideCancelButton(true);
 
-        //I can customise font and drawables here before displaying the form
-        ThemeConfig themeConfig = form.getThemeConfig();
-        //form.getThemeConfig().setFont("MiloOT.otf", getApplicationContext());
+            //I can customise font and drawables here before displaying the form
+            ThemeConfig themeConfig = form.getThemeConfig();
+            //form.getThemeConfig().setFont("MiloOT.otf", getApplicationContext());
 
-        getSupportFragmentManager().beginTransaction().add(R.id.container, form).commit();
+            getSupportFragmentManager().beginTransaction().add(R.id.container, form).commit();
+            
+        } catch (Exception ignored) {
+            /* If destroy this usabilla Activity before formLoadedSuccessfully callback will force close */
+        }
     }
 
     @Override
