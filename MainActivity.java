@@ -1,76 +1,139 @@
-public class MainActivity extends AppCompatActivity implements UBFormInterface {
+public class MainActivity extends AppCompatActivity implements UBFeedbackForm {
+
+    private static final String FRAGMENT_TAG = "MyFragment";
+    private FormClient formClient;
+    private BroadcastReceiver usabillaCloser;
+    private BroadcastReceiver usabillaCampaignCloser;
+    private IntentFilter closerFilter = new IntentFilter(Constants.INTENT_CLOSE_FORM);
+    private IntentFilter closerCampaignFilter = new IntentFilter(Constants.INTENT_CLOSE_CAMPAIGN);
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-       
-       //UBFormClient is now static
-        //This is used just to get the name of the hostin app, for reporting
-        UBFormClient.initClient(getApplicationContext());
-        //The SDK uses broadcast to communicate with the main application. 
-        BroadcastReceiver usabillaCloser = new BroadcastReceiver() {
-            @Override
-            public void onReceive(Context context, Intent intent) {
-                //remove fragment
-            }
-        };
-         BroadcastReceiver asd = new BroadcastReceiver() {
-            @Override
-            public void onReceive(Context context, Intent intent) {
-                //This will be called if the user asks to go to the playstore
-                //Redirect to play store
-            }
-        };
-        //This one is used when the user wishes to go to the play store. In this case "com.usabilla.closeForm" will be called immediately after as well.
-        LocalBroadcastManager.getInstance(getApplicationContext()).registerReceiver(asd, new IntentFilter("com.usabilla.redirectToPlayStore"));
-        //This one is called when the user wants to close the form
-        LocalBroadcastManager.getInstance(getApplicationContext()).registerReceiver(usabillaCloser, new IntentFilter("com.usabilla.closeForm"));
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_main);
 
-    }
-   
-    protected void onButtonClick() {
-       
-        final JSONObject customVars = new JSONObject();
-        try {
-            customVars.put("user", "Mari_o.");
-            customVars.put("user_id", 12345);
-        } catch (JSONException e) {
-            //WHOPS
+        //Optional
+        setUpUsabillaTheme();
+
+        setupCloserBroadcastReceiver();
+        setupCampaignCloserBroadcastReceiver();
+        initSDK();
+
+        if (getSupportFragmentManager().findFragmentByTag(FRAGMENT_TAG) != null) {
+            formClient = (FormClient) getSupportFragmentManager().findFragmentByTag(FRAGMENT_TAG);
+            attachFragment();
         }
-   
-        UBFormClient.takeScreenshot(this);
-        //Loading a form with an ID, custom variables (if any), context and the object implementing the UBFormInterface for the callback
-        UBFormClient.loadFeedbackForm("ID", customVars, getApplicationContext(), this);
-       
+    }
+
+    private void attachFragment() {
+        if (formClient.getFragment() != null) {
+            getSupportFragmentManager().beginTransaction().replace("use frame layour here", formClient.getFragment(), FRAGMENT_TAG).commit();
+        }
     }
 
     @Override
-    public void formLoadedSuccessfully(Form form, boolean active) {
-        //Form has been loaded, you can configure the behaviour of the buttons. Being a fragment, the navigation button ( next, submit) and the cancel one 
-        //are displayed on the bottom of the screen
-        form.hideCancelButton(false);
-        form.hideGiveMoreFeedback(true);
-        //You can edit the form styling here
-        ThemeConfig themeConfig = form.getThemeConfig();
-        themeConfig.setBackgroundColor(getResources().getColor(android.R.color.darker_gray));
-        themeConfig.setTitleColor(getResources().getColor(android.R.color.holo_purple));
-        themeConfig.setTextColor(getResources().getColor(android.R.color.holo_orange_light));
-        themeConfig.setAccentColor(getResources().getColor(android.R.color.white));
-        themeConfig.setBackgroundColor(getResources().getColor(android.R.color.holo_blue_dark));
-        themeConfig.setAccentTextColor(getResources().getColor(android.R.color.black));
-        //At this point the fragment is loaded and ready to be displayed. It's up to yo when or how
-    }
-    @Override
-    public void formFailedLoading(Form defaultForm) {
-        //This is called when some kind of error occurs. You get a default form
+    protected void onStart() {
+        super.onStart();
+        LocalBroadcastManager.getInstance(this).registerReceiver(usabillaCloser, closerFilter);
+        LocalBroadcastManager.getInstance(this).registerReceiver(usabillaCampaignCloser, closerCampaignFilter);
     }
 
     @Override
-    public void textForMainButtonUpdated(String text) {
-        //this is  useful if you want to hide the default navigation button and provide your own (ex. in action bar)
-        //In this case, a few more steps are necessary:
-        //1) call  form.hideDefaultNavigationButton(true); to hide the fragment navigation. You can also hide the cancel button if you want to use the device physical back button.
-        //2) call form.getTextForMainButton() to get the text your button should have at the beginning.
-        //3) call form.navigationButtonPushed(); when your external button is pushed. The form will update itself and that method will also return the string for the new button text.
+    protected void onStop() {
+        super.onStop();
+        LocalBroadcastManager.getInstance(this).unregisterReceiver(usabillaCloser);
+        LocalBroadcastManager.getInstance(this).unregisterReceiver(usabillaCampaignCloser);
+    }
 
+    private void setupCloserBroadcastReceiver() {
+        usabillaCloser = new BroadcastReceiver() {
+            @Override
+            public void onReceive(Context context, Intent intent) {
+                if (formClient != null && formClient.getFragment() != null) {
+                    getSupportFragmentManager().beginTransaction().remove(formClient.getFragment()).commit();
+                }
+            }
+        };
+    }
+
+    private void setupCampaignCloserBroadcastReceiver() {
+        usabillaCampaignCloser = new BroadcastReceiver() {
+            @Override
+            public void onReceive(Context context, Intent intent) {
+                FeedbackResult res = intent.getParcelableExtra(Constants.INTENT_FEEDBACK_RESULTS_CAMPAIGN);
+                String feedbackInfo = "Rating " + res.getRating() + "\n";
+                feedbackInfo += "Abandoned page " + res.getAbandonedPageIndex() + "\n";
+                feedbackInfo += "Is sent " + res.isSent();
+                Toast.makeText(context, feedbackInfo, Toast.LENGTH_LONG).show();
+            }
+        };
+    }
+
+    private void initSDK() {
+        Usabilla.initialize(this, "MyAppID");
+        Usabilla.setDebugEnabled(true);
+        Usabilla.updateFragmentManager(getSupportFragmentManager());
+    }
+
+    @Override
+    public void formLoadSuccess(FormClient form) {
+        formClient = form;
+        if (form.getFragment() != null) {
+            getSupportFragmentManager().beginTransaction().replace(R.id.main_activity_frame, form.getFragment(), FRAGMENT_TAG).commit();
+        }
+    }
+
+    @Override
+    public void formLoadFail() {
+        Toast.makeText(this, "Form load fail", Toast.LENGTH_LONG).show();
+    }
+
+    @Override
+    public void mainButtonTextUpdated(String text) {
+        // Use this text for your own navigation button
+        // Usually returns "Next" or "Submit"
+    }
+
+    private void giveFeedback() {
+        // Optional screenshot
+        Usabilla.takeScreenshot(this);
+        Usabilla.loadFeedbackForm(this, "MyFormID", this);
+    }
+
+    private void sendEvent() {
+        Usabilla.sendEvent(getApplicationContext(), "MyEvent");
+    }
+
+    private void resetCampaign() {
+        // Used to reset campaign progression
+        Usabilla.resetCampaignData(this);
+    }
+
+    private void setUpUsabillaTheme() {
+        // Create fonts
+        Fonts themeFonts = new Fonts();
+        themeFonts.setRegular("fonts/IndieFlower.ttf");
+
+        // Create images
+        Images themeImages = new Images();
+        ArrayList<Integer> ids = new ArrayList<Integer>();
+        ids.add(R.drawable.mood_1_bw);
+        ids.add(R.drawable.mood_2_bw);
+        ids.add(R.drawable.mood_3_bw);
+        ids.add(R.drawable.mood_4_bw);
+        ids.add(R.drawable.mood_5_bw);
+        themeImages.setEnabledEmoticons(ids);
+        
+        themeImages.setStarOutline(R.drawable.ic_star_red);
+        themeImages.setStar(R.drawable.ic_star_yellow);
+
+        // Build theme
+        UsabillaTheme.Builder themeBuilder = new UsabillaTheme.Builder();
+        themeBuilder.setImages(themeImages);
+        themeBuilder.setFonts(themeFonts);
+
+        // Set the theme
+        Usabilla.setTheme(themeBuilder.build());
     }
 }
