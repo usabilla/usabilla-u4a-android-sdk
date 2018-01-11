@@ -1,3 +1,31 @@
+## 4.0.0
+
+#### Added
+
+- Added targeted active feedback functionalities. See the [readme](https://github.com/usabilla/usabilla-u4a-android-sdk#campaigns) for more details.
+- Added `updateFragmentManager(SupportFragmentManager)` to pass the FragmentManager needed for campaign functionalities. See the [readme](https://github.com/usabilla/usabilla-u4a-android-sdk#update-fragment-manager) for more details.
+- Added `isDebugEnabled()` and `setDebugEnabled(boolean)` to enable the logging of information coming from the SDK. See the [readme](https://github.com/usabilla/usabilla-u4a-android-sdk#debug-mode) for more details.
+- Added `resetCampaignData(Context)`. See the [readme](https://github.com/usabilla/usabilla-u4a-android-sdk#managing-an-existing-campaign) for more details.
+
+
+#### Updated
+- Updated default smilies and stars.
+- Renamed `UBForm` to `Usabilla`.
+- Renamed `UBFormInterface` to `UBFeedbackForm`.
+- Renamed `initClient()` method to `initialize(Context, String);`. Calling this method is now mandatory to start the SDK.
+- Changed `formLoadedSuccessfully(Form, boolean)` to `formLoadSuccess(FormClient)`.
+- Changed `formFailedLoading(Form)` to `formLoadFail()`.
+- Changed `loadFeedbackForm(String, Context, UBFormInterface);` to `loadFeedbackForm(Context, String, UBFeedbackForm)`.
+- Changed `setCustomScreenshot(Bitmap)` to `setCustomScreenshot(Context, Bitmap)`.
+- Changed `textForMainButtonUpdated(String)` to `mainButtonTextUpdated(String)`.
+- Refactored `UsabillaTheme`. See the [readme](https://github.com/usabilla/usabilla-u4a-android-sdk#ui-customisations) for more details.
+- Merged `form.hideDefaultNavigationButton(boolean)` and `form.hideCancelButton(boolean);` into `setDefaultNavigationButtonsVisibility(boolean)` and `areNavigationButtonsVisible()`
+
+#### Removed
+- Removed `showCancelButton` property. The cancel button will now be always displayed.
+- Removed the possibility to add specialised custom variables to passive forms. From now on, the global custom variables will be used instead.
+
+
 ## 3.4.4
 
 #### Fixed
