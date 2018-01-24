@@ -1,3 +1,8 @@
+## 4.0.1
+
+#### Fixed
+- Fixed a possible issue with data serialisation
+
 ## 4.0.0
 
 #### Added
