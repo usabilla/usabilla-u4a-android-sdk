@@ -1,3 +1,9 @@
+## 4.0.2
+
+#### Fixed
+- Fixed an issue with the jump rules not considered with the radio buttons component
+- Fixed an issue when the submission of the form was blocked by a required hidden field
+
 ## 4.0.1
 
 #### Fixed
