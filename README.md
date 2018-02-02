@@ -43,7 +43,7 @@ The new Usabilla SDK Version 4 comes with two major advancements:
 
 
 ## Installation
-- You can find the latest version of our SDK [here](https://bintray.com/usabilla/maven/ubform) and add it as a Maven or a Gradle dependency (`implementation 'com.usabilla.sdk:ubform:4.0.1'`).
+- You can find the latest version of our SDK [here](https://bintray.com/usabilla/maven/ubform) and add it as a Maven or a Gradle dependency (`implementation 'com.usabilla.sdk:ubform:4.0.2'`).
 - If you don't want to use a dependency manager you can also import the .aar library independently.
 Our SDK uses the following dependencies. If your project doesn't use them already you might need to add it as well in your gradle file.
 ```
@@ -182,12 +182,6 @@ public class MainActivity extends AppCompatActivity implements UBFeedbackForm {
     public void mainButtonTextUpdated(String text) {
         // See section External Navigation
     }
-
-    @Override
-    public FragmentManager getClientFragmentManager() {
-        return getSupportFragmentManager();
-    }
-
 }
 ```
 

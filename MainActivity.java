@@ -28,7 +28,7 @@ public class MainActivity extends AppCompatActivity implements UBFeedbackForm {
 
     private void attachFragment() {
         if (formClient.getFragment() != null) {
-            getSupportFragmentManager().beginTransaction().replace("use frame layour here", formClient.getFragment(), FRAGMENT_TAG).commit();
+            getSupportFragmentManager().beginTransaction().replace("use frame layout here", formClient.getFragment(), FRAGMENT_TAG).commit();
         }
     }
 
@@ -71,7 +71,7 @@ public class MainActivity extends AppCompatActivity implements UBFeedbackForm {
     }
 
     private void initSDK() {
-        Usabilla.initialize(this, "MyAppID");
+        Usabilla.initialize(this, "use your personal AppId here");
         Usabilla.setDebugEnabled(true);
         Usabilla.updateFragmentManager(getSupportFragmentManager());
     }
@@ -98,7 +98,7 @@ public class MainActivity extends AppCompatActivity implements UBFeedbackForm {
     private void giveFeedback() {
         // Optional screenshot
         Usabilla.takeScreenshot(this);
-        Usabilla.loadFeedbackForm(this, "MyFormID", this);
+        Usabilla.loadFeedbackForm(this, "use your personal FormId here", this);
     }
 
     private void sendEvent() {
