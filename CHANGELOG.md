@@ -1,3 +1,10 @@
+## 4.0.3
+
+#### Fixed
+- Fixed dependency to espresso idling resources incorrectly leaking into the hosting application
+- Fixed an issue that would cause the redirect to play store button not to appear under certain conditions
+
+
 ## 4.0.2
 
 #### Fixed

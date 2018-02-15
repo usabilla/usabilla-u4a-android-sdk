@@ -43,7 +43,7 @@ The new Usabilla SDK Version 4 comes with two major advancements:
 
 
 ## Installation
-- You can find the latest version of our SDK [here](https://bintray.com/usabilla/maven/ubform) and add it as a Maven or a Gradle dependency (`implementation 'com.usabilla.sdk:ubform:4.0.2'`).
+- You can find the latest version of our SDK [here](https://bintray.com/usabilla/maven/ubform) and add it as a Maven or a Gradle dependency (`implementation 'com.usabilla.sdk:ubform:4.0.3'`).
 - If you don't want to use a dependency manager you can also import the .aar library independently.
 Our SDK uses the following dependencies. If your project doesn't use them already you might need to add it as well in your gradle file.
 ```
@@ -51,7 +51,6 @@ dependencies {
     compile 'com.mcxiaoke.volley:library:1.0.19'
     compile 'com.android.support:appcompat-v7:25.1.1'
     compile "org.jetbrains.kotlin:kotlin-stdlib-jre7:1.2.0"
-    compile 'com.android.support.test.espresso:espresso-idling-resource:3.0.1'
 }
 ```
 
