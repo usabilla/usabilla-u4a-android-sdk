@@ -1,4 +1,4 @@
-public class MainActivity extends AppCompatActivity implements UBFeedbackForm {
+public class MainActivity extends AppCompatActivity implements UBFeedbackForm, UsabillaReadyCallback {
 
     private static final String FRAGMENT_TAG = "MyFragment";
     private FormClient formClient;
@@ -6,7 +6,6 @@ public class MainActivity extends AppCompatActivity implements UBFeedbackForm {
     private BroadcastReceiver usabillaCampaignCloser;
     private IntentFilter closerFilter = new IntentFilter(Constants.INTENT_CLOSE_FORM);
     private IntentFilter closerCampaignFilter = new IntentFilter(Constants.INTENT_CLOSE_CAMPAIGN);
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -26,12 +25,6 @@ public class MainActivity extends AppCompatActivity implements UBFeedbackForm {
         }
     }
 
-    private void attachFragment() {
-        if (formClient.getFragment() != null) {
-            getSupportFragmentManager().beginTransaction().replace("use frame layout here", formClient.getFragment(), FRAGMENT_TAG).commit();
-        }
-    }
-
     @Override
     protected void onStart() {
         super.onStart();
@@ -46,6 +39,38 @@ public class MainActivity extends AppCompatActivity implements UBFeedbackForm {
         LocalBroadcastManager.getInstance(this).unregisterReceiver(usabillaCampaignCloser);
     }
 
+    @Override
+    public void formLoadSuccess(FormClient form) {
+        formClient = form;
+        if (form.getFragment() != null) {
+            getSupportFragmentManager().beginTransaction().replace(R.id.main_activity_frame, form.getFragment(), FRAGMENT_TAG).commit();
+        }
+    }
+
+    @Override
+    public void formLoadFail() {
+        Toast.makeText(this, "Form load fail", Toast.LENGTH_LONG).show();
+    }
+
+    @Override
+    public void mainButtonTextUpdated(String text) {
+        // Use this text for your own navigation button.
+        // Usually returns "Next" or "Submit".
+    }
+
+    @Override
+    public void onUsabillaInitialized() {
+        // This callback will be called once the initialization process of the SDK finishes.
+        // In case an appId was provided during initialization, then the SDK starts to be able
+        // to process events right after this callback is called.
+    }
+
+    private void attachFragment() {
+        if (formClient.getFragment() != null) {
+            getSupportFragmentManager().beginTransaction().replace("use frame layout here", formClient.getFragment(), FRAGMENT_TAG).commit();
+        }
+    }
+    
     private void setupCloserBroadcastReceiver() {
         usabillaCloser = new BroadcastReceiver() {
             @Override
@@ -71,28 +96,9 @@ public class MainActivity extends AppCompatActivity implements UBFeedbackForm {
     }
 
     private void initSDK() {
-        Usabilla.initialize(this, "use your personal AppId here");
+        Usabilla.initialize(this, "use your personal AppId here", this);
         Usabilla.setDebugEnabled(true);
         Usabilla.updateFragmentManager(getSupportFragmentManager());
-    }
-
-    @Override
-    public void formLoadSuccess(FormClient form) {
-        formClient = form;
-        if (form.getFragment() != null) {
-            getSupportFragmentManager().beginTransaction().replace(R.id.main_activity_frame, form.getFragment(), FRAGMENT_TAG).commit();
-        }
-    }
-
-    @Override
-    public void formLoadFail() {
-        Toast.makeText(this, "Form load fail", Toast.LENGTH_LONG).show();
-    }
-
-    @Override
-    public void mainButtonTextUpdated(String text) {
-        // Use this text for your own navigation button
-        // Usually returns "Next" or "Submit"
     }
 
     private void giveFeedback() {
@@ -106,8 +112,10 @@ public class MainActivity extends AppCompatActivity implements UBFeedbackForm {
     }
 
     private void resetCampaign() {
-        // Used to reset campaign progression
-        Usabilla.resetCampaignData(this);
+        // Reset campaign progression deleting them from memory.
+        // It also fetches the campaigns associated to the appId once again 
+        // and calls the initialisation callback once the processs is finished.
+        Usabilla.resetCampaignData(this, this);
     }
 
     private void setUpUsabillaTheme() {
