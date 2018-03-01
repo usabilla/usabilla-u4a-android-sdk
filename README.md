@@ -17,9 +17,9 @@ The new Usabilla SDK Version 4 comes with two major advancements:
     - [The App Id](#the-app-id)
     - [Targeting options](#targeting-options)
     - [Managing an existing campaign](#managing-an-existing-campaign)
-    - [Campaign callback](#campaign-callback)
     - [Campaign results](#campaign-results)
     - [Update fragment manager](#update-fragment-manager)
+    - [Reset Campaigns Data](#reset-campaigns-data)
 - [Passive feedback](#passive-feedback)
     - [Loading a form](#loading-a-form)
     - [Preloading a form](#preloading-a-form)
@@ -56,12 +56,17 @@ dependencies {
 
 ## Initialization
 
-Once the installation step is done the SDK can be initialized using the method:
+Once the installation step is done the SDK should be initialized using the **initialize** method in one of its three flavours:
 ```java
+Usabilla.initialize(Context context);
 Usabilla.initialize(Context context, @Nullable String appId);
+Usabilla.initialize(Context context, @Nullable String appId, @Nullable UsabillaReadyCallback callback);
 ```
-where `appId` can be `null` if you are not using the Campaign feature.
-Please read the [Campaigns](#campaigns) section for more information.
+The method **initialize** has two optional parameters:
+- `appId` needs to be used if you want to use the Campaign feature (please read the [Campaigns](#campaigns) section for more information).
+- `callback` is a callback used to communicate when the initialisation process ends.
+
+If you are using the campaign feature the moment when the callback triggers indicates from when the Usabilla SDK is ready to receive events.
 
 The **initialize** method will take care of:
 * Submitting any pending feedback items.
@@ -119,10 +124,6 @@ Moreover, you can update the content of your campaign (e.g. questions) at any ti
 
 Furthermore, you can also change the targeting options of a campaign. Keep in mind that updating the targeting options of an active campaign will **reset** any progression previously made on the user's device.
 
-### Campaign callback
-
-
-
 ### Campaign results
 
 Aggregated campaign results are available for download from the [Campaign Overview](https://app.usabilla.com/member/#/apps/campaigns/overview/). Here you can download the results per campaign, in the CSV format.
@@ -144,6 +145,16 @@ Usabilla.updateFragmentManager(FragmentManager fragmentManager)
 ```
 
 Furthermore, remember to handle properly the device rotation and other cases where a new FragmentManager is created, in order to always provide the latest one to the SDK.
+
+### Reset campaigns data
+
+The Usabilla SDK offers the possibility to reset the campaign data stored locally using the **resetCampaignData** method in one of its two flavours:
+```java
+Usabilla.resetCampaignData(Context context);
+Usabilla.resetCampaignData(Context context, @Nullable UsabillaReadyCallback callback);
+```
+The method removes all campaigns stored locally and fetches them again from our remote API, effectively losing any trace whether they triggered or not.
+The optional parameter `callback` is used to communicate when the fetching of the campaigns has ended and the campaign events can start being processed by the Usabilla SDK.
 
 ## Passive feedback
 Passive feedback are feedback forms that are not triggered by events.
