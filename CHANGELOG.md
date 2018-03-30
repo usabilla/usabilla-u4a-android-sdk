@@ -1,3 +1,9 @@
+## 4.1.1
+#### Fixed
+- Fixed a possible `IllegalStateException` when displaying the banner
+- Fixed puntuation marks not being correctly handled in custom variables
+
+
 ## 4.1.0
 #### Added
 - Added callback parameter to the `initialize` and `resetCampaignData` methods to notify when they finish. See the ReadMe for more information
