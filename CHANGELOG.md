@@ -1,8 +1,27 @@
+## 5.0.0
+#### Added
+- Added the possibility to apply a custom theme to a single passive feedback form
+- Added a callback to the reset campaign method to notify when the action is finished
+- Added the possibility to remove cached passive feedback forms
+
+#### Updated
+- Updated the way to interact with the SDK from static methods to class instantiation. See the ReadMe for more information
+- Updated the method `loadFeedbackForm` to accept as parameters also a Bitmap for the screenshot and a theme
+- Updated the way to provide a screenshot to the SDK
+- Updated Kotlin `stdlib` to use `jdk7` instead of `jre7`
+
+#### Removed
+- Removed the feature to give more feedback at the end of a passive feedback form
+- Removed the methods `getAppName`, `setAppName`, `getAppId`, `setCustomScreenshot` and `getAppVersion` from the public interface of our SDK
+
+#### Fixed
+- Fixed a crash happening on devices without Google PlayStore installed 
+- Fixed a crash happening when the screenshot file was not found
+
 ## 4.1.1
 #### Fixed
 - Fixed a possible `IllegalStateException` when displaying the banner
-- Fixed puntuation marks not being correctly handled in custom variables
-
+- Fixed punctuation marks not being correctly handled in custom variables
 
 ## 4.1.0
 #### Added
