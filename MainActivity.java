@@ -1,23 +1,29 @@
-public class MainActivity extends AppCompatActivity implements UBFeedbackForm, UsabillaReadyCallback {
+public class MainActivity extends AppCompatActivity implements UsabillaFormCallback, UsabillaReadyCallback {
 
     private static final String FRAGMENT_TAG = "MyFragment";
-    private FormClient formClient;
-    private BroadcastReceiver usabillaCloser;
-    private BroadcastReceiver usabillaCampaignCloser;
+    
+    private BroadcastReceiver usabillaReceiverClosePassive;
+    private BroadcastReceiver usabillaReceiverCloseCampaign;
     private IntentFilter closerFilter = new IntentFilter(Constants.INTENT_CLOSE_FORM);
     private IntentFilter closerCampaignFilter = new IntentFilter(Constants.INTENT_CLOSE_CAMPAIGN);
-
+    
+    private Usabilla usabilla;
+    private FormClient formClient;
+    
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        usabilla = new Usabilla.Companion().getInstance(this);
+        usabilla.updateFragmentManager(getSupportFragmentManager());
+        
+        setupPassiveFormBroadcastReceiver();
+        setupCampaignFormBroadcastReceiver();
+
+        initializeSdk();
 
         //Optional
-        setUpUsabillaTheme();
-
-        setupCloserBroadcastReceiver();
-        setupCampaignCloserBroadcastReceiver();
-        initSDK();
+        setUsabillaTheme();
 
         if (getSupportFragmentManager().findFragmentByTag(FRAGMENT_TAG) != null) {
             formClient = (FormClient) getSupportFragmentManager().findFragmentByTag(FRAGMENT_TAG);
@@ -28,15 +34,15 @@ public class MainActivity extends AppCompatActivity implements UBFeedbackForm, U
     @Override
     protected void onStart() {
         super.onStart();
-        LocalBroadcastManager.getInstance(this).registerReceiver(usabillaCloser, closerFilter);
-        LocalBroadcastManager.getInstance(this).registerReceiver(usabillaCampaignCloser, closerCampaignFilter);
+        LocalBroadcastManager.getInstance(this).registerReceiver(usabillaReceiverClosePassive, closerFilter);
+        LocalBroadcastManager.getInstance(this).registerReceiver(usabillaReceiverCloseCampaign, closerCampaignFilter);
     }
 
     @Override
     protected void onStop() {
         super.onStop();
-        LocalBroadcastManager.getInstance(this).unregisterReceiver(usabillaCloser);
-        LocalBroadcastManager.getInstance(this).unregisterReceiver(usabillaCampaignCloser);
+        LocalBroadcastManager.getInstance(this).unregisterReceiver(usabillaReceiverClosePassive);
+        LocalBroadcastManager.getInstance(this).unregisterReceiver(usabillaReceiverCloseCampaign);
     }
 
     @Override
@@ -70,9 +76,9 @@ public class MainActivity extends AppCompatActivity implements UBFeedbackForm, U
             getSupportFragmentManager().beginTransaction().replace("use frame layout here", formClient.getFragment(), FRAGMENT_TAG).commit();
         }
     }
-    
-    private void setupCloserBroadcastReceiver() {
-        usabillaCloser = new BroadcastReceiver() {
+
+    private void setupPassiveFormBroadcastReceiver() {
+        usabillaReceiverClosePassive = new BroadcastReceiver() {
             @Override
             public void onReceive(Context context, Intent intent) {
                 if (formClient != null && formClient.getFragment() != null) {
@@ -82,11 +88,11 @@ public class MainActivity extends AppCompatActivity implements UBFeedbackForm, U
         };
     }
 
-    private void setupCampaignCloserBroadcastReceiver() {
-        usabillaCampaignCloser = new BroadcastReceiver() {
+    private void setupCampaignFormBroadcastReceiver() {
+        usabillaReceiverCloseCampaign = new BroadcastReceiver() {
             @Override
             public void onReceive(Context context, Intent intent) {
-                FeedbackResult res = intent.getParcelableExtra(Constants.INTENT_FEEDBACK_RESULTS_CAMPAIGN);
+                final FeedbackResult res = intent.getParcelableExtra(FeedbackResult.INTENT_FEEDBACK_RESULT_CAMPAIGN);
                 String feedbackInfo = "Rating " + res.getRating() + "\n";
                 feedbackInfo += "Abandoned page " + res.getAbandonedPageIndex() + "\n";
                 feedbackInfo += "Is sent " + res.isSent();
@@ -95,53 +101,60 @@ public class MainActivity extends AppCompatActivity implements UBFeedbackForm, U
         };
     }
 
-    private void initSDK() {
-        Usabilla.initialize(this, "use your personal AppId here", this);
-        Usabilla.setDebugEnabled(true);
-        Usabilla.updateFragmentManager(getSupportFragmentManager());
+    private void initializeSdk() {
+        usabilla.initialize(this, "use your personal AppId here", this);
+        usabilla.setDebugEnabled(true);
     }
 
     private void giveFeedback() {
         // Optional screenshot
-        Usabilla.takeScreenshot(this);
-        Usabilla.loadFeedbackForm(this, "use your personal FormId here", this);
+        final Bitmap screenshot = usabilla.takeScreenshot(this);
+        
+        // Optional theme
+        final Fonts themeFonts = new Fonts();
+        themeFonts.setRegular("fonts/IndieFlower.ttf");
+        final UsabillaTheme theme = new UsabillaTheme.Builder()
+                .setFonts(themeFonts)
+                .build();
+        
+        usabilla.loadFeedbackForm(this, "use your personal FormId here", screenshot, theme, this);
     }
 
     private void sendEvent() {
-        Usabilla.sendEvent(getApplicationContext(), "MyEvent");
+        usabilla.sendEvent(getApplicationContext(), "MyEvent");
     }
 
     private void resetCampaign() {
         // Reset campaign progression deleting them from memory.
         // It also fetches the campaigns associated to the appId once again 
-        // and calls the initialisation callback once the processs is finished.
-        Usabilla.resetCampaignData(this, this);
+        // and calls the initialisation callback once the process is finished.
+        usabilla.resetCampaignData(this, this);
+    }
+    
+    private void resetPassiveFeedbackForms() {
+        // Deletes preloaded passive feedback forms from memory.
+        usabilla.removeCachedForms(this);
     }
 
-    private void setUpUsabillaTheme() {
-        // Create fonts
-        Fonts themeFonts = new Fonts();
-        themeFonts.setRegular("fonts/IndieFlower.ttf");
-
+    private void setUsabillaTheme() {
         // Create images
         Images themeImages = new Images();
-        ArrayList<Integer> ids = new ArrayList<Integer>();
+        ArrayList<Integer> ids = new ArrayList<>();
         ids.add(R.drawable.mood_1_bw);
         ids.add(R.drawable.mood_2_bw);
         ids.add(R.drawable.mood_3_bw);
         ids.add(R.drawable.mood_4_bw);
         ids.add(R.drawable.mood_5_bw);
         themeImages.setEnabledEmoticons(ids);
-        
+
         themeImages.setStarOutline(R.drawable.ic_star_red);
         themeImages.setStar(R.drawable.ic_star_yellow);
 
         // Build theme
         UsabillaTheme.Builder themeBuilder = new UsabillaTheme.Builder();
         themeBuilder.setImages(themeImages);
-        themeBuilder.setFonts(themeFonts);
 
         // Set the theme
-        Usabilla.setTheme(themeBuilder.build());
+        usabilla.setTheme(themeBuilder.build());
     }
 }
