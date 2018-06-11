@@ -314,6 +314,8 @@ To do so we allow to specify a parameter in the `initialize` method adhering to 
 - `UsabillaHttpResponse`: encapsulating a HTTP response
 - `UsabillaHttpListener`: providing callbacks for success and failure of a request
 
+A sample http client implementation done leveraging the library `OkHttp` can be seen in the class `CustomHttpClient.java` 
+
 ## Custom variables
 You can pass along custom variables that will be attached to the feedback users send.
 Custom variables are held in a `HashMap<String, Object>` in the public interface of the SDK.
