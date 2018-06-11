@@ -9,36 +9,41 @@ The new Usabilla SDK Version 4 comes with two major advancements:
 
 * * *
 
-- [Requirements](#requirements)
-- [Installation](#installation)
-- [Initialisation](#initialisation)
-    - [Debug mode](#debug-mode)
-- [Campaigns](#campaigns)
-    - [The App Id](#the-app-id)
-    - [Targeting options](#targeting-options)
-    - [Managing an existing campaign](#managing-an-existing-campaign)
-    - [Campaign results](#campaign-results)
-    - [Update fragment manager](#update-fragment-manager)
-    - [Reset Campaigns Data](#reset-campaigns-data)
-- [Passive feedback](#passive-feedback)
-    - [Loading a form](#loading-a-form)
-    - [Preloading a form](#preloading-a-form)
-    - [Adding a screenshot](#adding-a-screenshot)
-    - [Feedback submission callback](#feedback-submission-callback)
-        - [Feedback Result](#feedback-result)
-    - [Reset Passive Forms](#reset-passive-forms)
-- [Custom variables](#custom-variables)
-- [Play Store link](#play-store-link)
-- [UI Customisations](#ui-customisations)
-    - [Custom Emoticons Rating](#custom-emoticons-rating)
-    - [Custom Star Rating](#custom-star-rating)
-    - [Custom Fonts](#custom-fonts)
-    - [Custom Colors](#custom-colors)
-    - [Custom Theming for Passive forms](#apply-different-themes-to-different-passive-forms)
-- [Localisation](#localisation)
-- [External navigation](#external-navigation)
-- [Permissions](#permissions)
-- [Proguard](#proguard)
+- [Usabilla for Apps - Android SDK](#usabilla-for-apps---android-sdk)
+    - [Requirements](#requirements)
+    - [Installation](#installation)
+    - [Initialization](#initialization)
+        - [Debug Mode](#debug-mode)
+    - [Campaigns](#campaigns)
+        - [The App Id](#the-app-id)
+        - [Targeting options](#targeting-options)
+        - [Managing an existing campaign](#managing-an-existing-campaign)
+        - [Campaign results](#campaign-results)
+        - [Update fragment manager](#update-fragment-manager)
+        - [Reset campaigns data](#reset-campaigns-data)
+    - [Passive feedback](#passive-feedback)
+        - [Loading a form](#loading-a-form)
+        - [Preloading a form](#preloading-a-form)
+        - [Adding a screenshot](#adding-a-screenshot)
+        - [Feedback submission callback](#feedback-submission-callback)
+            - [Feedback Result](#feedback-result)
+    - [Play Store link](#play-store-link)
+        - [Reset passive forms](#reset-passive-forms)
+    - [Custom http client](#custom-http-client)
+    - [Custom variables](#custom-variables)
+            - [Limitations](#limitations)
+    - [UI Customisations](#ui-customisations)
+        - [Custom Emoticons Rating](#custom-emoticons-rating)
+            - [Provide only the selected version](#provide-only-the-selected-version)
+            - [Provide both the selected and unselected version](#provide-both-the-selected-and-unselected-version)
+        - [Custom Star Rating](#custom-star-rating)
+        - [Custom Fonts](#custom-fonts)
+        - [Custom colors](#custom-colors)
+        - [Apply different themes to different passive forms](#apply-different-themes-to-different-passive-forms)
+    - [Localization](#localization)
+    - [External Navigation](#external-navigation)
+    - [Permissions](#permissions)
+    - [Proguard](#proguard)
 
 * * *
 
@@ -46,42 +51,50 @@ The new Usabilla SDK Version 4 comes with two major advancements:
 - The Usabilla SDK requires the minSdkVersion of the application to be 16 (Android 4.1).
 
 ## Installation
-- You can find the latest version of our SDK [here](https://bintray.com/usabilla/maven/ubform) and add it as a Maven or a Gradle dependency (`implementation 'com.usabilla.sdk:ubform:5.0.0'`).
+- You can find the latest version of our SDK [here](https://bintray.com/usabilla/maven/ubform) and add it as a Maven or a Gradle dependency (`implementation 'com.usabilla.sdk:ubform:5.1.0'`).
 - If you don't want to use a dependency manager you can also import the .aar library independently.
 Our SDK uses the following dependencies. If your project doesn't use them already you might need to add it as well in your gradle file.
 ```
 dependencies {
-    compile 'com.mcxiaoke.volley:library:1.0.19'
+    compile 'com.android.volley:volley:1.1.0'
     compile 'com.android.support:appcompat-v7:27.1.0'
-    compile “org.jetbrains.kotlin:kotlin-stdlib-jdk7:1.2.31"
+    compile "org.jetbrains.kotlin:kotlin-stdlib-jre7:1.2.31"
 }
 ```
 
-## Initialisation
+## Initialization
 The first thing you need to do is to get an instance of our SDK with the command:
 
 ```java
 final Usabilla usabilla = Usabilla.Companion.getInstance(context);
 ```
 
-On that instance you should then proceed to initialise it using the **initialize** method in one of its three flavours:
+or in Kotlin
+
+```kotlin
+val usabilla = Usabilla.getInstance(context)
+```
+
+On that instance you should then proceed to initialise it using the **initialize** method in one of its four flavours:
 
 ```java
 usabilla.initialize(Context context);
 usabilla.initialize(Context context, @Nullable String appId);
-usabilla.initialize(Context context, @Nullable String appId, @Nullable UsabillaReadyCallback callback);
+usabilla.initialize(Context context, @Nullable String appId, @Nullable UsabillaHttpClient httpClient);
+usabilla.initialize(Context context, @Nullable String appId, @Nullable UsabillaHttpClient httpClient, @Nullable UsabillaReadyCallback callback);
 ```
 
-The method **initialize** has two optional parameters:
+The method **initialize** has three optional parameters:
 - `appId` needs to be used if you want to use the Campaign feature (please read the [Campaigns](#campaigns) section for more information).
-- `callback` is a callback used to communicate when the initialisation process ends.
+- `httpClient` gives the possibility to inject a custom client to handle all the connections performed by the SDK (please read the [Custom Http Client](#custom-http-client) section for more information).
+- `callback` is a callback used to communicate when the initialization process ends.
 
 If you are using Campaigns, the callback will indicate that the SDK is ready to receive events.
 
 The **initialize** method will take care of:
 * Submitting any pending feedback items.
 * Fetching and updating all campaigns associated with the appId.
-* Initialising a few background processes of the SDK.
+* Initializing a few background processes of the SDK.
 
 >⚠️ **Failure to call this method before using the SDK will prevent it from running properly.**
 
@@ -114,7 +127,6 @@ We recommend you to use a separate AppId per app. One Campaign can be targeted t
 ### Targeting options
 Campaigns are triggered by events. Events are used to communicate with the SDK when something happens in your app. Consequently, the SDK will react to an event depending on the configuration of the Usabilla web interface.
 To send an event to the SDK, use :
-
 ```java
 usabilla.sendEvent(Context context, String event);
 ```
@@ -156,12 +168,10 @@ Furthermore, remember to handle properly the device rotation and other cases whe
 
 ### Reset campaigns data
 The Usabilla SDK offers the possibility to reset the campaign data stored locally using the **resetCampaignData** method in one of its two flavours:
-
 ```java
 usabilla.resetCampaignData(Context context);
 usabilla.resetCampaignData(Context context, @Nullable UsabillaReadyCallback callback);
 ```
-
 The method removes all campaigns stored locally and fetches them again from our remote API, effectively losing any trace whether they triggered or not.
 The optional parameter `callback` is used to communicate when the fetching of the campaigns has ended and the campaign events can start being processed by the Usabilla SDK.
 
@@ -293,8 +303,16 @@ The Usabilla SDK offers the possibility to reset the database from previosuly fe
 ```java
 usabilla.removeCachedForms(Context context);
 ```
-
 The method removes all passive forms stored locally.
+
+## Custom http client
+We allow the use of a custom client to handle all the connections to retrieve and send data through our SDK.
+
+To do so we allow to specify a parameter in the `initialize` method adhering to the `UsabillaHttpClient` interface, which in turns depends on three other interfaces:
+
+- `UsabillaHttpRequest`: encapsulating a HTTP request
+- `UsabillaHttpResponse`: encapsulating a HTTP response
+- `UsabillaHttpListener`: providing callbacks for success and failure of a request
 
 ## Custom variables
 You can pass along custom variables that will be attached to the feedback users send.
@@ -419,7 +437,7 @@ Usabilla.loadFeedbackForm(this, formId, null, theme, this);
 
 Multiple requests of multiple forms done with different themes will result in each form having its own dedicated theme.
 
-## Localisation
+## Localization
 If you want to provide your own translation, you need to override the strings in the default Usabilla SDK. You can do so by providing a string with the same name in your main application string resource file. This will override the SDK default value and yours will be displayed instead.
 
 The string resources you can override and their default value are the following

@@ -14,12 +14,10 @@ public class MainActivity extends AppCompatActivity implements UsabillaFormCallb
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        usabilla = new Usabilla.Companion().getInstance(this);
-        usabilla.updateFragmentManager(getSupportFragmentManager());
-        
         setupPassiveFormBroadcastReceiver();
         setupCampaignFormBroadcastReceiver();
 
+        usabilla = new Usabilla.Companion().getInstance(this);
         initializeSdk();
 
         //Optional
@@ -102,8 +100,12 @@ public class MainActivity extends AppCompatActivity implements UsabillaFormCallb
     }
 
     private void initializeSdk() {
-        usabilla.initialize(this, "use your personal AppId here", this);
+        // In the initialize method the third parameter defines a custom http client that can replace
+        // the default one used by the SDK (Volley).
+        // If `null` is passed then the default client will be used.
+        usabilla.initialize(this, "use your personal AppId here", null, this);
         usabilla.setDebugEnabled(true);
+        usabilla.updateFragmentManager(getSupportFragmentManager());
     }
 
     private void giveFeedback() {

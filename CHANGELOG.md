@@ -1,3 +1,13 @@
+## 5.1.0
+#### Added
+- Added the possibility to set a custom Http Client to handle the network calls
+
+#### Updated
+- Updated the default Volley library to the official v1.1.0
+
+#### Fixed
+- Fixed possible memory leaks concerning the `FragmentManager`, `UsabillaReadyCallback` and `UsabillaFormCallback`
+
 ## 5.0.0
 #### Added
 - Added the possibility to apply a custom theme to a single passive feedback form
