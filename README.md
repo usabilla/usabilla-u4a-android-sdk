@@ -3,7 +3,7 @@
 # Usabilla for Apps - Android SDK
 Usabilla for Apps allows you to collect feedback from your users with great ease and flexibility.
 
-The new Usabilla SDK Version 4 comes with two major advancements:
+The new Usabilla SDK Version 5 comes with two major advancements:
 1. The new feature [Actively targeted surveys](#campaigns) (referred to as **Campaigns** in this document).
 2. A more stabilised [Passive feedback forms](#passive-feedback).
 
@@ -271,7 +271,7 @@ private void setupCloserBroadcastReceiver() {
         public void onReceive(Context context, Intent intent) {
             // The feedback form has been closed
             // And following result has been returned                
-            FeedbackResult result = (FeedbackResult) intent.getParcelableArrayExtra(FeedbackResult.INTENT_FEEDBACK_RESULT);
+            final FeedbackResult feedbackResult = intent.getParcelableExtra(FeedbackResult.INTENT_FEEDBACK_RESULT_CAMPAIGN);
         }
     };
 }
