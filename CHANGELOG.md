@@ -1,3 +1,16 @@
+## 5.2.0
+#### Added
+- Accessibility labels on screenshot components
+- Accessibility labels on mood and star rating components
+#### Updated
+- Changed Play Store reminder in Passive Feedback Form to a dialog
+- Increased touch area for slider component
+#### Removed
+- Play Store button at the last page of the Passive Feedback Form
+#### Fixed
+- Fixed private methods that became public
+- Fixed the percentage rule to check only the first time it is triggered
+
 ## 5.1.0
 #### Added
 - Added the possibility to set a custom Http Client to handle the network calls
