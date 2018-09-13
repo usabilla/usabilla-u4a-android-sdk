@@ -1,3 +1,9 @@
+## 5.2.1
+#### Updated
+- Drawable names to have a `ub_` prefix
+#### Fixed
+- Crash when sending an event after upgrading to v5.2.0
+
 ## 5.2.0
 #### Added
 - Accessibility labels on screenshot components

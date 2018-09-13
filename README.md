@@ -52,7 +52,7 @@ The new Usabilla SDK Version 5 comes with two major advancements:
 - The Usabilla SDK requires the minSdkVersion of the application to be 16 (Android 4.1).
 
 ## Installation
-- You can find the latest version of our SDK [here](https://bintray.com/usabilla/maven/ubform) and add it as a Maven or a Gradle dependency (`implementation 'com.usabilla.sdk:ubform:5.2.0'`).
+- You can find the latest version of our SDK [here](https://bintray.com/usabilla/maven/ubform) and add it as a Maven or a Gradle dependency (`implementation 'com.usabilla.sdk:ubform:5.2.1'`).
 - If you don't want to use a dependency manager you can also import the .aar library independently.
 Our SDK uses the following dependencies. If your project doesn't use them already you might need to add it as well in your gradle file.
 ```
@@ -508,7 +508,7 @@ view.setImportantForAccessibility(View.IMPORTANT_FOR_ACCESSIBILITY_YES);
 If you are using resource proguards in your project, add these files to your configuration(whitelist) to keep these resources
 
  ```
- "R.drawable.mood_1", "R.drawable.mood_2", "R.drawable.mood_3", "R.drawable.mood_4", "R.drawable.mood_5",
- "R.drawable.star_full", "R.drawable.star_empty"
+ "R.drawable.ub_mood_1", "R.drawable.ub_mood_2", "R.drawable.ub_mood_3", "R.drawable.ub_mood_4", "R.drawable.ub_mood_5",
+ "R.drawable.ub_star_full", "R.drawable.ub_star_empty"
  ```
  
