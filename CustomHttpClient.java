@@ -67,92 +67,82 @@ public class CustomHttpClient implements UsabillaHttpClient {
 
         @Override
         public void onFailure(Call call, final IOException e) {
-            final UsabillaHttpResponse customResponse = new UsabillaHttpResponse() {
-                @Nullable
-                @Override
-                public Integer getStatusCode() {
-                    return null;
-                }
-
-                @Nullable
-                @Override
-                public Map<String, String> getHeaders() {
-                    return null;
-                }
-
-                @Nullable
-                @Override
-                public String getBody() {
-                    return null;
-                }
-
-                @Nullable
-                @Override
-                public String getError() {
-                    return e.getLocalizedMessage();
-                }
-            };
+            CustomUsabillaHttpResponse customResponse = new CustomUsabillaHttpResponse(e);
             activityReference.get().runOnUiThread(new Runnable() {
                 @Override
                 public void run() {
-                        listener.onFailure(customResponse);
+                    listener.onFailure(customResponse);
                 }
             });
+
         }
 
         @Override
         public void onResponse(Call call, final Response response) {
-            final UsabillaHttpResponse customResponse = new UsabillaHttpResponse() {
-                @Nullable
-                @Override
-                public Integer getStatusCode() {
-                    return response.code();
-                }
-
-                @Nullable
-                @Override
-                public Map<String, String> getHeaders() {
-                    final Map<String, String> headers = new HashMap<>();
-                    final Headers responseHeaders = response.headers();
-                    for (int i = 0; i < responseHeaders.size(); i++) {
-                        headers.put(responseHeaders.name(i), responseHeaders.value(i));
-                    }
-                    return headers;
-                }
-
-                @Nullable
-                @Override
-                public String getBody() {
-                    try {
-                        String returnValue = "";
-                        final ResponseBody body = response.body();
-                        if (body != null) {
-                            returnValue = body.string();
-                            body.close();
-                        }
-                        return returnValue;
-                    } catch (IOException e) {
-                        Log.i("CustomHttpClient", "Custom http client response failed to read body with exception: " + e.getLocalizedMessage());
-                    }
-                    return null;
-                }
-
-                @Nullable
-                @Override
-                public String getError() {
-                    return response.message();
-                }
-            };
+            CustomUsabillaHttpResponse customResponse = new CustomUsabillaHttpResponse(response);
+            boolean successful = response.isSuccessful();
             activityReference.get().runOnUiThread(new Runnable() {
                 @Override
                 public void run() {
-                    if (response.isSuccessful()) {
+                    if (successful) {
                         listener.onSuccess(customResponse);
                     } else {
                         listener.onFailure(customResponse);
                     }
                 }
             });
+        }
+
+        class CustomUsabillaHttpResponse implements UsabillaHttpResponse {
+            private String body;
+            private String error;
+            private Map<String, String> headers;
+            private Integer statusCode;
+
+            CustomUsabillaHttpResponse(IOException e) {
+                init(null, e);
+            }
+
+            CustomUsabillaHttpResponse(Response response) {
+                init(response, null);
+            }
+
+            private void init(Response response, IOException e) {
+                if (response != null) {
+                    try (ResponseBody responseBody = response.body()) {
+                        if (responseBody != null) {
+                            body = responseBody.string();
+                        }
+                    } catch (IOException e1) {
+                        Timber.d("Custom http client response failed to read body with exception: %s", e.getLocalizedMessage());
+                    }
+                    error = response.message();
+                    headers = new HashMap<>();
+                    Headers responseHeaders = response.headers();
+                    for (int i = 0; i < responseHeaders.size(); i++) {
+                        headers.put(responseHeaders.name(i), responseHeaders.value(i));
+                    }
+                    statusCode = response.code();
+                } else if (e != null) {
+                    error = e.getLocalizedMessage();
+                }
+            }
+
+            @Override public String getBody() {
+                return body;
+            }
+
+            @Override public String getError() {
+                return error;
+            }
+
+            @Override public Map<String, String> getHeaders() {
+                return headers;
+            }
+
+            @Override public Integer getStatusCode() {
+                return statusCode;
+            }
         }
     }
 }
