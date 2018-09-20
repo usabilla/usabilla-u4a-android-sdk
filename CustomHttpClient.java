@@ -13,11 +13,7 @@
 public class CustomHttpClient implements UsabillaHttpClient {
 
     private OkHttpClient client = new OkHttpClient();
-    private WeakReference<Activity> activityReference;
-
-    CustomHttpClient(Activity activity) {
-        activityReference = new WeakReference(activity);
-    }
+    private Handler mainHandler = new Handler(Looper.getMainLooper());
 
     @Override
     public void execute(@NotNull UsabillaHttpRequest usabillaRequest, @NotNull UsabillaHttpListener listener) {
@@ -68,7 +64,7 @@ public class CustomHttpClient implements UsabillaHttpClient {
         @Override
         public void onFailure(Call call, final IOException e) {
             CustomUsabillaHttpResponse customResponse = new CustomUsabillaHttpResponse(e);
-            activityReference.get().runOnUiThread(new Runnable() {
+            mainHandler.post(new Runnable() {
                 @Override
                 public void run() {
                     listener.onFailure(customResponse);
@@ -81,7 +77,7 @@ public class CustomHttpClient implements UsabillaHttpClient {
         public void onResponse(Call call, final Response response) {
             CustomUsabillaHttpResponse customResponse = new CustomUsabillaHttpResponse(response);
             boolean successful = response.isSuccessful();
-            activityReference.get().runOnUiThread(new Runnable() {
+            mainHandler.post(new Runnable() {
                 @Override
                 public void run() {
                     if (successful) {
