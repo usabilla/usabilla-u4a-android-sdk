@@ -110,7 +110,7 @@ public class CustomHttpClient implements UsabillaHttpClient {
                             body = responseBody.string();
                         }
                     } catch (IOException e1) {
-                        Timber.d("Custom http client response failed to read body with exception: %s", e.getLocalizedMessage());
+                        Timber.d("Custom http client response failed to read body with exception: %s", e1.getLocalizedMessage());
                     }
                     error = response.message();
                     headers = new HashMap<>();
