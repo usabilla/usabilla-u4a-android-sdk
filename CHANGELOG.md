@@ -1,3 +1,13 @@
+## 5.3.0
+#### Added
+- Accessibility feedback regarding required fields
+- Support for custom fonts by resource id
+#### Updated
+- Dependencies (Volley to v1.1.1, AppCompat to v28.0.0, Kotlin standard library to v1.2.71)
+- Dependency configuration to use `implementation` instead of `compile`
+#### Fixed
+- Required NPS component does not stop users from continuing
+
 ## 5.2.1
 #### Updated
 - Drawable names to have a `ub_` prefix

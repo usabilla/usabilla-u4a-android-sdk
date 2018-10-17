@@ -25,13 +25,13 @@ The new Usabilla SDK Version 5 comes with two major advancements:
         - [Loading a form](#loading-a-form)
         - [Preloading a form](#preloading-a-form)
         - [Adding a screenshot](#adding-a-screenshot)
-        - [Feedback submission callback](#feedback-submission-callback)
-            - [Feedback Result](#feedback-result)
+    - [Feedback submission callback](#feedback-submission-callback)
+        - [Feedback Result](#feedback-result)
     - [Play Store link](#play-store-link)
         - [Reset passive forms](#reset-passive-forms)
     - [Custom http client](#custom-http-client)
     - [Custom variables](#custom-variables)
-            - [Limitations](#limitations)
+        - [Limitations](#limitations)
     - [UI Customisations](#ui-customisations)
         - [Custom Emoticons Rating](#custom-emoticons-rating)
             - [Provide only the selected version](#provide-only-the-selected-version)
@@ -44,7 +44,6 @@ The new Usabilla SDK Version 5 comes with two major advancements:
     - [External Navigation](#external-navigation)
     - [Permissions](#permissions)
     - [Accessibility](#accessibility)
-    - [Proguard](#proguard)
 
 * * *
 
@@ -52,14 +51,14 @@ The new Usabilla SDK Version 5 comes with two major advancements:
 - The Usabilla SDK requires the minSdkVersion of the application to be 16 (Android 4.1).
 
 ## Installation
-- You can find the latest version of our SDK [here](https://bintray.com/usabilla/maven/ubform) and add it as a Maven or a Gradle dependency (`implementation 'com.usabilla.sdk:ubform:5.2.1'`).
+- You can find the latest version of our SDK [here](https://bintray.com/usabilla/maven/ubform) and add it as a Maven or a Gradle dependency (`implementation 'com.usabilla.sdk:ubform:5.3.0'`).
 - If you don't want to use a dependency manager you can also import the .aar library independently.
 Our SDK uses the following dependencies. If your project doesn't use them already you might need to add it as well in your gradle file.
 ```
 dependencies {
-    compile 'com.android.volley:volley:1.1.0'
-    compile 'com.android.support:appcompat-v7:27.1.0'
-    compile "org.jetbrains.kotlin:kotlin-stdlib-jre7:1.2.31"
+    implementation 'com.android.volley:volley:1.1.1'
+    implementation 'com.android.support:appcompat-v7:28.0.0'
+    implementation "org.jetbrains.kotlin:kotlin-stdlib-jre7:1.2.71"
 }
 ```
 
@@ -245,40 +244,53 @@ Bitmap myScreenshot = usabilla.takeScreenshot(this);
 usabilla.loadFeedbackForm(this, "formId", myScreenshot, this);
 ```
 
-### Feedback submission callback
-It is possible to know when the passive feedback form has been closed
-using the following BroadcastReceiver.
+## Feedback submission callback
+It is possible to know when the feedback form has been closed implementing the following `BroadcastReceiver`.
+ * Note 1: The form closure happens both as a result of the user dismissing it half-way through or them completing it.
+ * Note 2: A separate `BroadcastReceiver` can be set for both passive feedback and campaigns, depending on your needs.
 
 ```java
-private BroadcastReceiver usabillaCloser;
-private IntentFilter closerFilter = new IntentFilter("com.usabilla.closeForm");
+private BroadcastReceiver usabillaCloserPassive;
+private IntentFilter closerFilterPassive = new IntentFilter(Constants.INTENT_CLOSE_FORM);
+private BroadcastReceiver usabillaCloserCampaign;
+private IntentFilter closerFilterCampaign = new IntentFilter(Constants.INTENT_CLOSE_CAMPAIGN);
 
 
 @Override
 protected void onStart() {
     super.onStart();
-    LocalBroadcastManager.getInstance(this).registerReceiver(usabillaCloser, closerFilter);
+    LocalBroadcastManager.getInstance(this).registerReceiver(usabillaCloserPassive, closerFilterPassive);
+    LocalBroadcastManager.getInstance(this).registerReceiver(usabillaCloserCampaign, closerFilterCampaign);
 }
 
 @Override
 protected void onStop() {
     super.onStop();
-    LocalBroadcastManager.getInstance(this).unregisterReceiver(usabillaCloser);
+    LocalBroadcastManager.getInstance(this).unregisterReceiver(usabillaCloserPassive);
+    LocalBroadcastManager.getInstance(this).unregisterReceiver(usabillaCloserCampaign);
 }
 
 private void setupCloserBroadcastReceiver() {
-    usabillaCloser = new BroadcastReceiver() {
+    usabillaCloserPassive = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
-            // The feedback form has been closed and the feedback result has been returned
-            // The extra can be either INTENT_FEEDBACK_RESULT or INTENT_FEEDBACK_RESULT_CAMPAIGN
+            // The passive feedback form has been closed and the feedback result is returned
+            // The extra is INTENT_FEEDBACK_RESULT
             final FeedbackResult result = intent.getParcelableExtra(FeedbackResult.INTENT_FEEDBACK_RESULT);
+        }
+    };
+    usabillaCloserCampaign = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            // The campaign feedback form has been closed and the feedback result is returned
+            // The extra is INTENT_FEEDBACK_RESULT_CAMPAIGN
+            final FeedbackResult result = intent.getParcelableExtra(FeedbackResult.INTENT_FEEDBACK_RESULT_CAMPAIGN);
         }
     };
 }
 ```
 
-#### Feedback Result
+### Feedback Result
 ```java
 public class FeedbackResult {
     int rating;
@@ -289,14 +301,14 @@ public class FeedbackResult {
 
 The **rating** value is set as soon as the user interacts with it and will be reported even if the form is not submitted.
 
-The **abandonedPageIndex** property is only set if the user cancels the form before submission.
+The **abandonedPageIndex** property is only set if the user cancels the form before submission, otherwise its calue is -1.
 
 The **isSent** property is false if the user dropped out while filling the form.
 
 ## Play Store link
 Enable "App Store redirect" in the Advanced panel of the feedback form editor in order to redirect the user to the Play Store after leaving a positive feedback item.
 
-This will show a button "Go to the app store" on the last page of the passive feedback form or a native Dialog after the campaign form was displayed. In both cases, they will be displayed only if the mood rating is 4 or 5.
+This will show a native dialog after the last page of the passive feedback form and after the campaign form was displayed. In both cases, they will be displayed only if the mood rating is 4 or 5.
 
 ### Reset passive forms
 The Usabilla SDK offers the possibility to reset the database from previosuly fetched passive forms using the **removeCachedForms** method:
@@ -338,12 +350,12 @@ Custom variables are added as extra feedback data with every feedback item sent 
 
 **Custom variables can be used as targeting options, as long as the `value` is a `String`.**
 
-#### Limitations
+### Limitations
 There are a few limitations to the kind of objects you can add to the custom variables:
 
-• You can add custom objects, but you will have to override the `toString()` method to be able to read them from the Usabilla dashboard.
-• Arrays of objects are not accepted and will be removed by our servers
-• The custom variables will be translated into a `JSONObject` during the submission to our servers, so any non parseable value will break their submission.
+* You can add custom objects, but you will have to override the `toString()` method to be able to read them from the Usabilla dashboard.
+* Arrays of objects are not accepted and will be removed by our servers
+* The custom variables will be translated into a `JSONObject` during the submission to our servers, so any non parseable value will break their submission.
 
 ## UI Customisations
 
@@ -403,13 +415,21 @@ usabilla.setTheme(themeBuilder.build());
 ```
 
 ### Custom Fonts
-It is possible to change the font of the feedback form by setting the `regular` property of the `UsabillaTheme.fonts`.
+It is possible to change the font of the feedback form by setting the `regular` property of the `UsabillaTheme.fonts` in two different ways.
+
+You can pass to it the name (as a String) of the `.otf` or `.ttf` file you placed in the asset folder of your project or in a subfolder of asset called "fonts/"
 
 ```java
 // Create fonts
 Fonts themeFonts = new Fonts();
 themeFonts.setRegular("fonts/your_font");
+```
 
+Otherwise you can pass to it the resourceId if you already have the font file in the `res` folder of your project (supported from Android API 26 and above).
+
+In both cases the fonts can be then set to the theme as follows:
+
+```java
 // Build theme
 UsabillaTheme.Builder themeBuilder = new UsabillaTheme.Builder();
 themeBuilder.setFonts(themeFonts);
@@ -460,6 +480,7 @@ The string resources you can override and their default value are the following
 <string name="sdk_permission_disabled_label">Permission disabled!\nEnable it from Settings -> app info</string>
 <string name="usa_delete_screenshot">Delete Screenshot</string>
 <string name="usa_edit_screenshot">Change Screenshot</string>
+<string name="usa_accessibility_field_required">This field is required</string>
 <string name="usa_mood_select_a_rating_out_of">select a rating out of %1$d</string>
 <string name="usa_mood_hate">I really don\'t like it!</string>
 <string name="usa_mood_dislike">I don\'t like it</string>
@@ -474,17 +495,35 @@ The string resources you can override and their default value are the following
 ```
 
 ## External Navigation
-It is possible to hide the default navigation and cancel button in the SDK (for the passive feedback form) and provide your own (ex. in the action bar).
+It is possible to hide the default navigation buttons our forms use (continue and cancel button) from the SDK and provide your own (e.g. in the Toolbar).
 
-```java
-usabilla.setDefaultNavigationButtonsVisibility(false);
-
-@Override
-public void mainButtonTextUpdated(String text) {
-    // Use this text for your own navigation button
-    // Usually returns "Next" or "Submit"
-}
-```
+To do so a couple of steps are required:
+* Set the standard navigation buttons invisible
+    ```java
+    usabilla.setDefaultNavigationButtonsVisibility(false);
+    ```
+* Call the method `navigationButtonPushed` from the `onClickListener` of your custom button (e.g. the one you have placed in the Toolbar) to let the form know that it was pressed. ⚠️ This is only associating that click to a 'continue' action, you should provide handling for the cancellation yourself.
+    ```java
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            ...
+            case R.id.myNextButtonForForms:
+                form.navigationButtonPushed();
+                break;
+            ...
+        }
+        return true;
+    }
+    ```
+* (OPTIONAL) Use the `mainButtonTextUpdated` to grab the text for the navigation button you want to use
+    ```java
+    @Override
+    public void mainButtonTextUpdated(String text) {
+        // Use this text for your own navigation button
+        // It returns "Next" or "Submit"
+    }
+    ```
 
 ## Permissions
 If the user tries to set a custom screenshot, the SDK will ask for the permission to access the external storage.    
@@ -503,12 +542,3 @@ Of course when the form is dismissed and you proceed to remove it from its holdi
 ```java
 view.setImportantForAccessibility(View.IMPORTANT_FOR_ACCESSIBILITY_YES);
 ```
-
-## Proguard
-If you are using resource proguards in your project, add these files to your configuration(whitelist) to keep these resources
-
- ```
- "R.drawable.ub_mood_1", "R.drawable.ub_mood_2", "R.drawable.ub_mood_3", "R.drawable.ub_mood_4", "R.drawable.ub_mood_5",
- "R.drawable.ub_star_full", "R.drawable.ub_star_empty"
- ```
- 
