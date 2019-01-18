@@ -7,7 +7,6 @@ public class MainActivity extends AppCompatActivity implements UsabillaFormCallb
     private IntentFilter closerFilter = new IntentFilter(Constants.INTENT_CLOSE_FORM);
     private IntentFilter closerCampaignFilter = new IntentFilter(Constants.INTENT_CLOSE_CAMPAIGN);
     
-    private Usabilla usabilla;
     private FormClient formClient;
     
     @Override
@@ -16,10 +15,8 @@ public class MainActivity extends AppCompatActivity implements UsabillaFormCallb
         setContentView(R.layout.activity_main);
         setupPassiveFormBroadcastReceiver();
         setupCampaignFormBroadcastReceiver();
-
-        usabilla = new Usabilla.Companion().getInstance(this);
+        
         initializeSdk();
-
         //Optional
         setUsabillaTheme();
 
@@ -103,60 +100,51 @@ public class MainActivity extends AppCompatActivity implements UsabillaFormCallb
         // In the initialize method the third parameter defines a custom http client that can replace
         // the default one used by the SDK (Volley).
         // If `null` is passed then the default client will be used.
-        usabilla.initialize(this, "use your personal AppId here", null, this);
-        usabilla.setDebugEnabled(true);
-        usabilla.updateFragmentManager(getSupportFragmentManager());
+        Usabilla.initialize(this, "use your personal AppId here", null, this);
+        Usabilla.setDebugEnabled(true);
+        Usabilla.updateFragmentManager(getSupportFragmentManager());
     }
 
     private void giveFeedback() {
         // Optional screenshot
-        final Bitmap screenshot = usabilla.takeScreenshot(this);
+        final Bitmap screenshot = Usabilla.takeScreenshot(this);
         
-        // Optional theme
-        final Fonts themeFonts = new Fonts();
-        themeFonts.setRegular("fonts/IndieFlower.ttf");
-        final UsabillaTheme theme = new UsabillaTheme.Builder()
-                .setFonts(themeFonts)
-                .build();
-        
-        usabilla.loadFeedbackForm(this, "use your personal FormId here", screenshot, theme, this);
+        // Optional theme specific for that passive form
+        final UbFonts newFonts = new UbFonts(R.font.indie_flower);
+        final UsabillaTheme theme = new UsabillaTheme(newFonts, null);
+        Usabilla.loadFeedbackForm("use your personal FormId here", screenshot, theme, this);
     }
 
     private void sendEvent() {
-        usabilla.sendEvent(getApplicationContext(), "MyEvent");
+        Usabilla.sendEvent(getApplicationContext(), "MyEvent");
     }
 
     private void resetCampaign() {
         // Reset campaign progression deleting them from memory.
         // It also fetches the campaigns associated to the appId once again 
         // and calls the initialisation callback once the process is finished.
-        usabilla.resetCampaignData(this, this);
+        Usabilla.resetCampaignData(this, this);
     }
     
     private void resetPassiveFeedbackForms() {
         // Deletes preloaded passive feedback forms from memory.
-        usabilla.removeCachedForms(this);
+        Usabilla.removeCachedForms();
     }
 
     private void setUsabillaTheme() {
         // Create images
-        Images themeImages = new Images();
-        ArrayList<Integer> ids = new ArrayList<>();
-        ids.add(R.drawable.mood_1_bw);
-        ids.add(R.drawable.mood_2_bw);
-        ids.add(R.drawable.mood_3_bw);
-        ids.add(R.drawable.mood_4_bw);
-        ids.add(R.drawable.mood_5_bw);
-        themeImages.setEnabledEmoticons(ids);
-
-        themeImages.setStarOutline(R.drawable.ic_star_red);
-        themeImages.setStar(R.drawable.ic_star_yellow);
-
-        // Build theme
-        UsabillaTheme.Builder themeBuilder = new UsabillaTheme.Builder();
-        themeBuilder.setImages(themeImages);
+        final UbImages newImages = new UbImages(
+            Arrays.asList(R.drawable.mood_1_bw,
+                        R.drawable.mood_2_bw,
+                        R.drawable.mood_3_bw,
+                        R.drawable.mood_4_bw,
+                        R.drawable.mood_5_bw), 
+            null, 
+            R.drawable.ic_star_yellow, 
+            R.drawable.ic_star_red);
+        final UsabillaTheme theme = new UsabillaTheme(null, newImages);
 
         // Set the theme
-        usabilla.setTheme(themeBuilder.build());
+        Usabilla.setTheme(themeBuilder.build());
     }
 }

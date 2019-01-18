@@ -3,85 +3,79 @@
 # Usabilla for Apps - Android SDK
 Usabilla for Apps allows you to collect feedback from your users with great ease and flexibility.
 
-The new Usabilla SDK Version 5 comes with two major advancements:
-1. The new feature [Actively targeted surveys](#campaigns) (referred to as **Campaigns** in this document).
-2. A more stabilised [Passive feedback forms](#passive-feedback).
+The new Usabilla SDK Version 6 comes with a new visual design with **cards**, a much cleaner interface and several bug-fixes
 
 * * *
 
 - [Usabilla for Apps - Android SDK](#usabilla-for-apps---android-sdk)
-    - [Requirements](#requirements)
-    - [Installation](#installation)
-    - [Initialization](#initialization)
-        - [Debug Mode](#debug-mode)
-    - [Campaigns](#campaigns)
-        - [The App Id](#the-app-id)
-        - [Targeting options](#targeting-options)
-        - [Managing an existing campaign](#managing-an-existing-campaign)
-        - [Campaign results](#campaign-results)
-        - [Update fragment manager](#update-fragment-manager)
-        - [Reset campaigns data](#reset-campaigns-data)
-    - [Passive feedback](#passive-feedback)
-        - [Loading a form](#loading-a-form)
-        - [Preloading a form](#preloading-a-form)
-        - [Adding a screenshot](#adding-a-screenshot)
-    - [Feedback submission callback](#feedback-submission-callback)
-        - [Feedback Result](#feedback-result)
-    - [Play Store link](#play-store-link)
-        - [Reset passive forms](#reset-passive-forms)
-    - [Custom http client](#custom-http-client)
-    - [Custom variables](#custom-variables)
-        - [Limitations](#limitations)
-    - [UI Customisations](#ui-customisations)
-        - [Custom Emoticons Rating](#custom-emoticons-rating)
-            - [Provide only the selected version](#provide-only-the-selected-version)
-            - [Provide both the selected and unselected version](#provide-both-the-selected-and-unselected-version)
-        - [Custom Star Rating](#custom-star-rating)
-        - [Custom Fonts](#custom-fonts)
-        - [Custom colors](#custom-colors)
-        - [Apply different themes to different passive forms](#apply-different-themes-to-different-passive-forms)
-    - [Localization](#localization)
-    - [External Navigation](#external-navigation)
-    - [Permissions](#permissions)
-    - [Accessibility](#accessibility)
+  - [Requirements](#requirements)
+  - [Android API limitations](#android-api-limitations)
+  - [Installation](#installation)
+  - [Initialization](#initialization)
+    - [Debug Mode](#debug-mode)
+  - [Campaigns](#campaigns)
+    - [The App Id](#the-app-id)
+    - [Targeting options](#targeting-options)
+    - [Managing an existing campaign](#managing-an-existing-campaign)
+    - [Campaign results](#campaign-results)
+    - [Update fragment manager](#update-fragment-manager)
+    - [Reset campaigns data](#reset-campaigns-data)
+  - [Passive feedback](#passive-feedback)
+    - [Loading a form](#loading-a-form)
+    - [Preloading a form](#preloading-a-form)
+    - [Adding a screenshot](#adding-a-screenshot)
+  - [Feedback submission callback](#feedback-submission-callback)
+    - [Feedback Result](#feedback-result)
+  - [Play Store link](#play-store-link)
+    - [Reset passive forms](#reset-passive-forms)
+  - [Custom http client](#custom-http-client)
+  - [Custom variables](#custom-variables)
+    - [Limitations](#limitations)
+  - [UI Customisations](#ui-customisations)
+    - [UsabillaTheme](#usabillatheme)
+    - [Custom Images](#custom-images)
+      - [Custom Emoticons Rating](#custom-emoticons-rating)
+      - [Custom Star Rating](#custom-star-rating)
+    - [Custom Fonts](#custom-fonts)
+    - [Custom colors](#custom-colors)
+    - [Apply different themes to different passive forms](#apply-different-themes-to-different-passive-forms)
+  - [Localization](#localization)
+  - [External Navigation](#external-navigation)
+  - [Permissions](#permissions)
+  - [Accessibility](#accessibility)
 
 * * *
 
 ## Requirements
 - The Usabilla SDK requires the minSdkVersion of the application to be 16 (Android 4.1).
 
+## Android API limitations
+Due to changes of the Android framework some minor aspects of the SDK will work differently based on the Android version running on the phone, specifically:
+
+- The cursor on text fields will be tinted with the accent color only for API >= 21
+- The custom drawables will be applied to the star component only for API >= 21
+- The progress bar at the top of the form will be tinted with the accent color only for API >= 21
+
 ## Installation
-- You can find the latest version of our SDK [here](https://bintray.com/usabilla/maven/ubform) and add it as a Maven or a Gradle dependency (`implementation 'com.usabilla.sdk:ubform:5.3.0'`).
+- You can find the latest version of our SDK [here](https://bintray.com/usabilla/maven/ubform) and add it as a Maven or a Gradle dependency (`implementation 'com.usabilla.sdk:ubform:6.0.0'`).
 - If you don't want to use a dependency manager you can also import the .aar library independently.
 Our SDK uses the following dependencies. If your project doesn't use them already you might need to add it as well in your gradle file.
 ```
 dependencies {
-    implementation 'com.android.volley:volley:1.1.1'
-    implementation 'com.android.support:appcompat-v7:28.0.0'
-    implementation "org.jetbrains.kotlin:kotlin-stdlib-jre7:1.2.71"
+    implement 'com.android.volley:volley:1.1.1'
+    implement 'com.android.support:appcompat-v7:28.0.0'
+    implement "org.jetbrains.kotlin:kotlin-stdlib-jre7:1.3.11"
 }
 ```
 
 ## Initialization
-The first thing you need to do is to get an instance of our SDK with the command:
+The Usabilla SDK should first of all be initialized using the **initialize** method in one of its four versions:
 
 ```java
-final Usabilla usabilla = Usabilla.Companion.getInstance(context);
-```
-
-or in Kotlin
-
-```kotlin
-val usabilla = Usabilla.getInstance(context)
-```
-
-On that instance you should then proceed to initialise it using the **initialize** method in one of its four flavours:
-
-```java
-usabilla.initialize(Context context);
-usabilla.initialize(Context context, @Nullable String appId);
-usabilla.initialize(Context context, @Nullable String appId, @Nullable UsabillaHttpClient httpClient);
-usabilla.initialize(Context context, @Nullable String appId, @Nullable UsabillaHttpClient httpClient, @Nullable UsabillaReadyCallback callback);
+Usabilla.initialize(Context context);
+Usabilla.initialize(Context context, @Nullable String appId);
+Usabilla.initialize(Context context, @Nullable String appId, @Nullable UsabillaHttpClient httpClient);
+Usabilla.initialize(Context context, @Nullable String appId, @Nullable UsabillaHttpClient httpClient, @Nullable UsabillaReadyCallback callback);
 ```
 
 The method **initialize** has three optional parameters:
@@ -101,7 +95,7 @@ The **initialize** method will take care of:
 ### Debug Mode
 In order to obtain more insights form the SDK while developing, logging can be enabled with:
 ```java
-usabilla.setDebugEnabled(true);
+Usabilla.setDebugEnabled(true);
 ```
 
 This property is by default set to `false`.
@@ -129,7 +123,7 @@ We recommend you to use a separate AppId per app. One Campaign can be targeted t
 Campaigns are triggered by events. Events are used to communicate with the SDK when something happens in your app. Consequently, the SDK will react to an event depending on the configuration of the Usabilla web interface.
 To send an event to the SDK, use :
 ```java
-usabilla.sendEvent(Context context, String event);
+Usabilla.sendEvent(Context context, String event);
 ```
 
 You can also segment your user base using custom variables.
@@ -159,19 +153,21 @@ As for campaign results. Please note that editing the form of an existing campai
 - Replacing the question type with a different question is also possible. When you give the same 'name' in the Usabilla for Apps Campaign Editor, the results are represented in the same column.
 
 ### Update fragment manager
-⚠️ It's important to note that our campaigns use Android Fragments in order to be displayed to the user; therefore it's important that you provide a reference to the FragmentManager using :
+⚠️ It's important to note that our campaigns use Android Fragments in order to be displayed to the user; therefore it's important that you provide a reference to the FragmentManager using:
 
 ```java
-usabilla.updateFragmentManager(FragmentManager fragmentManager);
+Usabilla.updateFragmentManager(FragmentManager fragmentManager);
 ```
 
 Furthermore, remember to handle properly the device rotation and other cases where a new FragmentManager is created, in order to always provide the latest one to the SDK.
 
+The FragmentManager accepted is the one coming from the support library with the path `android.support.v4.app.FragmentManager`
+
 ### Reset campaigns data
 The Usabilla SDK offers the possibility to reset the campaign data stored locally using the **resetCampaignData** method in one of its two flavours:
 ```java
-usabilla.resetCampaignData(Context context);
-usabilla.resetCampaignData(Context context, @Nullable UsabillaReadyCallback callback);
+Usabilla.resetCampaignData(Context context);
+Usabilla.resetCampaignData(Context context, @Nullable UsabillaReadyCallback callback);
 ```
 The method removes all campaigns stored locally and fetches them again from our remote API, effectively losing any trace whether they triggered or not.
 The optional parameter `callback` is used to communicate when the fetching of the campaigns has ended and the campaign events can start being processed by the Usabilla SDK.
@@ -182,6 +178,19 @@ They are mostly, but not necessarily, initiated directly by the user.
 
 ### Loading a form
 The SDK uses the Form ID you get from [Usabilla](https://app.usabilla.com/member/apps/list) after creating a new form, to fetch and display the form inside your app.
+The **loadFeedbackForm** method can be used in one of its four versions:
+
+```java
+Usabilla.loadFeedbackForm(String formId);
+Usabilla.loadFeedbackForm(String formId, @Nullable Bitmap screenshot);
+Usabilla.loadFeedbackForm(String formId, @Nullable Bitmap screenshot, @Nullable UsabillaHttpClient httpClient);
+Usabilla.loadFeedbackForm(String formId, @Nullable Bitmap screenshot, @Nullable UsabillaHttpClient httpClient, @Nullable UsabillaFormCallback callback);
+```
+
+The method **loadFeedbackForm** has three optional parameters:
+- `screenshot` is the bitmap that will be attached to the feedback form.
+- `httpClient` gives the possibility to inject a custom client to handle all the connections performed by the SDK (please read the [Custom Http Client](#custom-http-client) section for more information).
+- `callback` is a callback used to communicate when the loading ends.
 
 A basic implementation of the SDK would be the following:
 
@@ -191,22 +200,20 @@ public class MainActivity extends AppCompatActivity implements UsabillaFormCallb
     public void loadForm() {
         // After initialising our SDK
         // The null parameters are for the screenshot and theme, both explained in their own chapters
-        Usabilla.loadFeedbackForm(this, "the form id to load", null, null, this);
+        Usabilla.loadFeedbackForm("the form id to load", null, null, this);
     }
 
     @Override
     public void formLoadSuccess(FormClient form) {
-        if (form.getFragment() != null) {
-            getSupportFragmentManager()
+        getSupportFragmentManager()
               .beginTransaction()
               .replace(R.id.main_activity_frame, form.getFragment(), FRAGMENT_TAG)
               .commit();
-        }
     }
 
     @Override
     public void formLoadFail() {
-        // The form did not load (internet connection, invalid formId...)
+        // The form did not load (no internet connection, invalid formId...)
     }
 
     @Override
@@ -220,7 +227,7 @@ public class MainActivity extends AppCompatActivity implements UsabillaFormCallb
 Our SDK offers the possibility to preload forms. The form will be fetched and stored locally. This could be useful in case the user is offline and the form is requested.
 
 ```java
-usabilla.preloadFeedbackForms(Context context, List<String> formIds);
+Usabilla.preloadFeedbackForms(List<String> formIds);
 ```
 
 ### Adding a screenshot
@@ -230,10 +237,10 @@ You can take a screenshot at any moment by calling
 
 ``` java
 // Passing a View to take the screenshot and attach it the form
-Bitmap myScreenshot = usabilla.takeScreenshot(View view);
+Bitmap myScreenshot = Usabilla.takeScreenshot(View view);
 
 // Passing an Activity to take the screenshot and attach it the form
-Bitmap myScreenshot = usabilla.takeScreenshot(Activity activity);
+Bitmap myScreenshot = Usabilla.takeScreenshot(Activity activity);
 ```
 
 These methods will return a bitmap containing a screenshot of the view or activity you have passed.
@@ -241,8 +248,8 @@ These methods will return a bitmap containing a screenshot of the view or activi
 You can then attach this image, or any other bitmap of your choosing, to the feedback form you're loading by specifying the screenshot parameter in the `loadFeedbackForm` method.
 
 ```java
-Bitmap myScreenshot = usabilla.takeScreenshot(this);
-usabilla.loadFeedbackForm(this, "formId", myScreenshot, this);
+Bitmap myScreenshot = Usabilla.takeScreenshot(this);
+Usabilla.loadFeedbackForm("formId", myScreenshot, null, this);
 ```
 
 ## Feedback submission callback
@@ -252,9 +259,9 @@ It is possible to know when the feedback form has been closed implementing the f
 
 ```java
 private BroadcastReceiver usabillaCloserPassive;
-private IntentFilter closerFilterPassive = new IntentFilter(Constants.INTENT_CLOSE_FORM);
+private IntentFilter closerFilterPassive = new IntentFilter(UbConstants.INTENT_CLOSE_FORM);
 private BroadcastReceiver usabillaCloserCampaign;
-private IntentFilter closerFilterCampaign = new IntentFilter(Constants.INTENT_CLOSE_CAMPAIGN);
+private IntentFilter closerFilterCampaign = new IntentFilter(UbConstants.INTENT_CLOSE_CAMPAIGN);
 
 
 @Override
@@ -315,7 +322,7 @@ This will show a native dialog after the last page of the passive feedback form 
 The Usabilla SDK offers the possibility to reset the database from previosuly fetched passive forms using the **removeCachedForms** method:
 
 ```java
-usabilla.removeCachedForms(Context context);
+Usabilla.removeCachedForms();
 ```
 The method removes all passive forms stored locally.
 
@@ -341,15 +348,17 @@ You can set custom variables by manipulating the `customVariables` object, addin
  HashMap<String, Object> myVariables = new HashMap<>();
  myVariables.put("tier", "premium");
  myVariables.put("loggedIn", true);
- usabilla.setCustomVariables(myVariables);
+ Usabilla.setCustomVariables(myVariables);
 
  // Modifying the object
- usabilla.getCustomVariables().put("tier", "premium");
+ Usabilla.getCustomVariables().put("tier", "premium");
  ```
 
 Custom variables are added as extra feedback data with every feedback item sent by the SDK, whether from a passive feedback or a campaign.
 
-**Custom variables can be used as targeting options, as long as the `value` is a `String`.**
+⚠️ **Custom variables can be used as targeting options, as long as the `value` is a `String`.**
+
+⚠️ **Usabilla.setCustomVariables overwrites the custom variables already present, it does not add them to the pre-existing ones**
 
 ### Limitations
 There are a few limitations to the kind of objects you can add to the custom variables:
@@ -360,85 +369,86 @@ There are a few limitations to the kind of objects you can add to the custom var
 
 ## UI Customisations
 
-### Custom Emoticons Rating
-It is possible to use custom images instead of the ones provided natively in the SDK.
+### UsabillaTheme
+We provide a class `UsabillaTheme` containing two parameters of type `UbFonts` and `UbImages` in its constructor.
 
-To do so, you must provide a list (or two, depending on what you want to achieve) of five image ids to be used instead of the Usabilla default emoticons.
+**They are both nullable, and if not provided will use the SDK default values as follows:**
+- `UbFonts`:
+  - text and title size 18sp
+  - note text size 16dp
+  - boldness enabled
+- `UbImages`:
+  - default mood and stars as seen in the Usabilla dashboard
+
+### Custom Images
+`UbImages` can be instantiated with four different parameters:
+- `selectedEmoticons` is the list of resource IDs to be used as selected emoticons in place of the default ones for the Mood component.
+- `unselectedEmoticons` is the list of resource IDs to be used as unselected emoticons in place of the default ones for the Mood component.
+- `star` is the resource ID to be used in place of the default star for the Mood component (when in star version).
+- `starOutline`is the resource ID to be used in place of the default star outline for the Mood component (when in star version).
+
+#### Custom Emoticons Rating
+To use custom emoticons you must provide two lists of **five image IDs** to be used instead of the Usabilla default emoticons (one list for their selected state and one for the unselected state).
+
 The first element of the array should be the lowest or leftmost item, while the 5th element will be the highest or rightmost.
-At the moment, the SDK does not perform any check to make sure the lists are valid.
 
-#### Provide only the selected version
-You can provide only one list containing the selected version of the icons.
-
-The images will be displayed with an alpha value of 0.5 when unselected, and with an alpha value of 1 when selected.
+If only the list containing the selected version of the icons is provided, the images will be displayed with an alpha value of 0.5 when unselected, and with an alpha value of 1 when selected.
 
 ```java
 // Create images
-Images themeImages = new Images();
 ArrayList<Integer> imagesIdList = new ArrayList<Integer>();
 imagesIdList.add(R.drawable.your_mood_1);
 imagesIdList.add(R.drawable.your_mood_2);
 imagesIdList.add(R.drawable.your_mood_3);
 imagesIdList.add(R.drawable.your_mood_4);
 imagesIdList.add(R.drawable.your_mood_5);
-themeImages.setEnabledEmoticons(imagesIdList);
+UbImages themeImages = new UbImages(imagesIdList);
 
-// Build theme
-UsabillaTheme.Builder themeBuilder = new UsabillaTheme.Builder();
-themeBuilder.setImages(themeImages);
-usabilla.setTheme(themeBuilder.build());
+// Update theme
+UsabillaTheme newTheme = new UsabillaTheme(null, themeImages);
+Usabilla.setTheme(newTheme);
 ```
 
-#### Provide both the selected and unselected version
-You can provide two lists containing the selected and the unselected version of the icons.
-
-The icons drawable will be selected from one of the two lists according to its state.
+You can also provide two lists containing the selected and the unselected version of the icons.
 
 ```java
-themeImages.setEnabledEmoticons(enabledEmoticonsImagesIdList);
-themeImages.setDisabledEmoticons(disabledEmoticonsImagesIdList);
+UbImages themeImages = new UbImages(selectedEmoticonsImagesIdList, unselectedEmoticonsImagesIdList);
+
+// Update theme
+UsabillaTheme newTheme = new UsabillaTheme(null, themeImages);
+Usabilla.setTheme(newTheme);
 ```
 
-### Custom Star Rating
-You can change the appearance of the star in the Star Rating by setting both `star` and `starOutline` in the Usabilla Theme object.
+#### Custom Star Rating
+You can change the appearance of the star in the Star Rating by setting both `star` and `starOutline` in the `UbImages` object.
 
 Keep in mind that, in order to display the Star Rating in your form, you must first enable it in the [Usabilla Web Interface](https://app.usabilla.com/member/apps/).
 
 ```java
-Images themeImages = new Images();
+UbImages themeImages = new UbImages(null, null, R.drawable.ic_star, R.drawable.ic_star_outline);
 
-themeImages.setStarOutline(R.drawable.ic_star_outline);
-themeImages.setStar(R.drawable.ic_star);
-
-UsabillaTheme.Builder themeBuilder = new UsabillaTheme.Builder();
-themeBuilder.setImages(themeImages);
-usabilla.setTheme(themeBuilder.build());
+// Update theme
+UsabillaTheme newTheme = new UsabillaTheme(null, themeImages);
+Usabilla.setTheme(newTheme);
 ```
 
 ### Custom Fonts
-It is possible to change the font of the feedback form by setting the `regular` property of the `UsabillaTheme.fonts` in two different ways.
+`UbFonts` can be instantiated with five different parameters:
+- `regular` is the resource IDs for the font to be applied to the feedback form.
+- `bold` is enabling text to be shown bold (for titles for example).
+- `titleSize` is the size in `sp` for the titles in the form
+- `textSize` is the size in `sp` for the text in the form
+- `miniSize` is the size in `sp` for the small text in the form (e.g. NPS text, Error labels or top page required field note)
 
-You can pass to it the name (as a String) of the `.otf` or `.ttf` file you placed in the asset folder of your project or in a subfolder of asset called "fonts/"
-
-```java
-// Create fonts
-Fonts themeFonts = new Fonts();
-themeFonts.setRegular("fonts/your_font");
-```
-
-Otherwise you can pass to it the resourceId if you already have the font file in the `res` folder of your project (supported from Android API 26 and above).
-
-In both cases the fonts can be then set to the theme as follows:
+⚠️ The font resource needs to be placed in the `res/fonts` folder of the project and be in format `.otf` or `.ttf`
 
 ```java
-// Build theme
-UsabillaTheme.Builder themeBuilder = new UsabillaTheme.Builder();
-themeBuilder.setFonts(themeFonts);
-usabilla.setTheme(themeBuilder.build());
-```
+UbFonts themeFonts = UbFonts(R.font.name_of_your_font)
 
-⚠️ It's important for your font files to be stored either in the asset folder of the project
-or in a subfolder of asset called `"fonts/"`
+// Update theme
+UsabillaTheme newTheme = new UsabillaTheme(themeFonts, null);
+Usabilla.setTheme(newTheme);
+```
 
 ### Custom colors
 All colors are set from the Usabilla website and not from the SDK. You can find a detailed explanation of the color's name and role in our [knowledge base](https://support.usabilla.com/hc/en-us/articles/211588989-How-do-I-change-the-feedback-form-colors-in-Usabilla-for-Apps).
@@ -451,12 +461,10 @@ Additionally, it is possible to specify a theme when requesting a passive form, 
 This can be done as follows:
 
 ```java
-Fonts themeFonts = new Fonts();
-themeFonts.setRegular("fonts/yourFont.ttf");
-UsabillaTheme.Builder themeBuilder = new UsabillaTheme.Builder().setFonts(themeFonts);
-final UsabillaTheme theme = themeBuilder.build();
-
-Usabilla.loadFeedbackForm(this, formId, null, theme, this);
+UbFonts themeFonts = UbFonts(R.font.name_of_your_font)
+UbImages themeImages = new UbImages(null, null, R.drawable.ic_star, R.drawable.ic_star_outline);
+UsabillaTheme newTheme = new UsabillaTheme(themeFonts, themeImages);
+Usabilla.loadFeedbackForm(formId, null, newTheme, this);
 ```
 
 Multiple requests of multiple forms done with different themes will result in each form having its own dedicated theme.
@@ -466,33 +474,33 @@ If you want to provide your own translation, you need to override the strings in
 
 The string resources you can override and their default value are the following
 ```xml
-<string name="usa_field_error">Please check this field</string>
-<string name="usa_screenshot_title">Screenshot (optional)</string>
-<string name="usa_screenshot_message">Add screenshot</string>
-<string name="usa_thank_you_dialog_more_feedback">Give more feedback</string>
-<string name="usa_rate_on_play_store">Rate on the play store</string>
-<string name="usa_dialog_playstore_title">Rate</string>
-<string name="usa_dialog_playstore_message">Thank you for your feedback! Would you like to leave a review?</string>
-<string name="usa_dialog_playstore_negative">NO, THANKS</string>
-<string name="usa_dialog_playstore_positive">RATE NOW</string>
-<string name="usa_toolbar_continue">Continue</string>
-<string name="usa_close_form">Close</string>
-<string name="usa_submit_text">Submit</string>
-<string name="sdk_permission_disabled_label">Permission disabled!\nEnable it from Settings -> app info</string>
-<string name="usa_delete_screenshot">Delete Screenshot</string>
-<string name="usa_edit_screenshot">Change Screenshot</string>
-<string name="usa_accessibility_field_required">This field is required</string>
-<string name="usa_mood_select_a_rating_out_of">select a rating out of %1$d</string>
-<string name="usa_mood_hate">I really don\'t like it!</string>
-<string name="usa_mood_dislike">I don\'t like it</string>
-<string name="usa_mood_neutral">I feel neutral</string>
-<string name="usa_mood_like">I like it!</string>
-<string name="usa_mood_love">I love it!</string>
-<string name="usa_mood_one_star">one star</string>
-<string name="usa_mood_two_star">two stars</string>
-<string name="usa_mood_three_star">three stars</string>
-<string name="usa_mood_four_star">four stars</string>
-<string name="usa_mood_five_star">five stars</string>
+<string name="ub_field_error">Please check this field</string>
+<string name="ub_element_screenshot_title">Screenshot (optional)</string>
+<string name="ub_element_screenshot_message">Add screenshot</string>
+<string name="ub_button_close_default">Close</string>
+<string name="ub_button_continue_default">Continue</string>
+<string name="ub_button_playstore_default">Rate on the play store</string>
+<string name="ub_button_submit_default">Submit</string>
+<string name="ub_dialog_playStore_title">Rate</string>
+<string name="ub_dialog_playstore_message">Thank you for your feedback! Would you like to leave a review?</string>
+<string name="ub_dialog_playstore_negative">No, thanks</string>
+<string name="ub_dialog_playstore_positive">Rate now</string>
+<string name="ub_sdk_permission_disabled_label">Permission disabled!\nEnable it from Settings -> app info</string>
+<string name="ub_element_mood_select_rating">Select a rating out of %1$d</string>
+<string name="ub_element_slider_select_rating">Select a rating from %1$d (%2$s) to %3$d (%4$s)</string>
+<string name="ub_element_required">This field is required</string>
+<string name="ub_element_screenshot_delete">Delete Screenshot</string>
+<string name="ub_element_screenshot_edit">Change Screenshot</string>
+<string name="ub_element_mood_hate">I really don\'t like it!</string>
+<string name="ub_element_mood_dislike">I don\'t like it</string>
+<string name="ub_element_mood_neutral">I feel neutral</string>
+<string name="ub_element_mood_like">I like it!</string>
+<string name="ub_element_mood_love">I love it!</string>
+<string name="ub_element_mood_one_star">One star</string>
+<string name="ub_element_mood_two_star">Two stars</string>
+<string name="ub_element_mood_three_star">Three stars</string>
+<string name="ub_element_mood_four_star">Four stars</string>
+<string name="ub_element_mood_five_star">Five stars</string>
 ```
 
 ## External Navigation
@@ -501,7 +509,7 @@ It is possible to hide the default navigation buttons our forms use (continue an
 To do so a couple of steps are required:
 * Set the standard navigation buttons invisible
     ```java
-    usabilla.setDefaultNavigationButtonsVisibility(false);
+    Usabilla.setDefaultNavigationButtonsVisibility(false);
     ```
 * Call the method `navigationButtonPushed` from the `onClickListener` of your custom button (e.g. the one you have placed in the Toolbar) to let the form know that it was pressed. ⚠️ This is only associating that click to a 'continue' action, you should provide handling for the cancellation yourself.
     ```java
