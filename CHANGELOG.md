@@ -1,3 +1,13 @@
+## 6.0.0
+#### Updated
+- UI to card design
+- Resource names for uniformity
+- `Fonts` changed to `UbFonts`
+- `Images` changed to `UbImages`
+- Accessibility for slider component
+#### Removed
+- Old way of supporting fonts
+- `Context` parameter when getting Usabilla instance
 ## 5.3.0
 #### Added
 - Accessibility feedback regarding required fields
