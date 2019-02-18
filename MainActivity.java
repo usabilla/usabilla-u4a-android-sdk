@@ -1,21 +1,45 @@
+import android.content.BroadcastReceiver;
+import android.content.Context;
+import android.content.Intent;
+import android.content.IntentFilter;
+import android.graphics.Bitmap;
+import android.os.Bundle;
+import android.support.v4.content.LocalBroadcastManager;
+import android.support.v7.app.AppCompatActivity;
+import android.widget.Toast;
+
+import com.usabilla.sdk.ubform.UbConstants;
+import com.usabilla.sdk.ubform.Usabilla;
+import com.usabilla.sdk.ubform.UsabillaFormCallback;
+import com.usabilla.sdk.ubform.UsabillaReadyCallback;
+import com.usabilla.sdk.ubform.sdk.entity.FeedbackResult;
+import com.usabilla.sdk.ubform.sdk.form.FormClient;
+import com.usabilla.sdk.ubform.sdk.form.model.UbFonts;
+import com.usabilla.sdk.ubform.sdk.form.model.UbImages;
+import com.usabilla.sdk.ubform.sdk.form.model.UsabillaTheme;
+
+import java.util.Arrays;
+
 public class MainActivity extends AppCompatActivity implements UsabillaFormCallback, UsabillaReadyCallback {
 
     private static final String FRAGMENT_TAG = "MyFragment";
-    
+
     private BroadcastReceiver usabillaReceiverClosePassive;
     private BroadcastReceiver usabillaReceiverCloseCampaign;
-    private IntentFilter closerFilter = new IntentFilter(Constants.INTENT_CLOSE_FORM);
-    private IntentFilter closerCampaignFilter = new IntentFilter(Constants.INTENT_CLOSE_CAMPAIGN);
-    
+    private IntentFilter closerFilter = new IntentFilter(UbConstants.INTENT_CLOSE_FORM);
+    private IntentFilter closerCampaignFilter = new IntentFilter(UbConstants.INTENT_CLOSE_CAMPAIGN);
+
     private FormClient formClient;
-    
+    private Usabilla usabilla;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         setupPassiveFormBroadcastReceiver();
         setupCampaignFormBroadcastReceiver();
-        
+        usabilla = Usabilla.INSTANCE;
+
         initializeSdk();
         //Optional
         setUsabillaTheme();
@@ -43,9 +67,7 @@ public class MainActivity extends AppCompatActivity implements UsabillaFormCallb
     @Override
     public void formLoadSuccess(FormClient form) {
         formClient = form;
-        if (form.getFragment() != null) {
-            getSupportFragmentManager().beginTransaction().replace(R.id.main_activity_frame, form.getFragment(), FRAGMENT_TAG).commit();
-        }
+        getSupportFragmentManager().beginTransaction().replace(R.id.main_activity_frame, form.getFragment(), FRAGMENT_TAG).commit();
     }
 
     @Override
@@ -67,16 +89,14 @@ public class MainActivity extends AppCompatActivity implements UsabillaFormCallb
     }
 
     private void attachFragment() {
-        if (formClient.getFragment() != null) {
-            getSupportFragmentManager().beginTransaction().replace("use frame layout here", formClient.getFragment(), FRAGMENT_TAG).commit();
-        }
+        getSupportFragmentManager().beginTransaction().replace("use frame layout here", formClient.getFragment(), FRAGMENT_TAG).commit();
     }
 
     private void setupPassiveFormBroadcastReceiver() {
         usabillaReceiverClosePassive = new BroadcastReceiver() {
             @Override
             public void onReceive(Context context, Intent intent) {
-                if (formClient != null && formClient.getFragment() != null) {
+                if (formClient != null) {
                     getSupportFragmentManager().beginTransaction().remove(formClient.getFragment()).commit();
                 }
             }
@@ -100,51 +120,50 @@ public class MainActivity extends AppCompatActivity implements UsabillaFormCallb
         // In the initialize method the third parameter defines a custom http client that can replace
         // the default one used by the SDK (Volley).
         // If `null` is passed then the default client will be used.
-        Usabilla.initialize(this, "use your personal AppId here", null, this);
-        Usabilla.setDebugEnabled(true);
-        Usabilla.updateFragmentManager(getSupportFragmentManager());
+        usabilla.initialize(this, "use your personal AppId here", null, this);
+        usabilla.setDebugEnabled(true);
+        usabilla.updateFragmentManager(getSupportFragmentManager());
     }
 
     private void giveFeedback() {
         // Optional screenshot
         final Bitmap screenshot = Usabilla.takeScreenshot(this);
-        
+
         // Optional theme specific for that passive form
         final UbFonts newFonts = new UbFonts(R.font.indie_flower);
         final UsabillaTheme theme = new UsabillaTheme(newFonts, null);
-        Usabilla.loadFeedbackForm("use your personal FormId here", screenshot, theme, this);
+        usabilla.loadFeedbackForm("use your personal FormId here", screenshot, theme, this);
     }
 
     private void sendEvent() {
-        Usabilla.sendEvent(getApplicationContext(), "MyEvent");
+        usabilla.sendEvent(getApplicationContext(), "MyEvent");
     }
 
     private void resetCampaign() {
         // Reset campaign progression deleting them from memory.
-        // It also fetches the campaigns associated to the appId once again 
+        // It also fetches the campaigns associated to the appId once again
         // and calls the initialisation callback once the process is finished.
-        Usabilla.resetCampaignData(this, this);
+        usabilla.resetCampaignData(this, this);
     }
-    
+
     private void resetPassiveFeedbackForms() {
         // Deletes preloaded passive feedback forms from memory.
-        Usabilla.removeCachedForms();
+        usabilla.removeCachedForms();
     }
 
     private void setUsabillaTheme() {
         // Create images
         final UbImages newImages = new UbImages(
-            Arrays.asList(R.drawable.mood_1_bw,
+                Arrays.asList(R.drawable.mood_1_bw,
                         R.drawable.mood_2_bw,
                         R.drawable.mood_3_bw,
                         R.drawable.mood_4_bw,
-                        R.drawable.mood_5_bw), 
-            null, 
-            R.drawable.ic_star_yellow, 
-            R.drawable.ic_star_red);
-        final UsabillaTheme theme = new UsabillaTheme(null, newImages);
-
+                        R.drawable.mood_5_bw),
+                null,
+                R.drawable.ic_star_yellow,
+                R.drawable.ic_star_red);
         // Set the theme
-        Usabilla.setTheme(themeBuilder.build());
+        final UsabillaTheme theme = new UsabillaTheme(null, newImages);
+        usabilla.setTheme(theme);
     }
 }
