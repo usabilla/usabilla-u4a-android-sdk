@@ -309,7 +309,7 @@ public class FeedbackResult {
 
 The **rating** value is set as soon as the user interacts with it and will be reported even if the form is not submitted.
 
-The **abandonedPageIndex** property is only set if the user cancels the form before submission, otherwise its calue is -1.
+The **abandonedPageIndex** property is only set if the user cancels the form before submission, otherwise its value is -1.
 
 The **isSent** property is false if the user dropped out while filling the form.
 
@@ -479,12 +479,12 @@ The string resources you can override and their default value are the following
 <string name="ub_element_screenshot_message">Add screenshot</string>
 <string name="ub_button_close_default">Close</string>
 <string name="ub_button_continue_default">Continue</string>
-<string name="ub_button_playstore_default">Rate on the play store</string>
+<string name="ub_button_playStore_default">Rate on the play store</string>
 <string name="ub_button_submit_default">Submit</string>
 <string name="ub_dialog_playStore_title">Rate</string>
-<string name="ub_dialog_playstore_message">Thank you for your feedback! Would you like to leave a review?</string>
-<string name="ub_dialog_playstore_negative">No, thanks</string>
-<string name="ub_dialog_playstore_positive">Rate now</string>
+<string name="ub_dialog_playStore_message">Thank you for your feedback! Would you like to leave a review?</string>
+<string name="ub_dialog_playStore_negative">No, thanks</string>
+<string name="ub_dialog_playStore_positive">Rate now</string>
 <string name="ub_sdk_permission_disabled_label">Permission disabled!\nEnable it from Settings -> app info</string>
 <string name="ub_element_mood_select_rating">Select a rating out of %1$d</string>
 <string name="ub_element_slider_select_rating">Select a rating from %1$d (%2$s) to %3$d (%4$s)</string>
