@@ -57,14 +57,14 @@ Due to changes of the Android framework some minor aspects of the SDK will work 
 - The progress bar at the top of the form will be tinted with the accent color only for API >= 21
 
 ## Installation
-- You can find the latest version of our SDK [here](https://bintray.com/usabilla/maven/ubform) and add it as a Maven or a Gradle dependency (`implementation 'com.usabilla.sdk:ubform:6.0.0'`).
+- You can find the latest version of our SDK [here](https://bintray.com/usabilla/maven/ubform) and add it as a Maven or a Gradle dependency (`implementation 'com.usabilla.sdk:ubform:6.1.0'`).
 - If you don't want to use a dependency manager you can also import the .aar library independently.
 Our SDK uses the following dependencies. If your project doesn't use them already you might need to add it as well in your gradle file.
 ```
 dependencies {
     implement 'com.android.volley:volley:1.1.1'
     implement 'com.android.support:appcompat-v7:28.0.0'
-    implement "org.jetbrains.kotlin:kotlin-stdlib-jre7:1.3.11"
+    implement "org.jetbrains.kotlin:kotlin-stdlib-jre7:1.3.21"
 }
 ```
 
@@ -392,7 +392,9 @@ To use custom emoticons you must provide two lists of **five image IDs** to be u
 
 The first element of the array should be the lowest or leftmost item, while the 5th element will be the highest or rightmost.
 
-If only the list containing the selected version of the icons is provided, the images will be displayed with an alpha value of 0.5 when unselected, and with an alpha value of 1 when selected.
+In case you want to use the default Usabilla emoticons, then you need to pass an empty `List` for the first two parameters.
+
+Passing an empty list as a second parameter (and a valid list with resource IDs as first) will show the provided emoticons with an alpha value of 0.5 when unselected, and with an alpha value of 1 when selected.
 
 ```java
 // Create images
@@ -425,7 +427,7 @@ You can change the appearance of the star in the Star Rating by setting both `st
 Keep in mind that, in order to display the Star Rating in your form, you must first enable it in the [Usabilla Web Interface](https://app.usabilla.com/member/apps/).
 
 ```java
-UbImages themeImages = new UbImages(null, null, R.drawable.ic_star, R.drawable.ic_star_outline);
+UbImages themeImages = new UbImages(new ArrayList<Integer>(), new ArrayList<Integer>(), R.drawable.ic_star, R.drawable.ic_star_outline);
 
 // Update theme
 UsabillaTheme newTheme = new UsabillaTheme(null, themeImages);
@@ -462,7 +464,7 @@ This can be done as follows:
 
 ```java
 UbFonts themeFonts = UbFonts(R.font.name_of_your_font)
-UbImages themeImages = new UbImages(null, null, R.drawable.ic_star, R.drawable.ic_star_outline);
+UbImages themeImages = new UbImages(new ArrayList<Integer>(), new ArrayList<Integer>(), R.drawable.ic_star, R.drawable.ic_star_outline);
 UsabillaTheme newTheme = new UsabillaTheme(themeFonts, themeImages);
 Usabilla.loadFeedbackForm(formId, null, newTheme, this);
 ```

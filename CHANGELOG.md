@@ -1,3 +1,13 @@
+## 6.1.0
+#### Updated
+- Secondary button updated to text color.
+#### Fixed
+- Finishing the banner does not send a broadcast. Fixes issue #128
+- `isSent` property is always false. Fixes issue #129
+- Playstore review prompt not displayed. Fixes issue #130
+- Progress bar does not appear in campaigns.
+- The abandonedPageIndex property is set on submit.
+- Crash when opening a campaign without a start page.
 ## 6.0.0
 #### Updated
 - UI to card design
