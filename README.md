@@ -68,6 +68,10 @@ dependencies {
 }
 ```
 
+If you have ProGuard enabled you will have to add this line to your ProGuard configuration:
+
+'''-keep public class com.usabilla.sdk.ubform.eventengine.TargetingOptionsModel'''
+
 ## Initialization
 The Usabilla SDK should first of all be initialized using the **initialize** method in one of its four versions:
 
