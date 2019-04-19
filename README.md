@@ -43,8 +43,8 @@ The new Usabilla SDK Version 6 comes with a new visual design with **cards**, a 
   - [External Navigation](#external-navigation)
   - [Permissions](#permissions)
   - [Accessibility](#accessibility)
-
-* * *
+  - [Dismissing Forms](#dismissing-forms)
+  - [Masking Private Identifiable Information](#masking-private-identifiable-information)
 
 ## Requirements
 - The Usabilla SDK requires the minSdkVersion of the application to be 16 (Android 4.1).
@@ -57,20 +57,21 @@ Due to changes of the Android framework some minor aspects of the SDK will work 
 - The progress bar at the top of the form will be tinted with the accent color only for API >= 21
 
 ## Installation
-- You can find the latest version of our SDK [here](https://bintray.com/usabilla/maven/ubform) and add it as a Maven or a Gradle dependency (`implementation 'com.usabilla.sdk:ubform:6.1.0'`).
+- You can find the latest version of our SDK [here](https://bintray.com/usabilla/maven/ubform) and add it as a Maven or a Gradle dependency (`implementation 'com.usabilla.sdk:ubform:6.2.0'`).
 - If you don't want to use a dependency manager you can also import the .aar library independently.
 Our SDK uses the following dependencies. If your project doesn't use them already you might need to add it as well in your gradle file.
 ```
 dependencies {
     implement 'com.android.volley:volley:1.1.1'
     implement 'com.android.support:appcompat-v7:28.0.0'
-    implement "org.jetbrains.kotlin:kotlin-stdlib-jre7:1.3.21"
+    implement "org.jetbrains.kotlin:kotlin-stdlib-jdk7:1.3.30"
 }
 ```
 
 If you have ProGuard enabled you will have to add this line to your ProGuard configuration:
-
-'''-keep public class com.usabilla.sdk.ubform.eventengine.TargetingOptionsModel'''
+```
+-keep public class com.usabilla.sdk.ubform.eventengine.TargetingOptionsModel
+```
 
 ## Initialization
 The Usabilla SDK should first of all be initialized using the **initialize** method in one of its four versions:
@@ -556,4 +557,49 @@ where `view` is the `ViewGroup` you want to exclude from the TalkBack.
 Of course when the form is dismissed and you proceed to remove it from its holding `Activity` (or `Fragment`) then you can reset the TalkBack to consider it with the line
 ```java
 view.setImportantForAccessibility(View.IMPORTANT_FOR_ACCESSIBILITY_YES);
+```
+
+## Dismissing Forms
+The SDK provides a way to programatically dismiss all forms through the method:
+```java
+Usabilla.dismiss(Context context);
+```
+For Passive Feedback Forms the SDK only sends the broadcast to close the form. It assumes that the receiver is properly implemented to be able to close the form.
+
+## Masking Private Identifiable Information
+The SDK has an option to mask (on the back-end side) the data from input texts, specifically `Text Input` and `Text Area`. Please note that the an email input field is not being masked.
+
+It matches a list of RegEx and replaces them by the  **"X"** character by default.
+
+The SDK has a `setDataMasking` method that can be used as:
+```java
+Usabilla.setDataMasking();
+Usabilla.setDataMasking(List<String> masks);
+Usabilla.setDataMasking(List<String> masks, char maskCharacter);
+```
+ - `masks` is a list of RegExes to mask data in input fields. If not set it uses the default RegExes that the SDK provides.
+ - `maskCharacter` is a character to replace the matched RegExes. By default this is **"X"**.
+
+The default RegExes that the SDK provides are:
+Email Addresses
+```regexp
+[a-zA-Z0-9\+\.\_\%\-\+]{1,256}\@[a-zA-Z0-9][a-zA-Z0-9\-]{0,64}(\.[a-zA-Z0-9][a-zA-Z0-9\-]{0,25})+
+```
+Numbers with the length 4 or more
+```regexp
+[0-9]{4,}
+```
+
+The default RegEx and character can be accessed by:
+
+In Java
+```java
+UbConstants.getDefaultDataMasks();
+UbConstants.getDefaultMaskCharacter();
+```
+
+In Kotlin
+```kotlin
+UbConstants.DEFAULT_DATA_MASKS
+UbConstants.DEFAULT_MASK_CHARACTER
 ```

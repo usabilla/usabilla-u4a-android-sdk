@@ -1,3 +1,7 @@
+## 6.2.0
+#### Added
+- Method to mask personal identifiable information in the public interface.
+- Method to remove a displayed form programmatically.
 ## 6.1.0
 #### Updated
 - Secondary button updated to text color.
