@@ -447,7 +447,7 @@ Usabilla.setTheme(newTheme);
 - `textSize` is the size in `sp` for the text in the form
 - `miniSize` is the size in `sp` for the small text in the form (e.g. NPS text, Error labels or top page required field note)
 
-⚠️ The font resource needs to be placed in the `res/fonts` folder of the project and be in format `.otf` or `.ttf`
+⚠️ The font resource needs to be placed in the `res/font` folder of the project and be in format `.otf` or `.ttf`
 
 ```java
 UbFonts themeFonts = UbFonts(R.font.name_of_your_font)

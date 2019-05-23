@@ -5,6 +5,10 @@
 ## 6.1.0
 #### Updated
 - Secondary button updated to text color.
+- If you have ProGuard enabled you will have to add this line to your ProGuard configuration:
+```
+-keep public class com.usabilla.sdk.ubform.eventengine.TargetingOptionsModel
+```
 #### Fixed
 - Finishing the banner does not send a broadcast. Fixes issue #128
 - `isSent` property is always false. Fixes issue #129
@@ -18,6 +22,7 @@
 - Resource names for uniformity
 - `Fonts` changed to `UbFonts`
 - `Images` changed to `UbImages`
+- `Constants` changed to `UbConstants`
 - Accessibility for slider component
 #### Removed
 - Old way of supporting fonts
