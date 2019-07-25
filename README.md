@@ -319,9 +319,9 @@ The **abandonedPageIndex** property is only set if the user cancels the form bef
 The **isSent** property is false if the user dropped out while filling the form.
 
 ## Play Store link
-Enable "App Store redirect" in the Advanced panel of the feedback form editor in order to redirect the user to the Play Store after leaving a positive feedback item.
+Check "Show rating prompt after feedback submit" in the Advanced panel of the feedback form editor in order to redirect the user to the Play Store after leaving a positive feedback item.
 
-This will show a native dialog after the last page of the passive feedback form and after the campaign form was displayed. In both cases, they will be displayed only if the mood rating is 4 or 5.
+This will show a native dialog after the last page of the passive feedback form and after the campaign form was displayed. In both cases, they will be displayed only if the mood rating is 4 or 5. Please note that the dialog will only appear on devices that have the Play Store installed (i.e. physical devices).
 
 ### Reset passive forms
 The Usabilla SDK offers the possibility to reset the database from previosuly fetched passive forms using the **removeCachedForms** method:
