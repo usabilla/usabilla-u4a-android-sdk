@@ -1,3 +1,9 @@
+## 6.3.0
+#### Added
+- User can choose between camera or image library as source when adding screenshot.
+#### Fixed
+- Navigation bar showing in front of campaign banner when the navigation bar is translucent.
+- Campaign banner element visual aberration. Fixes issue [151](https://github.com/usabilla/usabilla-u4a-android-sdk/issues/151)
 ## 6.2.0
 #### Added
 - Method to mask personal identifiable information in the public interface.
