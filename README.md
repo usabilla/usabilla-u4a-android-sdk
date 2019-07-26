@@ -3,7 +3,7 @@
 # Usabilla for Apps - Android SDK
 Usabilla for Apps allows you to collect feedback from your users with great ease and flexibility.
 
-The new Usabilla SDK Version 6 comes with a new visual design with **cards**, a much cleaner interface and several bug-fixes
+From version 6.0.0 of the Usabilla SDK a new visual design with **cards** has been introduced
 
 * * *
 
@@ -45,6 +45,7 @@ The new Usabilla SDK Version 6 comes with a new visual design with **cards**, a 
   - [Accessibility](#accessibility)
   - [Dismissing Forms](#dismissing-forms)
   - [Masking Private Identifiable Information](#masking-private-identifiable-information)
+* * *
 
 ## Requirements
 - The Usabilla SDK requires the minSdkVersion of the application to be 16 (Android 4.1).
@@ -57,14 +58,14 @@ Due to changes of the Android framework some minor aspects of the SDK will work 
 - The progress bar at the top of the form will be tinted with the accent color only for API >= 21
 
 ## Installation
-- You can find the latest version of our SDK [here](https://bintray.com/usabilla/maven/ubform) and add it as a Maven or a Gradle dependency (`implementation 'com.usabilla.sdk:ubform:6.2.0'`).
+- You can find the latest version of our SDK [here](https://bintray.com/usabilla/maven/ubform) and add it as a Maven or a Gradle dependency (`implementation 'com.usabilla.sdk:ubform:6.3.0'`).
 - If you don't want to use a dependency manager you can also import the .aar library independently.
 Our SDK uses the following dependencies. If your project doesn't use them already you might need to add it as well in your gradle file.
 ```
 dependencies {
     implement 'com.android.volley:volley:1.1.1'
     implement 'com.android.support:appcompat-v7:28.0.0'
-    implement "org.jetbrains.kotlin:kotlin-stdlib-jdk7:1.3.30"
+    implement "org.jetbrains.kotlin:kotlin-stdlib-jdk7:1.3.41"
 }
 ```
 
@@ -319,12 +320,12 @@ The **abandonedPageIndex** property is only set if the user cancels the form bef
 The **isSent** property is false if the user dropped out while filling the form.
 
 ## Play Store link
-Check "Show rating prompt after feedback submit" in the Advanced panel of the feedback form editor in order to redirect the user to the Play Store after leaving a positive feedback item.
+Enable "Show rating prompt after feedback submit" in the Advanced panel of the feedback form editor in order to redirect the user to the Play Store after leaving a positive feedback item.
 
 This will show a native dialog after the last page of the passive feedback form and after the campaign form was displayed. In both cases, they will be displayed only if the mood rating is 4 or 5. Please note that the dialog will only appear on devices that have the Play Store installed (i.e. physical devices).
 
 ### Reset passive forms
-The Usabilla SDK offers the possibility to reset the database from previosuly fetched passive forms using the **removeCachedForms** method:
+The Usabilla SDK offers the possibility to reset the database from previously fetched passive forms using the **removeCachedForms** method:
 
 ```java
 Usabilla.removeCachedForms();
@@ -493,6 +494,8 @@ The string resources you can override and their default value are the following
 <string name="ub_dialog_playStore_negative">No, thanks</string>
 <string name="ub_dialog_playStore_positive">Rate now</string>
 <string name="ub_sdk_permission_disabled_label">Permission disabled!\nEnable it from Settings -> app info</string>
+
+// Accessibility labels
 <string name="ub_element_mood_select_rating">Select a rating out of %1$d</string>
 <string name="ub_element_slider_select_rating">Select a rating from %1$d (%2$s) to %3$d (%4$s)</string>
 <string name="ub_element_required">This field is required</string>
@@ -508,6 +511,7 @@ The string resources you can override and their default value are the following
 <string name="ub_element_mood_three_star">Three stars</string>
 <string name="ub_element_mood_four_star">Four stars</string>
 <string name="ub_element_mood_five_star">Five stars</string>
+<string name="ub_usabilla_logo">Powered by Usabilla</string>
 ```
 
 ## External Navigation
