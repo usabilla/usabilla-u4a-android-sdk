@@ -58,14 +58,14 @@ Due to changes of the Android framework some minor aspects of the SDK will work 
 - The progress bar at the top of the form will be tinted with the accent color only for API >= 21
 
 ## Installation
-- You can find the latest version of our SDK [here](https://bintray.com/usabilla/maven/ubform) and add it as a Maven or a Gradle dependency (`implementation 'com.usabilla.sdk:ubform:6.3.0'`).
+- You can find the latest version of our SDK [here](https://bintray.com/usabilla/maven/ubform) and add it as a Maven or a Gradle dependency (`implementation 'com.usabilla.sdk:ubform:6.4.0'`).
 - If you don't want to use a dependency manager you can also import the .aar library independently.
 Our SDK uses the following dependencies. If your project doesn't use them already you might need to add it as well in your gradle file.
 ```
 dependencies {
-    implement 'com.android.volley:volley:1.1.1'
-    implement 'com.android.support:appcompat-v7:28.0.0'
-    implement "org.jetbrains.kotlin:kotlin-stdlib-jdk7:1.3.41"
+    implementation 'com.android.volley:volley:1.1.1'
+    implementation 'com.android.support:appcompat-v7:28.0.0'
+    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:1.3.41"
 }
 ```
 
@@ -512,6 +512,18 @@ The string resources you can override and their default value are the following
 <string name="ub_element_mood_four_star">Four stars</string>
 <string name="ub_element_mood_five_star">Five stars</string>
 <string name="ub_usabilla_logo">Powered by Usabilla</string>
+
+<string name="ub_take_picture">Take Picture</string>
+<string name="ub_screenshot_preview">Screenshot Preview</string>
+<string name="ub_menu_add">Add</string>
+<string name="ub_menu_undo">Undo</string>
+<string name="ub_menu_done">Done</string>
+
+<string name="ub_camera_access_denied">No access to camera</string>
+<string name="ub_camera_access_denied_details">Allowing access lets you take photos to add to your feedback.</string>
+<string name="ub_camera_access_allow">Allow access to camera</string>
+
+<string name="ub_edit_title">Edit</string>
 ```
 
 ## External Navigation
