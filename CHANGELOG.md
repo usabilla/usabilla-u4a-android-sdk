@@ -1,3 +1,11 @@
+## 6.4.0
+#### Added
+- User can draw on the screenshot to mask or highlight features
+#### Updated
+- Footer to make use of new Usabilla logo
+#### Fixed
+- Crash when resuming the app after its process was killed
+- Crash when resuming the apps on Samsung phones
 ## 6.3.0
 #### Added
 - User can choose between camera or image library as source when adding screenshot.
