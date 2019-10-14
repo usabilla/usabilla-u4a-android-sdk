@@ -1,3 +1,9 @@
+## 6.4.1
+#### Fixed
+- Crash caused by TargetingOptionsModel when obfuscated
+- Crash when the `body` in `UsabillaHttpResponse` is null
+- Compatibility with dynamic feature modules
+- EditText losing text on rotation
 ## 6.4.0
 #### Added
 - User can draw on the screenshot to mask or highlight features

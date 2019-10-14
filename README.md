@@ -65,7 +65,7 @@ Our SDK uses the following dependencies. If your project doesn't use them alread
 dependencies {
     implementation 'com.android.volley:volley:1.1.1'
     implementation 'com.android.support:appcompat-v7:28.0.0'
-    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:1.3.41"
+    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:1.3.50"
 }
 ```
 
@@ -558,8 +558,13 @@ To do so a couple of steps are required:
     ```
 
 ## Permissions
-If the user tries to set a custom screenshot, the SDK will ask for the permission to access the external storage.    
-No other permission is needed to run the SDK.
+The SDK uses the following permissions:
+```
+<uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+<uses-permission android:name="android.permission.CAMERA" />
+```
+These permissions are only needed during the flow in getting a new screenshot. The SDK can capture pictures directly or get from the image gallery.
+This flow lets users of the SDK annotate the image that was captured.
 
 ## Accessibility
 In order to have Android TalkBack work properly with the passive feedback form, you have to make sure that the `Activity` (or `Fragment`) holding the `FormClient.fragment` received from our SDK stops being considered for TalkBack.
