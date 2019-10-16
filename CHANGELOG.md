@@ -1,3 +1,7 @@
+### Changelog:
+## 6.4.2
+#### Fixed
+- Close form broadcast being called while Play Store dialog is active
 ## 6.4.1
 #### Fixed
 - Crash caused by TargetingOptionsModel when obfuscated
