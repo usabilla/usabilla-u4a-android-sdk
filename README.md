@@ -5,8 +5,7 @@ Usabilla for Apps allows you to collect feedback from your users with great ease
 
 From version 6.0.0 of the Usabilla SDK a new visual design with **cards** has been introduced
 
-* * *
-
+***
 - [Usabilla for Apps - Android SDK](#usabilla-for-apps---android-sdk)
   - [Requirements](#requirements)
   - [Android API limitations](#android-api-limitations)
@@ -45,7 +44,7 @@ From version 6.0.0 of the Usabilla SDK a new visual design with **cards** has be
   - [Accessibility](#accessibility)
   - [Dismissing Forms](#dismissing-forms)
   - [Masking Private Identifiable Information](#masking-private-identifiable-information)
-* * *
+***
 
 ## Requirements
 - The Usabilla SDK requires the minSdkVersion of the application to be 16 (Android 4.1).
@@ -58,7 +57,7 @@ Due to changes of the Android framework some minor aspects of the SDK will work 
 - The progress bar at the top of the form will be tinted with the accent color only for API >= 21
 
 ## Installation
-- You can find the latest version of our SDK [here](https://bintray.com/usabilla/maven/ubform) and add it as a Maven or a Gradle dependency (`implementation 'com.usabilla.sdk:ubform:6.4.2'`).
+- You can find the latest version of our SDK [here](https://bintray.com/usabilla/maven/ubform) and add it as a Maven or a Gradle dependency (`implementation 'com.usabilla.sdk:ubform:6.4.3'`).
 - If you don't want to use a dependency manager you can also import the .aar library independently.
 Our SDK uses the following dependencies. If your project doesn't use them already you might need to add it as well in your gradle file.
 ```
@@ -527,6 +526,8 @@ The string resources you can override and their default value are the following
 ```
 
 ## External Navigation
+
+⚠️ **Passive feedback only!**
 It is possible to hide the default navigation buttons our forms use (continue and cancel button) from the SDK and provide your own (e.g. in the Toolbar).
 
 To do so a couple of steps are required:

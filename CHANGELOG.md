@@ -1,4 +1,8 @@
 ### Changelog:
+## 6.4.3
+#### Fixed
+- Form navigation visibility not working as expected
+- Cancel/Dismiss button not sending broadcast
 ## 6.4.2
 #### Fixed
 - Close form broadcast being called while Play Store dialog is active
