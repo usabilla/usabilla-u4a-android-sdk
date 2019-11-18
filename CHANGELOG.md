@@ -1,4 +1,7 @@
 ### Changelog:
+## 6.4.4
+#### Fixed
+- Crash caused by parcelable exception on play store dialog ([#167](https://github.com/usabilla/usabilla-u4a-android-sdk/issues/167))
 ## 6.4.3
 #### Fixed
 - Form navigation visibility not working as expected
