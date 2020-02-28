@@ -531,7 +531,7 @@ The string resources you can override and their default value are the following
 It is possible to hide the default navigation buttons our forms use (continue and cancel button) from the SDK and provide your own (e.g. in the Toolbar).
 
 To do so a couple of steps are required:
-* Set the standard navigation buttons invisible
+* Set the standard navigation buttons invisible. This must be called before `loadFeedbackForm`.
     ```java
     Usabilla.setDefaultNavigationButtonsVisibility(false);
     ```
