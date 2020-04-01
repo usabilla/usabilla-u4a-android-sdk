@@ -3,7 +3,7 @@
 # Usabilla for Apps - Android SDK
 Usabilla for Apps allows you to collect feedback from your users with great ease and flexibility.
 
-From version 6.0.0 of the Usabilla SDK a new visual design with **cards** has been introduced
+From version 7.0.0 the Usabilla SDK relies on AndroidX libraries
 
 ***
 - [Usabilla for Apps - Android SDK](#usabilla-for-apps---android-sdk)
@@ -57,14 +57,18 @@ Due to changes of the Android framework some minor aspects of the SDK will work 
 - The progress bar at the top of the form will be tinted with the accent color only for API >= 21
 
 ## Installation
-- You can find the latest version of our SDK [here](https://bintray.com/usabilla/maven/ubform) and add it as a Maven or a Gradle dependency (`implementation 'com.usabilla.sdk:ubform:6.4.4'`).
+- You can find the latest version of our SDK [here](https://bintray.com/usabilla/maven/ubform) and add it as a Maven or a Gradle dependency (`implementation 'com.usabilla.sdk:ubform:7.0.0'`).
 - If you don't want to use a dependency manager you can also import the .aar library independently.
 Our SDK uses the following dependencies. If your project doesn't use them already you might need to add it as well in your gradle file.
 ```
 dependencies {
     implementation 'com.android.volley:volley:1.1.1'
-    implementation 'com.android.support:appcompat-v7:28.0.0'
-    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:1.3.50"
+    implementation 'androidx.appcompat:appcompat:1.1.0'
+    implementation 'androidx.exifinterface:exifinterface:1.1.0'
+    implementation 'androidx.localbroadcastmanager:localbroadcastmanager:1.0.0'
+    implementation 'org.jetbrains.kotlin:kotlin-stdlib-jdk7:1.3.70'
+    implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-core:1.3.2'
+    implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-android:1.3.2'
 }
 ```
 

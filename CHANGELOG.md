@@ -1,4 +1,9 @@
 ### Changelog:
+## 7.0.0
+#### Added
+- Dependency on coroutines
+#### Updated
+- Android library dependencies to use AndroidX (targeting Android 29)
 ## 6.4.4
 #### Fixed
 - Crash caused by parcelable exception on play store dialog ([#167](https://github.com/usabilla/usabilla-u4a-android-sdk/issues/167))
