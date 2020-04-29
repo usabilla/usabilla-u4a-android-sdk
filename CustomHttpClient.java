@@ -1,21 +1,27 @@
+import android.app.Activity;
+import android.content.Intent;
 import android.net.TrafficStats;
-import android.os.Handler;
-import android.os.Looper;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
 import android.util.Log;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+
+import com.google.android.gms.security.ProviderInstaller;
 import com.usabilla.sdk.ubform.net.http.UsabillaHttpClient;
 import com.usabilla.sdk.ubform.net.http.UsabillaHttpListener;
 import com.usabilla.sdk.ubform.net.http.UsabillaHttpRequest;
 import com.usabilla.sdk.ubform.net.http.UsabillaHttpResponse;
 
 import java.io.IOException;
+import java.lang.ref.WeakReference;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 
 import okhttp3.Call;
 import okhttp3.Callback;
+import okhttp3.CipherSuite;
+import okhttp3.ConnectionSpec;
 import okhttp3.Headers;
 import okhttp3.MediaType;
 import okhttp3.OkHttpClient;
@@ -23,23 +29,50 @@ import okhttp3.Request;
 import okhttp3.RequestBody;
 import okhttp3.Response;
 import okhttp3.ResponseBody;
+import okhttp3.TlsVersion;
 
 /**
-* This class is meant as a crude example of a custom http client that can be passed to 
-* our SDK in case you would like to handle the connectivity on your own.
-*
-* It's based on the library OkHttp and it needs to extend from our interface UsabillaHttpClient
-* which requires to implement the method execute(UsabillaHttpRequest usabillaRequest, UsabillaHttpListener listener)
-*
-* The parameters passed in the signature are:
-* - usabillaRequest: The network request created from our SDK that you need to map to your client for execution.
-* - listener: The listener to be triggered in case the request succeeds or not
-*/
-
+ * This class is meant as a crude example of a custom http client that can be passed to
+ * our SDK in case you would like to handle the connectivity on your own.
+ *
+ * It's based on the library OkHttp and it needs to extend from our interface UsabillaHttpClient
+ * which requires to implement the method execute(UsabillaHttpRequest usabillaRequest, UsabillaHttpListener listener)
+ */
 public class CustomHttpClient implements UsabillaHttpClient {
 
-    private OkHttpClient client = new OkHttpClient();
-    private Handler mainHandler = new Handler(Looper.getMainLooper());
+    private OkHttpClient client;
+    private final ConnectionSpec spec = new ConnectionSpec.Builder(ConnectionSpec.RESTRICTED_TLS)
+            .tlsVersions(TlsVersion.TLS_1_2)
+            .cipherSuites(CipherSuite.TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256)
+            .build();
+    private final OkHttpClient.Builder builder = new OkHttpClient().newBuilder()
+            .connectionSpecs(Collections.singletonList(spec));
+
+    private WeakReference<Activity> activityReference;
+
+    CustomHttpClient(Activity activity) {
+        activityReference = new WeakReference(activity);
+
+        /**
+         * This is only required for phones running Android API 19 since they do not have TLS1.2
+         * enabled by default, and our SDK has it as a requirement to perform network connections
+         */
+        ProviderInstaller.installIfNeededAsync(activity.getBaseContext(), new ProviderInstaller.ProviderInstallListener() {
+            @Override
+            public void onProviderInstalled() {
+                try {
+                    builder.sslSocketFactory(new TlsSocketFactory());
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+                client = builder.build();
+            }
+
+            @Override
+            public void onProviderInstallFailed(int i, Intent intent) {
+            }
+        });
+    }
 
     @Override
     public void execute(@NonNull UsabillaHttpRequest usabillaRequest, @NonNull UsabillaHttpListener listener) {
@@ -57,10 +90,7 @@ public class CustomHttpClient implements UsabillaHttpClient {
                                      @NonNull Request.Builder builder) {
         if (usabillaRequest.getHeaders() != null) {
             for (String key : usabillaRequest.getHeaders().keySet()) {
-                final String header = usabillaRequest.getHeaders().get(key);
-                if (header != null) {
-                    builder.addHeader(key, header);
-                }
+                builder.addHeader(key, usabillaRequest.getHeaders().get(key));
             }
         }
     }
@@ -91,20 +121,84 @@ public class CustomHttpClient implements UsabillaHttpClient {
         }
 
         @Override
-        public void onFailure(@NonNull Call call, @NonNull final IOException e) {
-            final CustomUsabillaHttpResponse customResponse = new CustomUsabillaHttpResponse(e);
-            mainHandler.post(new Runnable() {
+        public void onFailure(Call call, final IOException e) {
+            activityReference.get().runOnUiThread(new Runnable() {
                 @Override
                 public void run() {
-                    listener.onFailure(customResponse);
+                    listener.onFailure(new UsabillaHttpResponse() {
+                        @Nullable
+                        @Override
+                        public Integer getStatusCode() {
+                            return null;
+                        }
+
+                        @Nullable
+                        @Override
+                        public Map<String, String> getHeaders() {
+                            return null;
+                        }
+
+                        @Nullable
+                        @Override
+                        public String getBody() {
+                            return null;
+                        }
+
+                        @Nullable
+                        @Override
+                        public String getError() {
+                            return e.getLocalizedMessage();
+                        }
+                    });
                 }
             });
         }
 
         @Override
-        public void onResponse(@NonNull Call call, @NonNull final Response response) {
-            final CustomUsabillaHttpResponse customResponse = new CustomUsabillaHttpResponse(response);
-            mainHandler.post(new Runnable() {
+        public void onResponse(Call call, final Response response) {
+            final UsabillaHttpResponse customResponse = new UsabillaHttpResponse() {
+                @Nullable
+                @Override
+                public Integer getStatusCode() {
+                    return response.code();
+                }
+
+                @Nullable
+                @Override
+                public Map<String, String> getHeaders() {
+                    final Map<String, String> headers = new HashMap<>();
+                    final Headers responseHeaders = response.headers();
+                    for (int i = 0; i < responseHeaders.size(); i++) {
+                        headers.put(responseHeaders.name(i), responseHeaders.value(i));
+                    }
+                    return headers;
+                }
+
+                @Nullable
+                @Override
+                public String getBody() {
+                    try {
+                        String returnValue = "";
+                        final ResponseBody body = response.body();
+                        if (body != null) {
+                            returnValue = body.string();
+                            body.close();
+                        }
+                        return returnValue;
+                    } catch (IOException e) {
+                        Log.i("CustomHttpClient", "Response in the custom HttpClient (status 200) failed to read body with exception: " + e.getLocalizedMessage());
+                    }
+                    return null;
+                }
+
+                @Nullable
+                @Override
+                public String getError() {
+                    return response.message();
+                }
+            };
+
+            activityReference.get().runOnUiThread(new Runnable() {
                 @Override
                 public void run() {
                     if (response.isSuccessful()) {
@@ -114,68 +208,6 @@ public class CustomHttpClient implements UsabillaHttpClient {
                     }
                 }
             });
-        }
-    }
-
-    class CustomUsabillaHttpResponse implements UsabillaHttpResponse {
-        private String body;
-        private String error;
-        private Map<String, String> headers;
-        private Integer statusCode;
-
-        CustomUsabillaHttpResponse(IOException e) {
-            init(null, e);
-        }
-
-        CustomUsabillaHttpResponse(Response response) {
-            init(response, null);
-        }
-
-        private void init(Response response, IOException e) {
-            if (response != null) {
-                try {
-                    final ResponseBody responseBody = response.body();
-                    if (responseBody != null) {
-                        body = responseBody.string();
-                        responseBody.close();
-                    }
-                } catch (IOException e1) {
-                    Log.i("CustomHttpClient", "Custom http client response failed to read body with exception: " + e1.getLocalizedMessage());
-                }
-                error = response.message();
-                headers = new HashMap<>();
-                Headers responseHeaders = response.headers();
-                for (int i = 0; i < responseHeaders.size(); i++) {
-                    headers.put(responseHeaders.name(i), responseHeaders.value(i));
-                }
-                statusCode = response.code();
-            } else if (e != null) {
-                error = e.getLocalizedMessage();
-            }
-        }
-
-        @Nullable
-        @Override
-        public String getBody() {
-            return body;
-        }
-
-        @Nullable
-        @Override
-        public String getError() {
-            return error;
-        }
-
-        @Nullable
-        @Override
-        public Map<String, String> getHeaders() {
-            return headers;
-        }
-
-        @Nullable
-        @Override
-        public Integer getStatusCode() {
-            return statusCode;
         }
     }
 }

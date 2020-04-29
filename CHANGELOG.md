@@ -1,25 +1,41 @@
 ### Changelog:
+## 7.0.1
+#### Updated
+- Kotlin dependency to 1.3.72
+#### Fixed
+- Bug on passive form not sending the attached screenshot
+- Bug on campaigns not sending results
+- Crash using a custom HTTP client
+#### Removed
+- Reference of TLS1.1 from the codebase
+- Support for Android API below 19
+
 ## 7.0.0
 #### Added
 - Dependency on coroutines
 #### Updated
 - Android library dependencies to use AndroidX (targeting Android 29)
+
 ## 6.4.4
 #### Fixed
 - Crash caused by parcelable exception on play store dialog ([#167](https://github.com/usabilla/usabilla-u4a-android-sdk/issues/167))
+
 ## 6.4.3
 #### Fixed
 - Form navigation visibility not working as expected
 - Cancel/Dismiss button not sending broadcast
+
 ## 6.4.2
 #### Fixed
 - Close form broadcast being called while Play Store dialog is active
+
 ## 6.4.1
 #### Fixed
 - Crash caused by TargetingOptionsModel when obfuscated
 - Crash when the `body` in `UsabillaHttpResponse` is null
 - Compatibility with dynamic feature modules
 - EditText losing text on rotation
+
 ## 6.4.0
 #### Added
 - User can draw on the screenshot to mask or highlight features
@@ -28,16 +44,19 @@
 #### Fixed
 - Crash when resuming the app after its process was killed
 - Crash when resuming the apps on Samsung phones
+
 ## 6.3.0
 #### Added
 - User can choose between camera or image library as source when adding screenshot.
 #### Fixed
 - Navigation bar showing in front of campaign banner when the navigation bar is translucent.
 - Campaign banner element visual aberration. Fixes issue [151](https://github.com/usabilla/usabilla-u4a-android-sdk/issues/151)
+
 ## 6.2.0
 #### Added
 - Method to mask personal identifiable information in the public interface.
 - Method to remove a displayed form programmatically.
+
 ## 6.1.0
 #### Updated
 - Secondary button updated to text color.
@@ -52,6 +71,7 @@
 - Progress bar does not appear in campaigns.
 - The abandonedPageIndex property is set on submit.
 - Crash when opening a campaign without a start page.
+
 ## 6.0.0
 #### Updated
 - UI to card design
@@ -63,6 +83,7 @@
 #### Removed
 - Old way of supporting fonts
 - `Context` parameter when getting Usabilla instance
+
 ## 5.3.0
 #### Added
 - Accessibility feedback regarding required fields
