@@ -1,4 +1,7 @@
 ### Changelog:
+## 7.0.1
+#### Fixed
+- Minor bug
 ## 7.0.0
 #### Updated
 - Android library dependencies to use AndroidX
