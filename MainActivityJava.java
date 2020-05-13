@@ -1,12 +1,15 @@
+package com.usabilla.android.testandroidx;
+
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.graphics.Bitmap;
 import android.os.Bundle;
-import android.support.v4.content.LocalBroadcastManager;
-import android.support.v7.app.AppCompatActivity;
 import android.widget.Toast;
+
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 
 import com.usabilla.sdk.ubform.UbConstants;
 import com.usabilla.sdk.ubform.Usabilla;
@@ -20,7 +23,7 @@ import com.usabilla.sdk.ubform.sdk.form.model.UsabillaTheme;
 
 import java.util.Arrays;
 
-public class MainActivity extends AppCompatActivity implements UsabillaFormCallback, UsabillaReadyCallback {
+public class MainActivityJava extends AppCompatActivity implements UsabillaFormCallback, UsabillaReadyCallback {
 
     private static final String FRAGMENT_TAG = "MyFragment";
 
@@ -67,7 +70,7 @@ public class MainActivity extends AppCompatActivity implements UsabillaFormCallb
     @Override
     public void formLoadSuccess(FormClient form) {
         formClient = form;
-        getSupportFragmentManager().beginTransaction().replace(R.id.main_activity_frame, form.getFragment(), FRAGMENT_TAG).commit();
+        attachFragment();
     }
 
     @Override
@@ -127,7 +130,7 @@ public class MainActivity extends AppCompatActivity implements UsabillaFormCallb
 
     private void giveFeedback() {
         // Optional screenshot
-        final Bitmap screenshot = Usabilla.takeScreenshot(this);
+        final Bitmap screenshot = usabilla.takeScreenshot(this);
 
         // Optional theme specific for that passive form
         final UbFonts newFonts = new UbFonts(R.font.indie_flower);
