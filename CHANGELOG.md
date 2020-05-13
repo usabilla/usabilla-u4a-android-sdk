@@ -1,4 +1,18 @@
 ### Changelog:
+## 7.0.0
+#### Updated
+- Android library dependencies to use AndroidX
+- Targeting Android 29
+- Kotlin dependency to 1.3.72
+#### Fixed
+- Bug on passive form not sending the attached screenshot
+- Bug on campaigns not sending results
+- Crash using a custom HTTP client
+#### Removed
+- Reference of TLS1.1 from the codebase
+- Support for Android API below 19
+#### Added
+- Dependency on coroutines
 ## 6.4.4
 #### Fixed
 - Crash caused by parcelable exception on play store dialog ([#167](https://github.com/usabilla/usabilla-u4a-android-sdk/issues/167))

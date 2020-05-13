@@ -3,7 +3,7 @@
 # Usabilla for Apps - Android SDK
 Usabilla for Apps allows you to collect feedback from your users with great ease and flexibility.
 
-From version 6.0.0 of the Usabilla SDK a new visual design with **cards** has been introduced
+From version 7.0.0 the Usabilla SDK relies on AndroidX libraries and brought the minimum required Android API version to 19 (previously 16)
 
 ***
 - [Usabilla for Apps - Android SDK](#usabilla-for-apps---android-sdk)
@@ -47,7 +47,35 @@ From version 6.0.0 of the Usabilla SDK a new visual design with **cards** has be
 ***
 
 ## Requirements
-- The Usabilla SDK requires the minSdkVersion of the application to be 16 (Android 4.1).
+- The Usabilla SDK supports Android API 19 (Android 4.4) and above.
+- The Usabilla SDK targets Android API 29.
+- The Usabilla SDK requires each network connection to be made using the TLS1.2 protocol.
+
+If your app supports Android API 21+ you are all set, otherwise if you date back to API 19 you need to update your security provider as follows:
+
+Include the following dependency in your `build.gradle` file
+
+```
+dependencies {
+    implementation `com.google.android.gms:play-services-safetynet:17.0.0`
+}
+```
+
+Call the following method in your app before any action with the Usabilla SDK
+
+```kotlin
+fun upgradeSecurityProvider(context: Context) {
+    ProviderInstaller.installIfNeededAsync(context, object : ProviderInstallListener {
+        override fun onProviderInstalled() {
+            // You are good to go
+        }
+
+        override fun onProviderInstallFailed(errorCode: Int, recoveryIntent: Intent) {
+            // Something went wrong. For more details please refer to https://developer.android.com/training/articles/security-gms-provider
+        }
+    })
+}
+```
 
 ## Android API limitations
 Due to changes of the Android framework some minor aspects of the SDK will work differently based on the Android version running on the phone, specifically:
@@ -57,14 +85,20 @@ Due to changes of the Android framework some minor aspects of the SDK will work 
 - The progress bar at the top of the form will be tinted with the accent color only for API >= 21
 
 ## Installation
-- You can find the latest version of our SDK [here](https://bintray.com/usabilla/maven/ubform) and add it as a Maven or a Gradle dependency (`implementation 'com.usabilla.sdk:ubform:6.4.4'`).
+- You can find the latest version of our SDK [here](https://bintray.com/usabilla/maven/ubform) and add it as a Maven or a Gradle dependency (`implementation 'com.usabilla.sdk:ubform:7.0.0'`).
+
 - If you don't want to use a dependency manager you can also import the .aar library independently.
-Our SDK uses the following dependencies. If your project doesn't use them already you might need to add it as well in your gradle file.
+Our SDK has some dependencies, and if your project doesn't use them already you need to add them as well in your gradle file.
+
 ```
 dependencies {
     implementation 'com.android.volley:volley:1.1.1'
-    implementation 'com.android.support:appcompat-v7:28.0.0'
-    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:1.3.50"
+    implementation 'androidx.appcompat:appcompat:1.1.0'
+    implementation 'androidx.exifinterface:exifinterface:1.2.0'
+    implementation 'androidx.localbroadcastmanager:localbroadcastmanager:1.0.0'
+    implementation 'org.jetbrains.kotlin:kotlin-stdlib-jdk7:1.3.72'
+    implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-core:1.3.2'
+    implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-android:1.3.2'
 }
 ```
 
@@ -74,36 +108,32 @@ If you have ProGuard enabled you will have to add this line to your ProGuard con
 ```
 
 ## Initialization
-The Usabilla SDK should first of all be initialized using the **initialize** method in one of its four versions:
+The first thing you need to do is to initialise the Usabilla using
 
-```java
-Usabilla.initialize(Context context);
-Usabilla.initialize(Context context, @Nullable String appId);
-Usabilla.initialize(Context context, @Nullable String appId, @Nullable UsabillaHttpClient httpClient);
-Usabilla.initialize(Context context, @Nullable String appId, @Nullable UsabillaHttpClient httpClient, @Nullable UsabillaReadyCallback callback);
+```kotlin
+Usabilla.initialize(val context: Context, val appId: String?, val httpClient: UsabillaHttpClient?, val callback: UsabillaReadyCallback?)
 ```
 
-The method **initialize** has three optional parameters:
-- `appId` needs to be used if you want to use the Campaign feature (please read the [Campaigns](#campaigns) section for more information).
-- `httpClient` gives the possibility to inject a custom client to handle all the connections performed by the SDK (please read the [Custom Http Client](#custom-http-client) section for more information).
-- `callback` is a callback used to communicate when the initialization process ends.
+It has three optional parameters:
+- `appId` to add if you intend to use the Campaign feature (please refer to the [Campaigns](#campaigns) section).
+- `httpClient` to use a custom client to handle all network connections performed by the SDK (please refer to the [Custom Http Client](#custom-http-client) section).
+- `callback` to be notified when the initialization process ends. When using campaigns it will indicate that the SDK is ready to receive events.
 
-If you are using Campaigns, the callback will indicate that the SDK is ready to receive events.
-
-The **initialize** method will take care of:
+This method takes care of:
+* Initialising the internals of our SDK.
 * Submitting any pending feedback items.
-* Fetching and updating all campaigns associated with the appId.
-* Initializing a few background processes of the SDK.
+* Fetching and updating all campaigns associated with the provided appId.
 
->⚠️ **Failure to call this method before using the SDK will prevent it from running properly.**
+>⚠️ **Failure to call initialise first before any other public method in the SDK will prevent it from running properly.**
 
 ### Debug Mode
-In order to obtain more insights form the SDK while developing, logging can be enabled with:
-```java
-Usabilla.setDebugEnabled(true);
+Local logging can be enabled using
+
+```kotlin
+Usabilla.setDebugEnabled(val enableLogging: Boolean)
 ```
 
-This property is by default set to `false`.
+Logging is by default set to `false`.
 
 ## Campaigns
 This guide describes the Campaigns feature and all the steps necessary to work with it.
@@ -113,7 +143,7 @@ In the Usabilla for Apps Platform, a campaign is defined as a proactive survey t
 Running Campaigns in your mobile app is great because it allows you to collect very specific insights from a targeted set of users. Furthermore, creating new Campaigns and managing existing ones can be done without the need for a new app release. Everything can be managed from the Usabilla web interface.
 
 You can run as many campaigns as you like and target them to be triggered when a specific set of targeting options are met.
-The configuration of how a campaign is displayed to the user will be familiar to existing Usabilla customers. You can configure it to suit your needs just like you are used to from the Passive feedback forms.
+The configuration of how a campaign is displayed to the user will be familiar to existing Usabilla customers. You can configure it to suit your needs just like you are used to from the passive feedback forms.
 
 The most important aspect of running a mobile campaign is the presence of 'Events'. Events are custom triggers that are configured in the SDK. When a pre-defined event occurs, it will allow you to trigger a campaign. A good example of an event is a successful purchase by a user in your app.
 
@@ -127,8 +157,9 @@ We recommend you to use a separate AppId per app. One Campaign can be targeted t
 ### Targeting options
 Campaigns are triggered by events. Events are used to communicate with the SDK when something happens in your app. Consequently, the SDK will react to an event depending on the configuration of the Usabilla web interface.
 To send an event to the SDK, use :
-```java
-Usabilla.sendEvent(Context context, String event);
+
+```kotlin
+Usabilla.sendEvent(val context: Context, val event: String)
 ```
 
 You can also segment your user base using custom variables.
@@ -160,8 +191,8 @@ As for campaign results. Please note that editing the form of an existing campai
 ### Update fragment manager
 ⚠️ It's important to note that our campaigns use Android Fragments in order to be displayed to the user; therefore it's important that you provide a reference to the FragmentManager using:
 
-```java
-Usabilla.updateFragmentManager(FragmentManager fragmentManager);
+```kotlin
+Usabilla.updateFragmentManager(val fragmentManager: FragmentManager)
 ```
 
 Furthermore, remember to handle properly the device rotation and other cases where a new FragmentManager is created, in order to always provide the latest one to the SDK.
@@ -170,10 +201,11 @@ The FragmentManager accepted is the one coming from the support library with the
 
 ### Reset campaigns data
 The Usabilla SDK offers the possibility to reset the campaign data stored locally using the **resetCampaignData** method in one of its two flavours:
-```java
-Usabilla.resetCampaignData(Context context);
-Usabilla.resetCampaignData(Context context, @Nullable UsabillaReadyCallback callback);
+
+```kotlin
+Usabilla.resetCampaignData(val context: Context, val callback: UsabillaReadyCallback?)
 ```
+
 The method removes all campaigns stored locally and fetches them again from our remote API, effectively losing any trace whether they triggered or not.
 The optional parameter `callback` is used to communicate when the fetching of the campaigns has ended and the campaign events can start being processed by the Usabilla SDK.
 
@@ -185,11 +217,8 @@ They are mostly, but not necessarily, initiated directly by the user.
 The SDK uses the Form ID you get from [Usabilla](https://app.usabilla.com/member/apps/list) after creating a new form, to fetch and display the form inside your app.
 The **loadFeedbackForm** method can be used in one of its four versions:
 
-```java
-Usabilla.loadFeedbackForm(String formId);
-Usabilla.loadFeedbackForm(String formId, @Nullable Bitmap screenshot);
-Usabilla.loadFeedbackForm(String formId, @Nullable Bitmap screenshot, @Nullable UsabillaHttpClient httpClient);
-Usabilla.loadFeedbackForm(String formId, @Nullable Bitmap screenshot, @Nullable UsabillaHttpClient httpClient, @Nullable UsabillaFormCallback callback);
+```kotlin
+Usabilla.loadFeedbackForm(val formId: String, val screenshot: Bitmap?, val httpClient: UsabillaHttpClient?, val callback: UsabillaFormCallback?)
 ```
 
 The method **loadFeedbackForm** has three optional parameters:
@@ -197,119 +226,73 @@ The method **loadFeedbackForm** has three optional parameters:
 - `httpClient` gives the possibility to inject a custom client to handle all the connections performed by the SDK (please read the [Custom Http Client](#custom-http-client) section for more information).
 - `callback` is a callback used to communicate when the loading ends.
 
-A basic implementation of the SDK would be the following:
-
-```java
-public class MainActivity extends AppCompatActivity implements UsabillaFormCallback {
-
-    public void loadForm() {
-        // After initialising our SDK
-        // The null parameters are for the screenshot and theme, both explained in their own chapters
-        Usabilla.loadFeedbackForm("the form id to load", null, null, this);
-    }
-
-    @Override
-    public void formLoadSuccess(FormClient form) {
-        getSupportFragmentManager()
-              .beginTransaction()
-              .replace(R.id.main_activity_frame, form.getFragment(), FRAGMENT_TAG)
-              .commit();
-    }
-
-    @Override
-    public void formLoadFail() {
-        // The form did not load (no internet connection, invalid formId...)
-    }
-
-    @Override
-    public void mainButtonTextUpdated(String text) {
-        // See section External Navigation
-    }
-}
-```
+A basic implementation of the SDK can be found in the repository in the files MainActivityJava and MainActivityKotlin
 
 ### Preloading a form
 Our SDK offers the possibility to preload forms. The form will be fetched and stored locally. This could be useful in case the user is offline and the form is requested.
 
-```java
-Usabilla.preloadFeedbackForms(List<String> formIds);
+```kotlin
+Usabilla.preloadFeedbackForms(val formIds: List<String>)
 ```
 
-### Adding a screenshot
-It is possible to attach a screenshot to a feedback form.
+### Capturing a screenshot
+We offer two methods to capture in a Bitmap the current state of the screen or the state of a specific `View`
 
-You can take a screenshot at any moment by calling
-
-``` java
+``` kotlin
 // Passing a View to take the screenshot and attach it the form
-Bitmap myScreenshot = Usabilla.takeScreenshot(View view);
+val myScreenshot = Usabilla.takeScreenshot(val view: View)
 
 // Passing an Activity to take the screenshot and attach it the form
-Bitmap myScreenshot = Usabilla.takeScreenshot(Activity activity);
+val myScreenshot = Usabilla.takeScreenshot(val activity: Activity)
 ```
 
-These methods will return a bitmap containing a screenshot of the view or activity you have passed.
-
-You can then attach this image, or any other bitmap of your choosing, to the feedback form you're loading by specifying the screenshot parameter in the `loadFeedbackForm` method.
-
-```java
-Bitmap myScreenshot = Usabilla.takeScreenshot(this);
-Usabilla.loadFeedbackForm("formId", myScreenshot, null, this);
-```
+The resulting Bitmaps can be added to the passive form as seen before in the `loadFeedbackForm` method.
 
 ## Feedback submission callback
 It is possible to know when the feedback form has been closed implementing the following `BroadcastReceiver`.
  * Note 1: The form closure happens both as a result of the user dismissing it half-way through or them completing it.
  * Note 2: A separate `BroadcastReceiver` can be set for both passive feedback and campaigns, depending on your needs.
 
-```java
-private BroadcastReceiver usabillaCloserPassive;
-private IntentFilter closerFilterPassive = new IntentFilter(UbConstants.INTENT_CLOSE_FORM);
-private BroadcastReceiver usabillaCloserCampaign;
-private IntentFilter closerFilterCampaign = new IntentFilter(UbConstants.INTENT_CLOSE_CAMPAIGN);
+```kotlin
+private val closerFilter: IntentFilter = IntentFilter(UbConstants.INTENT_CLOSE_FORM)
+private val closerCampaignFilter: IntentFilter = IntentFilter(UbConstants.INTENT_CLOSE_CAMPAIGN)
 
-
-@Override
-protected void onStart() {
-    super.onStart();
-    LocalBroadcastManager.getInstance(this).registerReceiver(usabillaCloserPassive, closerFilterPassive);
-    LocalBroadcastManager.getInstance(this).registerReceiver(usabillaCloserCampaign, closerFilterCampaign);
+private val usabillaReceiverClosePassive: BroadcastReceiver = object : BroadcastReceiver() {
+    override fun onReceive(context: Context, intent: Intent) {
+        // The passive feedback form has been closed and the feedback result is returned
+        // The extra is INTENT_FEEDBACK_RESULT
+        val res: FeedbackResult? = intent.getParcelableExtra(FeedbackResult.INTENT_FEEDBACK_RESULT)
+    }
 }
 
-@Override
-protected void onStop() {
-    super.onStop();
-    LocalBroadcastManager.getInstance(this).unregisterReceiver(usabillaCloserPassive);
-    LocalBroadcastManager.getInstance(this).unregisterReceiver(usabillaCloserCampaign);
+private val usabillaReceiverCloseCampaign: BroadcastReceiver = object : BroadcastReceiver() {
+    override fun onReceive(context: Context, intent: Intent) {
+        // The campaign feedback form has been closed and the feedback result is returned
+        // The extra is INTENT_FEEDBACK_RESULT_CAMPAIGN
+        val res: FeedbackResult? = intent.getParcelableExtra(FeedbackResult.INTENT_FEEDBACK_RESULT_CAMPAIGN)
+    }
 }
 
-private void setupCloserBroadcastReceiver() {
-    usabillaCloserPassive = new BroadcastReceiver() {
-        @Override
-        public void onReceive(Context context, Intent intent) {
-            // The passive feedback form has been closed and the feedback result is returned
-            // The extra is INTENT_FEEDBACK_RESULT
-            final FeedbackResult result = intent.getParcelableExtra(FeedbackResult.INTENT_FEEDBACK_RESULT);
-        }
-    };
-    usabillaCloserCampaign = new BroadcastReceiver() {
-        @Override
-        public void onReceive(Context context, Intent intent) {
-            // The campaign feedback form has been closed and the feedback result is returned
-            // The extra is INTENT_FEEDBACK_RESULT_CAMPAIGN
-            final FeedbackResult result = intent.getParcelableExtra(FeedbackResult.INTENT_FEEDBACK_RESULT_CAMPAIGN);
-        }
-    };
+override fun onStart() {
+    super.onStart()
+    LocalBroadcastManager.getInstance(this).registerReceiver(usabillaReceiverClosePassive, closerFilter)
+    LocalBroadcastManager.getInstance(this).registerReceiver(usabillaReceiverCloseCampaign, closerCampaignFilter)
+}
+
+override fun onStop() {
+    super.onStop()
+    LocalBroadcastManager.getInstance(this).unregisterReceiver(usabillaReceiverClosePassive)
+    LocalBroadcastManager.getInstance(this).unregisterReceiver(usabillaReceiverCloseCampaign)
 }
 ```
 
 ### Feedback Result
-```java
-public class FeedbackResult {
-    int rating;
-    int abandonedPageIndex;
-    boolean isSent;
-}
+```kotlin
+class FeedbackResult(
+    val rating: Int,
+    val abandonPageIndex: Int,
+    val isSent: Boolean
+)
 ```
 
 The **rating** value is set as soon as the user interacts with it and will be reported even if the form is not submitted.
@@ -326,9 +309,10 @@ This will show a native dialog after the last page of the passive feedback form 
 ### Reset passive forms
 The Usabilla SDK offers the possibility to reset the database from previously fetched passive forms using the **removeCachedForms** method:
 
-```java
-Usabilla.removeCachedForms();
+```kotlin
+Usabilla.removeCachedForms()
 ```
+
 The method removes all passive forms stored locally.
 
 ## Custom http client
@@ -348,15 +332,16 @@ Custom variables are held in a `HashMap<String, Object>` in the public interface
 
 You can set custom variables by manipulating the `customVariables` object, adding or removing entries as you need. An example is as follow:
 
-```java
+```kotlin
 // Setting a whole object
- HashMap<String, Object> myVariables = new HashMap<>();
- myVariables.put("tier", "premium");
- myVariables.put("loggedIn", true);
- Usabilla.setCustomVariables(myVariables);
+ val myVariables = hashMapOf(
+    Pair("tier", "premium"),
+    Pair("loggedIn", true)
+  )
+ Usabilla.customVariables = myVariables
 
  // Modifying the object
- Usabilla.getCustomVariables().put("tier", "premium");
+ Usabilla.customVariables["tier"] = "premium"
  ```
 
 Custom variables are added as extra feedback data with every feedback item sent by the SDK, whether from a passive feedback or a campaign.
@@ -397,33 +382,23 @@ To use custom emoticons you must provide two lists of **five image IDs** to be u
 
 The first element of the array should be the lowest or leftmost item, while the 5th element will be the highest or rightmost.
 
-In case you want to use the default Usabilla emoticons, then you need to pass an empty `List` for the first two parameters.
+In case you want to use the default Usabilla emoticons, then you don't need to pass the first two parameters.
 
-Passing an empty list as a second parameter (and a valid list with resource IDs as first) will show the provided emoticons with an alpha value of 0.5 when unselected, and with an alpha value of 1 when selected.
+Passing only a valid list with resource IDs for the first parameter will show the provided emoticons with an alpha value of 0.5 when unselected, and with an alpha value of 1 when selected.
 
 ```java
 // Create images
-ArrayList<Integer> imagesIdList = new ArrayList<Integer>();
-imagesIdList.add(R.drawable.your_mood_1);
-imagesIdList.add(R.drawable.your_mood_2);
-imagesIdList.add(R.drawable.your_mood_3);
-imagesIdList.add(R.drawable.your_mood_4);
-imagesIdList.add(R.drawable.your_mood_5);
-UbImages themeImages = new UbImages(imagesIdList);
+val imagesIdList = listOf(
+    R.drawable.your_mood_1,
+    R.drawable.your_mood_2,
+    R.drawable.your_mood_3,
+    R.drawable.your_mood_4,
+    R.drawable.your_mood_5
+)
+val themeImages = UbImages(imagesIdList)
 
 // Update theme
-UsabillaTheme newTheme = new UsabillaTheme(null, themeImages);
-Usabilla.setTheme(newTheme);
-```
-
-You can also provide two lists containing the selected and the unselected version of the icons.
-
-```java
-UbImages themeImages = new UbImages(selectedEmoticonsImagesIdList, unselectedEmoticonsImagesIdList);
-
-// Update theme
-UsabillaTheme newTheme = new UsabillaTheme(null, themeImages);
-Usabilla.setTheme(newTheme);
+usabilla.theme = UsabillaTheme(images = themeImages)
 ```
 
 #### Custom Star Rating
@@ -431,12 +406,8 @@ You can change the appearance of the star in the Star Rating by setting both `st
 
 Keep in mind that, in order to display the Star Rating in your form, you must first enable it in the [Usabilla Web Interface](https://app.usabilla.com/member/apps/).
 
-```java
-UbImages themeImages = new UbImages(new ArrayList<Integer>(), new ArrayList<Integer>(), R.drawable.ic_star, R.drawable.ic_star_outline);
-
-// Update theme
-UsabillaTheme newTheme = new UsabillaTheme(null, themeImages);
-Usabilla.setTheme(newTheme);
+```kotlin
+val themeImages = UbImages(star = R.drawable.ic_star, starOutline = R.drawable.ic_star_outline)
 ```
 
 ### Custom Fonts
@@ -449,12 +420,11 @@ Usabilla.setTheme(newTheme);
 
 ⚠️ The font resource needs to be placed in the `res/font` folder of the project and be in format `.otf` or `.ttf`
 
-```java
-UbFonts themeFonts = UbFonts(R.font.name_of_your_font)
+```kotlin
+val themeFonts = UbFonts(R.font.name_of_your_font)
 
 // Update theme
-UsabillaTheme newTheme = new UsabillaTheme(themeFonts, null);
-Usabilla.setTheme(newTheme);
+usabilla.theme = UsabillaTheme(fonts = themeFonts)
 ```
 
 ### Custom colors
@@ -467,11 +437,11 @@ Additionally, it is possible to specify a theme when requesting a passive form, 
 
 This can be done as follows:
 
-```java
-UbFonts themeFonts = UbFonts(R.font.name_of_your_font)
-UbImages themeImages = new UbImages(new ArrayList<Integer>(), new ArrayList<Integer>(), R.drawable.ic_star, R.drawable.ic_star_outline);
-UsabillaTheme newTheme = new UsabillaTheme(themeFonts, themeImages);
-Usabilla.loadFeedbackForm(formId, null, newTheme, this);
+```kotlin
+val themeFonts = UbFonts(R.font.name_of_your_font)
+val themeImages = UbImages(star = R.drawable.ic_star, starOutline = R.drawable.ic_star_outline)
+val newTheme = UsabillaTheme(themeFonts, themeImages)
+Usabilla.loadFeedbackForm("your form ID", theme = newTheme, callback = myCallback)
 ```
 
 Multiple requests of multiple forms done with different themes will result in each form having its own dedicated theme.
@@ -531,30 +501,28 @@ The string resources you can override and their default value are the following
 It is possible to hide the default navigation buttons our forms use (continue and cancel button) from the SDK and provide your own (e.g. in the Toolbar).
 
 To do so a couple of steps are required:
-* Set the standard navigation buttons invisible. This must be called before `loadFeedbackForm`.
-    ```java
-    Usabilla.setDefaultNavigationButtonsVisibility(false);
+* Set the Usabilla standard navigation buttons invisible
+    
+    ```kotlin
+    Usabilla.setDefaultNavigationButtonsVisibility(false)
     ```
+
 * Call the method `navigationButtonPushed` from the `onClickListener` of your custom button (e.g. the one you have placed in the Toolbar) to let the form know that it was pressed. ⚠️ This is only associating that click to a 'continue' action, you should provide handling for the cancellation yourself.
-    ```java
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            ...
-            case R.id.myNextButtonForForms:
-                form.navigationButtonPushed();
-                break;
-            ...
+    
+    ```kotlin
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        when (item.itemId) {
+            R.id.page_content -> formClient.navigationButtonPushed()
         }
-        return true;
+        return true
     }
     ```
+
 * (OPTIONAL) Use the `mainButtonTextUpdated` to grab the text for the navigation button you want to use
-    ```java
-    @Override
-    public void mainButtonTextUpdated(String text) {
-        // Use this text for your own navigation button
-        // It returns "Next" or "Submit"
+    ```kotlin
+    override fun mainButtonTextUpdated(text: String) {
+        // Use this text for your own navigation button.
+        // Usually returns "Next" or "Submit".
     }
     ```
 
@@ -564,64 +532,55 @@ The SDK uses the following permissions:
 <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
 <uses-permission android:name="android.permission.CAMERA" />
 ```
-These permissions are only needed during the flow in getting a new screenshot. The SDK can capture pictures directly or get from the image gallery.
+These permissions are only needed during the flow of getting a new screenshot. The SDK can capture pictures directly or get them from the image gallery.
 This flow lets users of the SDK annotate the image that was captured.
 
 ## Accessibility
 In order to have Android TalkBack work properly with the passive feedback form, you have to make sure that the `Activity` (or `Fragment`) holding the `FormClient.fragment` received from our SDK stops being considered for TalkBack.
 
 This can be achieved using this line
-```java
-view.setImportantForAccessibility(View.IMPORTANT_FOR_ACCESSIBILITY_NO_HIDE_DESCENDANTS);
+```kotlin
+view.importantForAccessibility = View.IMPORTANT_FOR_ACCESSIBILITY_NO_HIDE_DESCENDANTS
 ```
 where `view` is the `ViewGroup` you want to exclude from the TalkBack.
 
 Of course when the form is dismissed and you proceed to remove it from its holding `Activity` (or `Fragment`) then you can reset the TalkBack to consider it with the line
-```java
-view.setImportantForAccessibility(View.IMPORTANT_FOR_ACCESSIBILITY_YES);
+```kotlin
+view.importantForAccessibility = View.IMPORTANT_FOR_ACCESSIBILITY_YES
 ```
 
 ## Dismissing Forms
 The SDK provides a way to programatically dismiss all forms through the method:
-```java
-Usabilla.dismiss(Context context);
+```kotlin
+Usabilla.dismiss(val context: Context)
 ```
 For Passive Feedback Forms the SDK only sends the broadcast to close the form. It assumes that the receiver is properly implemented to be able to close the form.
 
 ## Masking Private Identifiable Information
-The SDK has an option to mask (on the back-end side) the data from input texts, specifically `Text Input` and `Text Area`. Please note that the an email input field is not being masked.
+The SDK has an method to mask (on the back-end side) the data from input texts, specifically `Text Input` and `Text Area`. Please note that the an email input field is not being masked.
 
-It matches a list of RegEx and replaces them by the  **"X"** character by default.
+It checks a list of RegEx and replaces them by the specified character.
 
-The SDK has a `setDataMasking` method that can be used as:
-```java
-Usabilla.setDataMasking();
-Usabilla.setDataMasking(List<String> masks);
-Usabilla.setDataMasking(List<String> masks, char maskCharacter);
-```
- - `masks` is a list of RegExes to mask data in input fields. If not set it uses the default RegExes that the SDK provides.
- - `maskCharacter` is a character to replace the matched RegExes. By default this is **"X"**.
-
-The default RegExes that the SDK provides are:
-Email Addresses
-```regexp
-[a-zA-Z0-9\+\.\_\%\-\+]{1,256}\@[a-zA-Z0-9][a-zA-Z0-9\-]{0,64}(\.[a-zA-Z0-9][a-zA-Z0-9\-]{0,25})+
-```
-Numbers with the length 4 or more
-```regexp
-[0-9]{4,}
-```
-
-The default RegEx and character can be accessed by:
-
-In Java
-```java
-UbConstants.getDefaultDataMasks();
-UbConstants.getDefaultMaskCharacter();
-```
-
-In Kotlin
 ```kotlin
-UbConstants.DEFAULT_DATA_MASKS
-UbConstants.DEFAULT_MASK_CHARACTER
+Usabilla.setDataMasking(val masks: List<String>, val maskCharacter: Char)
+```
+
+with parameters
+ - `masks` is a list of RegExes to mask data in input fields. Default value UbConstants.DEFAULT_DATA_MASKS.
+ - `maskCharacter` is a character to replace the matched RegExes. Default value UbConstants.DEFAULT_MASK_CHARACTER.
+
+The DEFAULT_DATA_MASKS are:
+- Email Addresses
+  ```regexp
+  [a-zA-Z0-9\+\.\_\%\-\+]{1,256}\@[a-zA-Z0-9][a-zA-Z0-9\-]{0,64}(\.[a-zA-Z0-9][a-zA-Z0-9\-]{0,25})+
+  ```
+- Numbers with the length 4 or more
+  ```regexp
+  [0-9]{4,}
+  ```
+
+The DEFAULT_MASK_CHARACTER is:
+
+```regexp
+X
 ```
