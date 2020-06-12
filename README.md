@@ -85,7 +85,7 @@ Due to changes of the Android framework some minor aspects of the SDK will work 
 - The progress bar at the top of the form will be tinted with the accent color only for API >= 21
 
 ## Installation
-- You can find the latest version of our SDK [here](https://bintray.com/usabilla/maven/ubform) and add it as a Maven or a Gradle dependency (`implementation 'com.usabilla.sdk:ubform:7.0.1'`).
+- You can find the latest version of our SDK [here](https://bintray.com/usabilla/maven/ubform) and add it as a Maven or a Gradle dependency (`implementation 'com.usabilla.sdk:ubform:7.0.2'`).
 
 - If you don't want to use a dependency manager you can also import the .aar library independently.
 Our SDK has some dependencies, and if your project doesn't use them already you need to add them as well in your gradle file.
@@ -99,6 +99,7 @@ dependencies {
     implementation 'org.jetbrains.kotlin:kotlin-stdlib-jdk7:1.3.72'
     implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-core:1.3.2'
     implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-android:1.3.2'
+    implementation 'com.google.code.gson:gson:2.8.6'
 }
 ```
 
@@ -398,7 +399,7 @@ val imagesIdList = listOf(
 val themeImages = UbImages(imagesIdList)
 
 // Update theme
-usabilla.theme = UsabillaTheme(images = themeImages)
+Usabilla.theme = UsabillaTheme(images = themeImages)
 ```
 
 #### Custom Star Rating
@@ -424,7 +425,7 @@ val themeImages = UbImages(star = R.drawable.ic_star, starOutline = R.drawable.i
 val themeFonts = UbFonts(R.font.name_of_your_font)
 
 // Update theme
-usabilla.theme = UsabillaTheme(fonts = themeFonts)
+Usabilla.theme = UsabillaTheme(fonts = themeFonts)
 ```
 
 ### Custom colors
@@ -504,7 +505,7 @@ To do so a couple of steps are required:
 * Set the Usabilla standard navigation buttons invisible
     
     ```kotlin
-    Usabilla.setDefaultNavigationButtonsVisibility(false)
+    Usabilla.setDefaultNavigationButtonsVisibility = false
     ```
 
 * Call the method `navigationButtonPushed` from the `onClickListener` of your custom button (e.g. the one you have placed in the Toolbar) to let the form know that it was pressed. ⚠️ This is only associating that click to a 'continue' action, you should provide handling for the cancellation yourself.
