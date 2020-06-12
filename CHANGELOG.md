@@ -1,4 +1,11 @@
 ### Changelog:
+## v7.0.2
+#### Added
+- Compatibility for scoped storages introduced on Android API 29
+#### Fixed
+- Next button text in the first feedback page (Fixes issue #163)
+- FileNotFoundException at UbAnnotationFragment (Fixes issue #172 )
+- RequestLegacyExternalStorage not found when targeting below android version 29 (Fixes issue #184)
 ## 7.0.1
 #### Fixed
 - Minor bug
