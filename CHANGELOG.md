@@ -1,4 +1,8 @@
 ### Changelog:
+## v7.0.3
+#### Fixed
+- Issue causes camerax to be frozen after an image picked from gallery.
+- Issues with loading feedback forms offline
 ## v7.0.2
 #### Added
 - Compatibility for scoped storages introduced on Android API 29
