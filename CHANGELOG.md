@@ -1,4 +1,8 @@
 ### Changelog:
+## 7.0.4
+#### Fixed
+- Disabled campaigns not updated in local database.
+- Campaign banner overlapped by navigation bar. Fixes #158
 ## v7.0.3
 #### Fixed
 - Issue causes camerax to be frozen after an image picked from gallery.
