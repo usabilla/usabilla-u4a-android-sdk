@@ -1,4 +1,7 @@
 ### Changelog:
+## 7.0.5
+#### Fixed
+- Custom themes not working with UbImages. #198
 ## 7.0.4
 #### Fixed
 - Disabled campaigns not updated in local database.
