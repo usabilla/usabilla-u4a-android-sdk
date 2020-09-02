@@ -1,21 +1,26 @@
 ### Changelog:
+## 7.0.6
+#### Updated
+- App rating system to adhere to [new Google standard](https://developer.android.com/guide/playcore/in-app-review)
+#### Fixed
+- Parcelisation error (Fixes issue #198)
 ## 7.0.5
 #### Fixed
-- Custom themes not working with UbImages. #198
+- Custom themes not working with UbImages (Fixes issue #193)
 ## 7.0.4
 #### Fixed
-- Disabled campaigns not updated in local database.
-- Campaign banner overlapped by navigation bar. Fixes #158
+- Disabled campaigns not updated in local database
+- Campaign banner overlapped by navigation bar (Fixes issue #158)
 ## v7.0.3
 #### Fixed
-- Issue causes camerax to be frozen after an image picked from gallery.
+- Issue causes camerax to be frozen after an image picked from gallery
 - Issues with loading feedback forms offline
 ## v7.0.2
 #### Added
 - Compatibility for scoped storages introduced on Android API 29
 #### Fixed
 - Next button text in the first feedback page (Fixes issue #163)
-- FileNotFoundException at UbAnnotationFragment (Fixes issue #172 )
+- FileNotFoundException at UbAnnotationFragment (Fixes issue #172)
 - RequestLegacyExternalStorage not found when targeting below android version 29 (Fixes issue #184)
 ## 7.0.1
 #### Fixed
@@ -36,7 +41,7 @@
 - Dependency on coroutines
 ## 6.4.4
 #### Fixed
-- Crash caused by parcelable exception on play store dialog ([#167](https://github.com/usabilla/usabilla-u4a-android-sdk/issues/167))
+- Crash caused by parcelable exception on play store dialog (Fixes issue #167)
 ## 6.4.3
 #### Fixed
 - Form navigation visibility not working as expected
@@ -63,7 +68,7 @@
 - User can choose between camera or image library as source when adding screenshot.
 #### Fixed
 - Navigation bar showing in front of campaign banner when the navigation bar is translucent.
-- Campaign banner element visual aberration. Fixes issue [151](https://github.com/usabilla/usabilla-u4a-android-sdk/issues/151)
+- Campaign banner element visual aberration. Fixes issue (Fixes issue #151)
 ## 6.2.0
 #### Added
 - Method to mask personal identifiable information in the public interface.
@@ -76,9 +81,9 @@
 -keep public class com.usabilla.sdk.ubform.eventengine.TargetingOptionsModel
 ```
 #### Fixed
-- Finishing the banner does not send a broadcast. Fixes issue #128
-- `isSent` property is always false. Fixes issue #129
-- Playstore review prompt not displayed. Fixes issue #130
+- Finishing the banner does not send a broadcast. (Fixes issue #128)
+- `isSent` property is always false. (Fixes issue #129)
+- Playstore review prompt not displayed. (Fixes issue #130)
 - Progress bar does not appear in campaigns.
 - The abandonedPageIndex property is set on submit.
 - Crash when opening a campaign without a start page.
