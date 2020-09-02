@@ -85,22 +85,21 @@ Due to changes of the Android framework some minor aspects of the SDK will work 
 - The progress bar at the top of the form will be tinted with the accent color only for API >= 21
 
 ## Installation
-- You can find the latest version of our SDK [here](https://bintray.com/usabilla/maven/ubform) and add it as a Maven or a Gradle dependency (`implementation 'com.usabilla.sdk:ubform:7.0.5'`).
-
-- If you don't want to use a dependency manager you can also import the .aar library independently.
-Our SDK has some dependencies, and if your project doesn't use them already you need to add them as well in your gradle file.
+Grab the latest version via Gradle:
 
 ```
-dependencies {
-    implementation 'com.android.volley:volley:1.1.1'
-    implementation 'androidx.appcompat:appcompat:1.1.0'
-    implementation 'androidx.exifinterface:exifinterface:1.2.0'
-    implementation 'androidx.localbroadcastmanager:localbroadcastmanager:1.0.0'
-    implementation 'org.jetbrains.kotlin:kotlin-stdlib-jdk7:1.3.72'
-    implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-core:1.3.2'
-    implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-android:1.3.2'
-    implementation 'com.google.code.gson:gson:2.8.6'
-}
+`implementation 'com.usabilla.sdk:ubform:7.0.6'`
+```
+
+Or Maven:
+
+```
+<dependency>
+  <groupId>com.usabilla.sdk</groupId>
+  <artifactId>ubform</artifactId>
+  <version>7.0.6</version>
+  <type>pom</type>
+</dependency>
 ```
 
 If you have ProGuard enabled you will have to add this line to your ProGuard configuration:
