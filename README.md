@@ -10,25 +10,25 @@ Usabilla for Apps allows you to collect feedback from your users with great ease
 - [Installation](#installation)
 - [Public properties](#public-properties)
   - [Custom variables](#custom-variables)
-  - [Debug Mode](#debug-mode)
-  - [External Navigation](#external-navigation)
+  - [Debug mode](#debug-mode)
+  - [External navigation](#external-navigation)
   - [Theme](#theme)
-    - [Custom Fonts](#custom-fonts)
-    - [Custom Images](#custom-images)
+    - [Custom fonts](#custom-fonts)
+    - [Custom images](#custom-images)
 - [Public functions](#public-functions)
-  - [Initialization](#initialization)
-  - [Loading a passive form](#loading-a-passive-form)
-  - [Preloading a passive form](#preloading-a-passive-form)
+  - [Initialize](#initialise)
+  - [Load a passive form](#load-a-passive-form)
+  - [Preload a passive form](#preload-a-passive-form)
   - [Remove cached forms](#remove-cached-forms)
-  - [Capturing a screenshot](#capturing-a-screenshot)
-  - [Sending events](#sending-events)
+  - [Capture a screenshot](#capture-a-screenshot)
+  - [Send events](#send-events)
   - [Update fragment manager](#update-fragment-manager)
   - [Reset campaigns data](#reset-campaigns-data)
-  - [Dismiss Form](#dismiss-form)
-  - [Masking PII](#masking-pii)
+  - [Dismiss form](#dismiss-form)
+  - [Mask PII](#mask-pii)
 - [Miscellaneous](#miscellaneous)
-  - [Closing a form](#closing-a-form)
-  - [Feedback Result](#feedback-result)
+  - [Close a form](#close-a-form)
+  - [Feedback result](#feedback-result)
   - [App review on the PlayStore](#app-review-on-the-playstore)
   - [Custom http client](#custom-http-client)
   - [Localization](#localization)
@@ -129,14 +129,14 @@ There are a few limitations to the kind of objects you can add to the custom var
 
 ⚠️ **Custom variables can be used as targeting options for campaigns, as long as the `value` is a `String`.**
 
-### Debug Mode
+### Debug mode
 Local logging (disabled by default) can be enabled using
 
 ```kotlin
 Usabilla.debugEnabled = true
 ```
 
-### External Navigation
+### External navigation
 
 ⚠️ **Passive feedback only!**
 
@@ -183,7 +183,7 @@ Usabilla.theme = UsabillaTheme(UbFonts(), UbImages())
 - `UbImages`:
   - default mood and stars as seen in the Usabilla dashboard
 
-#### Custom Fonts
+#### Custom fonts
 `UbFonts` can be instantiated with five different parameters:
 - `regular` resourceId for the font to be applied to the feedback form.
 - `bold` enables text to be shown bold (for titles for example).
@@ -193,7 +193,7 @@ Usabilla.theme = UsabillaTheme(UbFonts(), UbImages())
 
 ⚠️ The font resource needs to be placed in the `res/font` folder of the project and be in format `.otf` or `.ttf`
 
-#### Custom Images
+#### Custom images
 `UbImages` can be instantiated with four different parameters:
 - `selectedEmoticons` list of resourceIds of images to replace selected emoticons in the Mood component.
 - `unselectedEmoticons` list of resourceIds of images to replace unselected emoticons in the Mood component.
@@ -208,7 +208,7 @@ In order to display the Star Rating in your form instead of the Mood, you must s
 
 ## Public functions
 
-### Initialization
+### Initialize
 The first method called on the Usabilla SDK should be `initialize`. Failure to call `initialise` first before any other public method in the SDK will prevent the SDK from running properly.
 
 ```kotlin
@@ -225,7 +225,7 @@ This method takes care of
 - Submitting any pending feedback items.
 - Fetching and updating all campaigns associated with the provided appId.
 
-### Loading a passive form
+### Load a passive form
 To load a passive feedback form you should use
 
 ```kotlin
@@ -237,7 +237,7 @@ Optional parameters
 - `theme` Theme that will be applied solely to the passive form here requested.
 - `callback` Callback used to take actions when the loading ends to be able to show the form.
 
-### Preloading a passive form
+### Preload a passive form
 Preloading the form will fetch and store it locally. In order to show it to the user the **loadFeedbackForm** method needs to be called specifying a preloaded formId
 
 ```kotlin
@@ -251,7 +251,7 @@ Preloaded forms can be removed from cache using
 Usabilla.removeCachedForms()
 ```
 
-### Capturing a screenshot
+### Capture a screenshot
 We offer two methods to capture a Bitmap that can be then added to the passive form
 
 ``` kotlin
@@ -262,7 +262,7 @@ val myScreenshot = Usabilla.takeScreenshot(view: View)
 val myScreenshot = Usabilla.takeScreenshot(activity: Activity)
 ```
 
-### Sending events
+### Send events
 Campaigns, our proactive surveys targeted to a specific set of users, are triggered by events and events are sent using
 
 ```kotlin
@@ -290,7 +290,7 @@ Usabilla.resetCampaignData(val context: Context, val callback: UsabillaReadyCall
 The method removes all campaigns stored locally and fetches them again from our remote API, effectively losing any trace whether they already triggered or not.
 The optional parameter `callback` is used to communicate when the fetching of the campaigns has ended and the campaign events can start being processed by the Usabilla SDK.
 
-## Dismiss Form
+## Dismiss form
 Forms showing n screen can be programmatically dismissed using
 
 ```kotlin
@@ -299,7 +299,7 @@ Usabilla.dismiss(context: Context)
 
 Campaigns are dismissed directly by the SDK, whereas passive forms assume the proper broadcast receiver is implemented.
 
-## Masking PII
+## Mask PII
 PII (Private Identifiable Information) present in input text fields can be masked (on the back-end side) using
 
 ```kotlin
@@ -326,7 +326,7 @@ default value for the maskCharacter is `X`
 
 ## Miscellaneous
 
-### Closing a form
+### Close a form
 In order to know when to remove a passive form you need to implement a broadcast receiver listening for its closing event
 
 Moreover, inside the `onReceive` method of the receiver it's possible to obtain a `FeebackResult` object containing some information about the form such as
