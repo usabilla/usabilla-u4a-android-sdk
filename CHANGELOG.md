@@ -1,4 +1,8 @@
 ### Changelog:
+## 7.0.7
+#### Fixed
+- Duplicate input field (Fixes Issue #201)
+- Non-Sdk Greylist warning (Fixes issue #199)
 ## 7.0.6
 #### Updated
 - App rating system to adhere to [new Google standard](https://developer.android.com/guide/playcore/in-app-review)

@@ -83,7 +83,7 @@ The following functionalities will only be available on phones running a version
 Grab the latest version via Gradle:
 
 ```
-implementation 'com.usabilla.sdk:ubform:7.0.6'
+implementation 'com.usabilla.sdk:ubform:7.0.7'
 ```
 
 or Maven:
@@ -92,7 +92,7 @@ or Maven:
 <dependency>
   <groupId>com.usabilla.sdk</groupId>
   <artifactId>ubform</artifactId>
-  <version>7.0.6</version>
+  <version>7.0.7</version>
   <type>pom</type>
 </dependency>
 ```
