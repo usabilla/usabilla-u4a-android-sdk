@@ -1,39 +1,60 @@
 ### Changelog:
 ## 7.0.7
+#### Updated
+- Kotlin 1.4.10
+#### Removed
+- GSON as a dependency
+#### Added
+- Moshi 1.9.3 as a dependency
 #### Fixed
 - Duplicate input field (Fixes Issue #201)
 - Non-Sdk Greylist warning (Fixes issue #199)
+
 ## 7.0.6
+#### Added
+- Dependency on com.google.android.play:core 1.8.0
 #### Updated
 - App rating system to adhere to [new Google standard](https://developer.android.com/guide/playcore/in-app-review)
+- Kotlin 1.4.0
+- AndroidX appcompat 1.2.0
+- Coroutines to 1.3.9
 #### Fixed
 - Parcelisation error (Fixes issue #198)
+
 ## 7.0.5
 #### Fixed
 - Custom themes not working with UbImages (Fixes issue #193)
+
 ## 7.0.4
 #### Fixed
 - Disabled campaigns not updated in local database
 - Campaign banner overlapped by navigation bar (Fixes issue #158)
+
 ## v7.0.3
 #### Fixed
 - Issue causes camerax to be frozen after an image picked from gallery
 - Issues with loading feedback forms offline
+
 ## v7.0.2
 #### Added
 - Compatibility for scoped storages introduced on Android API 29
+- GSON as a dependency
 #### Fixed
 - Next button text in the first feedback page (Fixes issue #163)
 - FileNotFoundException at UbAnnotationFragment (Fixes issue #172)
 - RequestLegacyExternalStorage not found when targeting below android version 29 (Fixes issue #184)
+
 ## 7.0.1
+#### Updated
+- Kotlin dependency to 1.3.72
 #### Fixed
 - Minor bug
+
 ## 7.0.0
 #### Updated
 - Android library dependencies to use AndroidX
 - Targeting Android 29
-- Kotlin dependency to 1.3.72
+- Kotlin dependency to 1.3.70
 #### Fixed
 - Bug on passive form not sending the attached screenshot
 - Bug on campaigns not sending results
@@ -43,6 +64,7 @@
 - Support for Android API below 19
 #### Added
 - Dependency on coroutines
+
 ## 6.4.4
 #### Fixed
 - Crash caused by parcelable exception on play store dialog (Fixes issue #167)
