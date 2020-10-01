@@ -1,39 +1,57 @@
 ### Changelog:
 ## 7.0.7
+#### Updated
+- Kotlin dependency to v1.4.10
+#### Removed
+- Gson dependency
+#### Added
+- Moshi dependency v1.9.3
 #### Fixed
 - Duplicate input field (Fixes Issue #201)
 - Non-Sdk Greylist warning (Fixes issue #199)
+
 ## 7.0.6
 #### Updated
 - App rating system to adhere to [new Google standard](https://developer.android.com/guide/playcore/in-app-review)
+- Kotlin dependency to v1.4.0
+- GooglePlay core dependency v1.8.0
+- AndroidX appcompat dependency to v1.2.0
+- Coroutines dependency to v1.3.9
 #### Fixed
 - Parcelisation error (Fixes issue #198)
+
 ## 7.0.5
 #### Fixed
 - Custom themes not working with UbImages (Fixes issue #193)
+
 ## 7.0.4
 #### Fixed
 - Disabled campaigns not updated in local database
 - Campaign banner overlapped by navigation bar (Fixes issue #158)
+
 ## v7.0.3
 #### Fixed
-- Issue causes camerax to be frozen after an image picked from gallery
+- Issue causes CameraX to be frozen after an image picked from gallery
 - Issues with loading feedback forms offline
+
 ## v7.0.2
 #### Added
 - Compatibility for scoped storages introduced on Android API 29
+- Gson dependency v2.8.6
 #### Fixed
 - Next button text in the first feedback page (Fixes issue #163)
 - FileNotFoundException at UbAnnotationFragment (Fixes issue #172)
 - RequestLegacyExternalStorage not found when targeting below android version 29 (Fixes issue #184)
+
 ## 7.0.1
 #### Fixed
 - Minor bug
+
 ## 7.0.0
 #### Updated
 - Android library dependencies to use AndroidX
 - Targeting Android 29
-- Kotlin dependency to 1.3.72
+- Kotlin dependency to v1.3.72
 #### Fixed
 - Bug on passive form not sending the attached screenshot
 - Bug on campaigns not sending results
@@ -43,22 +61,27 @@
 - Support for Android API below 19
 #### Added
 - Dependency on coroutines
+
 ## 6.4.4
 #### Fixed
 - Crash caused by parcelable exception on play store dialog (Fixes issue #167)
+
 ## 6.4.3
 #### Fixed
 - Form navigation visibility not working as expected
 - Cancel/Dismiss button not sending broadcast
+
 ## 6.4.2
 #### Fixed
 - Close form broadcast being called while Play Store dialog is active
+
 ## 6.4.1
 #### Fixed
 - Crash caused by TargetingOptionsModel when obfuscated
 - Crash when the `body` in `UsabillaHttpResponse` is null
 - Compatibility with dynamic feature modules
 - EditText losing text on rotation
+
 ## 6.4.0
 #### Added
 - User can draw on the screenshot to mask or highlight features
@@ -67,19 +90,22 @@
 #### Fixed
 - Crash when resuming the app after its process was killed
 - Crash when resuming the apps on Samsung phones
+
 ## 6.3.0
 #### Added
-- User can choose between camera or image library as source when adding screenshot.
+- User can choose between camera or image library as source when adding screenshot
 #### Fixed
-- Navigation bar showing in front of campaign banner when the navigation bar is translucent.
+- Navigation bar showing in front of campaign banner when the navigation bar is translucent
 - Campaign banner element visual aberration. Fixes issue (Fixes issue #151)
+
 ## 6.2.0
 #### Added
-- Method to mask personal identifiable information in the public interface.
-- Method to remove a displayed form programmatically.
+- Method to mask personal identifiable information in the public interface
+- Method to remove a displayed form programmatically
+
 ## 6.1.0
 #### Updated
-- Secondary button updated to text color.
+- Secondary button updated to text color
 - If you have ProGuard enabled you will have to add this line to your ProGuard configuration:
 ```
 -keep public class com.usabilla.sdk.ubform.eventengine.TargetingOptionsModel
@@ -87,10 +113,11 @@
 #### Fixed
 - Finishing the banner does not send a broadcast. (Fixes issue #128)
 - `isSent` property is always false. (Fixes issue #129)
-- Playstore review prompt not displayed. (Fixes issue #130)
-- Progress bar does not appear in campaigns.
-- The abandonedPageIndex property is set on submit.
-- Crash when opening a campaign without a start page.
+- PlayStore review prompt not displayed. (Fixes issue #130)
+- Progress bar does not appear in campaigns
+- The abandonedPageIndex property is set on submit
+- Crash when opening a campaign without a start page
+
 ## 6.0.0
 #### Updated
 - UI to card design
@@ -102,6 +129,7 @@
 #### Removed
 - Old way of supporting fonts
 - `Context` parameter when getting Usabilla instance
+
 ## 5.3.0
 #### Added
 - Accessibility feedback regarding required fields
@@ -158,7 +186,7 @@
 - Removed the methods `getAppName`, `setAppName`, `getAppId`, `setCustomScreenshot` and `getAppVersion` from the public interface of our SDK
 
 #### Fixed
-- Fixed a crash happening on devices without Google PlayStore installed 
+- Fixed a crash happening on devices without Google PlayStore installed
 - Fixed a crash happening when the screenshot file was not found
 
 ## 4.1.1
@@ -338,3 +366,4 @@
 - Added star rating: It’s now possible to choose between the emoticons or a more traditional 5 star rating
 - Raised minimum api level to 16
 - Updated Appcompat-v7 to 23.1.1
+
