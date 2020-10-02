@@ -44,6 +44,8 @@
 - RequestLegacyExternalStorage not found when targeting below android version 29 (Fixes issue #184)
 
 ## 7.0.1
+#### Updated
+- Kotlin dependency to v1.3.72
 #### Fixed
 - Minor bug
 
@@ -51,7 +53,7 @@
 #### Updated
 - Android library dependencies to use AndroidX
 - Targeting Android 29
-- Kotlin dependency to v1.3.72
+- Kotlin dependency to v1.3.70
 #### Fixed
 - Bug on passive form not sending the attached screenshot
 - Bug on campaigns not sending results
