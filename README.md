@@ -16,7 +16,7 @@ Usabilla for Apps allows you to collect feedback from your users with great ease
     - [Custom fonts](#custom-fonts)
     - [Custom images](#custom-images)
 - [Public functions](#public-functions)
-  - [Initialize](#initialise)
+  - [Initialize](#initialize)
   - [Load a passive form](#load-a-passive-form)
   - [Preload a passive form](#preload-a-passive-form)
   - [Remove cached forms](#remove-cached-forms)
@@ -28,7 +28,6 @@ Usabilla for Apps allows you to collect feedback from your users with great ease
   - [Mask PII](#mask-pii)
 - [Miscellaneous](#miscellaneous)
   - [Close a form](#close-a-form)
-  - [Feedback result](#feedback-result)
   - [App review on the PlayStore](#app-review-on-the-playstore)
   - [Custom http client](#custom-http-client)
   - [Localization](#localization)
@@ -216,8 +215,8 @@ Usabilla.initialize(context: Context, appId: String?, httpClient: UsabillaHttpCl
 ```
 
 Optional parameters
-- `appId` Id to enable the Campaign feature (please refer to the [Campaigns](#campaigns) section).
-- `httpClient` Custom client to handle all network connections performed by the SDK (please refer to the [Custom Http Client](#custom-http-client) section).
+- `appId` Id to enable the Campaign feature.
+- `httpClient` Custom client to handle all network connections performed by the SDK (please refer to the [Custom http client](#custom-http-client) section).
 - `callback` Callback used to be notified when the initialization process ends. When using campaigns it will indicate that the SDK is ready to receive events.
 
 This method takes care of
@@ -291,7 +290,7 @@ The method removes all campaigns stored locally and fetches them again from our 
 The optional parameter `callback` is used to communicate when the fetching of the campaigns has ended and the campaign events can start being processed by the Usabilla SDK.
 
 ## Dismiss form
-Forms showing n screen can be programmatically dismissed using
+Forms showing on screen can be programmatically dismissed using
 
 ```kotlin
 Usabilla.dismiss(context: Context)
@@ -322,7 +321,7 @@ default values for the masks are:
 
 default value for the maskCharacter is `X`
 
-⚠️ **The email field does not apply masking since it explicitely asks for a sensitive data.**
+⚠️ **The email field does not apply masking since it explicitly asks for a sensitive data.**
 
 ## Miscellaneous
 
