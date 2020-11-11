@@ -1,4 +1,15 @@
 ### Changelog:
+## 7.0.8
+#### Updated
+- GooglePlay core dependency v1.8.3
+- AndroidX exifinterface dependency to v1.3.1
+- Target Android 30
+#### Added
+- Function to toggle logo clickability
+#### Fixed
+- Randomisation of Picker, Checkboxes and Radio components
+- Jump rules related to Mood and Slider component
+
 ## 7.0.7
 #### Updated
 - Kotlin dependency to v1.4.10
