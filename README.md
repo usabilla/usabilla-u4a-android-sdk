@@ -26,6 +26,7 @@ Usabilla for Apps allows you to collect feedback from your users with great ease
   - [Reset campaigns data](#reset-campaigns-data)
   - [Dismiss form](#dismiss-form)
   - [Mask PII](#mask-pii)
+  - [Set Footer Logo Clickable](#set-footer-logo-clickable)
 - [Miscellaneous](#miscellaneous)
   - [Close a form](#close-a-form)
   - [App review on the PlayStore](#app-review-on-the-playstore)
@@ -82,7 +83,7 @@ The following functionalities will only be available on phones running a version
 Grab the latest version via Gradle:
 
 ```
-implementation 'com.usabilla.sdk:ubform:7.0.7'
+implementation 'com.usabilla.sdk:ubform:7.0.8'
 ```
 
 or Maven:
@@ -91,7 +92,7 @@ or Maven:
 <dependency>
   <groupId>com.usabilla.sdk</groupId>
   <artifactId>ubform</artifactId>
-  <version>7.0.7</version>
+  <version>7.0.8</version>
   <type>pom</type>
 </dependency>
 ```
@@ -322,6 +323,13 @@ default values for the masks are:
 default value for the maskCharacter is `X`
 
 ⚠️ **The email field does not apply masking since it explicitly asks for a sensitive data.**
+
+## Set Footer Logo Clickable
+Sets whether the footer logo is clickable or not
+
+``` kotlin
+Usabilla.setFooterLogoClickable(clickable: Boolean)
+```
 
 ## Miscellaneous
 
