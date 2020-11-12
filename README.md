@@ -1,4 +1,4 @@
-[![Download](https://api.bintray.com/packages/usabilla/maven/ubform/images/download.svg)](https://bintray.com/usabilla/maven/ubform/_latestVersion)
+[![Download](https://maven-badges.herokuapp.com/maven-central/com.usabilla.sdk/ubform/badge.svg)](https://mvnrepository.com/artifact/com.usabilla.sdk/ubform)
 
 # Usabilla for Apps - Android SDK
 Usabilla for Apps allows you to collect feedback from your users with great ease and flexibility.
