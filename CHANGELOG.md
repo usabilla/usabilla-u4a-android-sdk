@@ -1,4 +1,10 @@
 ### Changelog:
+## 7.0.9
+####Updated
+- ConcurrentModificationException crash (upon suggestion in issue #215)
+#### Fixed
+- Http 494 Error (Fixes issue #214)
+- Campaign data submissions
 ## 7.0.8
 #### Updated
 - GooglePlay core dependency v1.8.3
