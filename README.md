@@ -326,7 +326,7 @@ default value for the maskCharacter is `X`
 
 ⚠️ **The email field does not apply masking since it explicitly asks for a sensitive data.**
 
-## Set Footer Logo Clickable
+## Set footer logo clickable
 Sets whether the footer logo is clickable or not
 
 ``` kotlin
@@ -444,8 +444,8 @@ Of course when the form is dismissed then you can reset the TalkBack
 ```kotlin
 view.importantForAccessibility = View.IMPORTANT_FOR_ACCESSIBILITY_YES
 ```
-### Devices With Notch
-There might be some display issues in devices with a notch, especially If no action bar theme is used. This can be handled for devices running Android 9 (API Level 28) and above by creating a style in your `styles.xml` :
+### Devices with notch
+There might be some display issues in devices with a notch, especially if no action bar theme is used. This can be handled for devices running Android 9 (API Level 28) and above by creating a style in your `styles.xml`
 ```xml
 <style name="ActivityTheme">
   <item name="android:windowLayoutInDisplayCutoutMode">
@@ -453,7 +453,7 @@ There might be some display issues in devices with a notch, especially If no act
   </item>
 </style>
 ```
-and you can use it in your manifest in the `application` tag.
+and use it in the manifest `application` tag as your activity theme.
 ```xml
    <application
         android:icon="@mipmap/ic_launcher"
@@ -463,7 +463,5 @@ and you can use it in your manifest in the `application` tag.
         android:theme="@style/ActivityTheme">
     </application>
 ```
-
-and using it as your activity theme.
 
 Please check the [official documentation](https://developer.android.com/guide/topics/display-cutout) for more info.
