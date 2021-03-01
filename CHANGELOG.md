@@ -1,4 +1,12 @@
 ### Changelog:
+## 7.1.0
+####Fixed
+- An issue about google play review prompt is not being shown (#205)
+- Improvement on operations done in main thread (#217)
+- An issue about campaign occurrence persistence
+- An an issue about campaign display when device is horizontal or font size is too big
+####Updated
+- Number of lines of a campaign title not be more than 3
 ## 7.0.9
 ####Updated
 - ConcurrentModificationException crash (upon suggestion in issue #215)
