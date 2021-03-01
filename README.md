@@ -26,18 +26,19 @@ Usabilla for Apps allows you to collect feedback from your users with great ease
   - [Reset campaigns data](#reset-campaigns-data)
   - [Dismiss form](#dismiss-form)
   - [Mask PII](#mask-pii)
-  - [Set Footer Logo Clickable](#set-footer-logo-clickable)
+  - [Set footer logo clickable](#set-footer-logo-clickable)
 - [Miscellaneous](#miscellaneous)
   - [Close a form](#close-a-form)
   - [App review on the PlayStore](#app-review-on-the-playstore)
   - [Custom http client](#custom-http-client)
   - [Localization](#localization)
   - [Accessibility](#accessibility)
+  - [Devices with notch](#devices-with-notch)
 ***
 
 ## Requirements
 
-- Minimum Android API 19 (Android 4.4) 
+- Minimum Android API 19 (Android 4.4)
 - Use of AndroidX support libraries
 - The use of TLS1.2 protocol for network connections (automatically enabled for Android API >= 21)
 
@@ -83,7 +84,7 @@ The following functionalities will only be available on phones running a version
 Grab the latest version via Gradle:
 
 ```
-implementation 'com.usabilla.sdk:ubform:7.0.9'
+implementation 'com.usabilla.sdk:ubform:7.1.0'
 ```
 
 or Maven:
@@ -92,7 +93,7 @@ or Maven:
 <dependency>
   <groupId>com.usabilla.sdk</groupId>
   <artifactId>ubform</artifactId>
-  <version>7.0.9</version>
+  <version>7.1.0</version>
   <type>pom</type>
 </dependency>
 ```
@@ -126,6 +127,7 @@ There are a few limitations to the kind of objects you can add to the custom var
 * Custom objects need to override the `toString()` method to be able to read them from the Usabilla dashboard.
 * Arrays of objects are not accepted and will be removed by our servers.
 * Custom variables are translated into a `JSONObject` during submission, so any non parseable value will break their submission.
+* Name of a custom variable should not be `blank` and it should not contain `.` or `$`.
 
 ⚠️ **Custom variables can be used as targeting options for campaigns, as long as the `value` is a `String`.**
 
@@ -144,13 +146,13 @@ It is possible to hide the default navigation buttons our forms use from the SDK
 
 To do so a couple of steps are required:
 * Set the Usabilla standard navigation buttons invisible
-    
+
     ```kotlin
     Usabilla.setDefaultNavigationButtonsVisibility(false)
     ```
 
 * Call the method `navigationButtonPushed` on the fragment representing the form you received from the SDK in the `onClickListener` of your custom button (e.g. the one you have placed in the Toolbar). This will tell the form to proceed with a 'continue' action, you should provide handling for the cancellation of the form yourself.
-    
+
     ```kotlin
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
@@ -442,3 +444,26 @@ Of course when the form is dismissed then you can reset the TalkBack
 ```kotlin
 view.importantForAccessibility = View.IMPORTANT_FOR_ACCESSIBILITY_YES
 ```
+### Devices With Notch
+There might be some display issues in devices with a notch, especially If no action bar theme is used. This can be handled for devices running Android 9 (API Level 28) and above by creating a style in your `styles.xml` :
+```xml
+<style name="ActivityTheme">
+  <item name="android:windowLayoutInDisplayCutoutMode">
+    <!--options are:  default, shortEdges, never -->
+  </item>
+</style>
+```
+and you can use it in your manifest in the `application` tag.
+```xml
+   <application
+        android:icon="@mipmap/ic_launcher"
+        android:label="@string/app_name"
+        android:roundIcon="@mipmap/ic_launcher_round"
+        android:supportsRtl="true"
+        android:theme="@style/ActivityTheme">
+    </application>
+```
+
+and using it as your activity theme.
+
+Please check the [official documentation](https://developer.android.com/guide/topics/display-cutout) for more info.
