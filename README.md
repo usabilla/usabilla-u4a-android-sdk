@@ -84,7 +84,7 @@ The following functionalities will only be available on phones running a version
 Grab the latest version via Gradle:
 
 ```
-implementation 'com.usabilla.sdk:ubform:7.1.0'
+implementation 'com.usabilla.sdk:ubform:7.1.1'
 ```
 
 or Maven:
@@ -93,7 +93,7 @@ or Maven:
 <dependency>
   <groupId>com.usabilla.sdk</groupId>
   <artifactId>ubform</artifactId>
-  <version>7.1.0</version>
+  <version>7.1.1</version>
   <type>pom</type>
 </dependency>
 ```
@@ -112,7 +112,7 @@ Custom variables are represented by a Map containing key-value pairs that are at
 
 ```kotlin
 // Setting a whole object
- val myVariables = hashMapOf(
+ val myVariables = mapOf(
     Pair("tier", "premium"),
     Pair("loggedIn", true)
   )
@@ -126,7 +126,6 @@ There are a few limitations to the kind of objects you can add to the custom var
 
 * Custom objects need to override the `toString()` method to be able to read them from the Usabilla dashboard.
 * Arrays of objects are not accepted and will be removed by our servers.
-* Custom variables are translated into a `JSONObject` during submission, so any non parseable value will break their submission.
 * Name of a custom variable should not be `blank` and it should not contain `.` or `$`.
 
 ⚠️ **Custom variables can be used as targeting options for campaigns, as long as the `value` is a `String`.**

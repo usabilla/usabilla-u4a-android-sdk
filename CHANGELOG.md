@@ -1,19 +1,29 @@
 ### Changelog:
+## 7.1.1
+#### Fixed
+- Custom variables not set
+- Crash when parsing wrongly formatted campaign
+
+#### Updated
+- Custom variables now use a ConcurrentMap to prevent threading problems
+
 ## 7.1.0
-####Fixed
+#### Fixed
 - Google play review prompt not being shown (#205)
 - Asynchrionous operations done off main thread (#217)
 - Campaign events remembered through different app launches
 - Banner dimension with long content or big font size
 - Sending event simultaneously had campaigns overlap
-####Updated
+#### Updated
 - Campaign banner title max number of rows set to 3
+
 ## 7.0.9
 ####Updated
 - ConcurrentModificationException crash (upon suggestion in issue #215)
 #### Fixed
 - Http 494 Error (Fixes issue #214)
 - Campaign data submissions
+
 ## 7.0.8
 #### Updated
 - GooglePlay core dependency v1.8.3
