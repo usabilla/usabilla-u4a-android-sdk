@@ -106,20 +106,14 @@ If you have ProGuard enabled you will have to add this line to your ProGuard con
 ## Public properties
 
 ### Custom variables
-Custom variables are represented by a Map containing key-value pairs that are attached to the feedback users will send (both from a passive feedback or a campaign)
-
-⚠️ **Setting the custom variables overwrites the previously present ones**
+Custom variables are represented by a non mutable Map and are attached to the feedback sent from both passive feedback or campaign
 
 ```kotlin
-// Setting a whole object
  val myVariables = mapOf(
     Pair("tier", "premium"),
     Pair("loggedIn", true)
   )
  Usabilla.customVariables = myVariables
-
- // Modifying the object
- Usabilla.customVariables["tier"] = "platinum"
  ```
 
 There are a few limitations to the kind of objects you can add to the custom variables
@@ -128,7 +122,7 @@ There are a few limitations to the kind of objects you can add to the custom var
 * Arrays of objects are not accepted and will be removed by our servers.
 * Name of a custom variable should not be `blank` and it should not contain `.` or `$`.
 
-⚠️ **Custom variables can be used as targeting options for campaigns, as long as the `value` is a `String`.**
+⚠️ **Custom variables can be used as targeting options for campaigns, as long as their value is a `String`.**
 
 ### Debug mode
 Local logging (disabled by default) can be enabled using
@@ -280,6 +274,8 @@ Campaigns are Fragments, therefore to properly display it's important that you p
 ```kotlin
 Usabilla.updateFragmentManager(fragmentManager: FragmentManager)
 ```
+
+⚠️ **When the fragmentManager is updated from inside a child-fragment the right instance to pass is `requireActivity().supportFragmentManager`.**
 
 ### Reset campaigns data
 Campaign data stored locally can be removed using
