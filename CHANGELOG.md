@@ -1,9 +1,15 @@
 ### Changelog:
+## 7.1.2
+#### Updated
+- Usabilla brand logo and redirect url with GetFeedback logo and url
+- Local database to support downgrading (upon suggestion in issue #225)
+#### Fixed
+- Campaigns not shown when there is a failure while parsing (Fixes issue #223)
+
 ## 7.1.1
 #### Fixed
 - Custom variables not set
 - Crash when parsing wrongly formatted campaign
-
 #### Updated
 - Custom variables now use a ConcurrentMap to prevent threading problems
 
