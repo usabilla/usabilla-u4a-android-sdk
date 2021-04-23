@@ -5,6 +5,8 @@ Usabilla for Apps allows you to collect feedback from your users with great ease
 
 ***
 - [Requirements](#requirements)
+  - [TLS1.2](#tls1.2)
+  - [Java 8](#java-8)
 - [Permissions](#permissions)
 - [Android API limitations](#android-api-limitations)
 - [Installation](#installation)
@@ -12,6 +14,7 @@ Usabilla for Apps allows you to collect feedback from your users with great ease
   - [Custom variables](#custom-variables)
   - [Debug mode](#debug-mode)
   - [External navigation](#external-navigation)
+  - [Telemetry data collection](#telemetry-data-collection)
   - [Theme](#theme)
     - [Custom fonts](#custom-fonts)
     - [Custom images](#custom-images)
@@ -41,6 +44,9 @@ Usabilla for Apps allows you to collect feedback from your users with great ease
 - Minimum Android API 19 (Android 4.4)
 - Use of AndroidX support libraries
 - The use of TLS1.2 protocol for network connections (automatically enabled for Android API >= 21)
+- Project targeting Java8 in the `build.gradle` compileOptions
+
+### TLS1.2
 
 If your app supports API 19, in order to enable TLS1.2 you need to update your security provider as follows
 
@@ -66,6 +72,10 @@ fun upgradeSecurityProvider(context: Context) {
 }
 ```
 
+### Java 8
+
+Make sure your app is targeting Java8 according to the [official Google guidelines](https://developer.android.com/studio/write/java8-support.html)
+
 ## Permissions
 The SDK uses the permissions `READ_EXTERNAL_STORAGE` and `CAMERA`.
 
@@ -84,7 +94,7 @@ The following functionalities will only be available on phones running a version
 Grab the latest version via Gradle:
 
 ```
-implementation 'com.usabilla.sdk:ubform:7.1.2'
+implementation 'com.usabilla.sdk:ubform:7.2.0'
 ```
 
 or Maven:
@@ -93,7 +103,7 @@ or Maven:
 <dependency>
   <groupId>com.usabilla.sdk</groupId>
   <artifactId>ubform</artifactId>
-  <version>7.1.2</version>
+  <version>7.2.0</version>
   <type>pom</type>
 </dependency>
 ```
@@ -162,6 +172,57 @@ To do so a couple of steps are required:
         // Usually returns "Next" or "Submit".
     }
     ```
+
+### Telemetry data collection
+
+The SDK collects diagnostic data to improve the performance and optimise usage on the variety of devices it can be run on.
+
+⚠️ **The information collected is not used to identify users, does not contain PII and it's not shared with external parties**
+
+Adding the SDK to your project will NOT send us any information; information is sent only in the following cases:
+- Call to `initialise()` completes
+- Call to `loadFeedbackForm()` completes
+- Call to `sendEvent()` completes
+- Exiting a feedback form
+
+The data collected content is as follows:
+
+```json
+{
+  "appVersion": "1.0.0",
+  "appName": "AppName",
+  "device": "Android SDK built for x86",
+  "freeMemory": "831172",
+  "freeSpace": "582800",
+  "orientation": "Portrait",
+  "osVersion": "8.1.0",
+  "reachability": "WiFi",
+  "rooted": false,
+  "screenSize": "1440x2392",
+  "sdkVersion": "7.2.0",
+  "system": "android",
+  "totalMemory": "1530604",
+  "totalSpace": "793488",
+  "id": "ms since Unix Epoch",
+  "timestamp": "human readable date",
+  "originClass": "com.usabilla.Usabilla",
+  "action": {
+    "duration": "102",
+    "errorCode": "0",
+    "errorMessage": "",
+    "name": "function or property invoked on our public interface"
+    ...
+    function parameters are also collected here
+    ...
+  }
+}
+```
+
+If you wish for us not to collect this diagnostic data you can set the public field (`true` by default) as follows
+
+```kotlin
+Usabilla.submitTelemetryData = false
+```
 
 ### Theme
 Setting a general theme will apply it to both passive forms and campaign forms, and can be done as follows

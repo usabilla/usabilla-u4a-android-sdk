@@ -1,4 +1,24 @@
 ### Changelog:
+
+## 7.2.0
+#### Updated
+- Volley dependency to 1.2.0
+- Exifinterface dependency to 1.3.2
+- Kotlin dependency to v1.4.32
+- Kotlin coroutines dependency to v1.4.2
+- Moshi dependency to v1.10.0
+- Play core dependency to v1.10.0
+#### Fixed
+- Crash after resuming the app from the background in a multi step campaign
+- Bug for concurrent injection (sometimes campaigns would not be shown because of that)
+#### Removed
+- Dependency from JCenter
+- Deprecated kotlin-extensions plugin
+#### Added
+- Set java compatibility to Java 8 
+- Public property to turn off telemetry data upload
+- Upload of Javadocs to Maven Central
+
 ## 7.1.2
 #### Updated
 - Usabilla brand logo and redirect url with GetFeedback logo and url
