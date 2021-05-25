@@ -74,7 +74,7 @@ fun upgradeSecurityProvider(context: Context) {
 
 ### Java 8
 
-Make sure your app is targeting Java8 according to the [official Google guidelines](https://developer.android.com/studio/write/java8-support.html)
+Our SDK targets Java8 and uses components available from Android API 26, therefore if your app targets previous Android versions please do enable desugaring support as explaied in the [official Google guidelines](https://developer.android.com/studio/write/java8-support.html)
 
 ## Permissions
 The SDK uses the permissions `READ_EXTERNAL_STORAGE` and `CAMERA`.
