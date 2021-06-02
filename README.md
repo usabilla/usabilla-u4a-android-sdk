@@ -44,7 +44,7 @@ Usabilla for Apps allows you to collect feedback from your users with great ease
 - Minimum Android API 19 (Android 4.4)
 - Use of AndroidX support libraries
 - The use of TLS1.2 protocol for network connections (automatically enabled for Android API >= 21)
-- Project targeting Java8 in the `build.gradle` compileOptions
+- Project targeting Java8 in the `build.gradle` `compileOptions`
 
 ### TLS1.2
 
@@ -74,7 +74,7 @@ fun upgradeSecurityProvider(context: Context) {
 
 ### Java 8
 
-Our SDK targets Java8 and uses components available from Android API 26, therefore if your app targets previous Android versions please do enable desugaring support as explaied in the [official Google guidelines](https://developer.android.com/studio/write/java8-support.html)
+Our SDK targets Java8 and uses components available from Android API 26, therefore if your app targets previous Android versions please do enable desugaring support as explained in the [official Google guidelines](https://developer.android.com/studio/write/java8-support.html)
 
 ## Permissions
 The SDK uses the permissions `READ_EXTERNAL_STORAGE` and `CAMERA`.
@@ -94,7 +94,7 @@ The following functionalities will only be available on phones running a version
 Grab the latest version via Gradle:
 
 ```
-implementation 'com.usabilla.sdk:ubform:7.2.0'
+implementation 'com.usabilla.sdk:ubform:7.2.1'
 ```
 
 or Maven:
@@ -103,7 +103,7 @@ or Maven:
 <dependency>
   <groupId>com.usabilla.sdk</groupId>
   <artifactId>ubform</artifactId>
-  <version>7.2.0</version>
+  <version>7.2.1</version>
   <type>pom</type>
 </dependency>
 ```
@@ -199,7 +199,7 @@ The data collected content is as follows:
   "reachability": "WiFi",
   "rooted": false,
   "screenSize": "1440x2392",
-  "sdkVersion": "7.2.0",
+  "sdkVersion": "7.2.1",
   "system": "android",
   "totalMemory": "1530604",
   "totalSpace": "793488",

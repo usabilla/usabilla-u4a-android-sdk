@@ -1,5 +1,9 @@
 ### Changelog:
-
+## 2.7.1
+#### Fixed
+- Campaign banner not shown properly in full screen apps. (Fixes issue #220)
+#### Updated
+- README to give detailed information about JAVA8 compatibility. (Fixes issue #239)
 ## 7.2.0
 #### Updated
 - Volley dependency to 1.2.0
