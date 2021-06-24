@@ -1,5 +1,10 @@
 ### Changelog:
-## 2.7.1
+## 7.2.2
+#### Fixed
+- Image selection not working properly in ReactNative
+#### Added
+- Optional broadcast receiver to receive user entries when a form or campaign is closed
+## 7.2.1
 #### Fixed
 - Campaign banner not shown properly in full screen apps. (Fixes issue #220)
 #### Updated

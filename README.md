@@ -94,7 +94,7 @@ The following functionalities will only be available on phones running a version
 Grab the latest version via Gradle:
 
 ```
-implementation 'com.usabilla.sdk:ubform:7.2.1'
+implementation 'com.usabilla.sdk:ubform:7.2.2'
 ```
 
 or Maven:
@@ -103,7 +103,7 @@ or Maven:
 <dependency>
   <groupId>com.usabilla.sdk</groupId>
   <artifactId>ubform</artifactId>
-  <version>7.2.1</version>
+  <version>7.2.2</version>
   <type>pom</type>
 </dependency>
 ```
@@ -199,7 +199,7 @@ The data collected content is as follows:
   "reachability": "WiFi",
   "rooted": false,
   "screenSize": "1440x2392",
-  "sdkVersion": "7.2.1",
+  "sdkVersion": "7.2.2",
   "system": "android",
   "totalMemory": "1530604",
   "totalSpace": "793488",
@@ -427,6 +427,28 @@ override fun onStop() {
 }
 ```
 
+Additionally, in order to receive user entries when a form or campaign has been closed, you need to implement another broadcast receiver:
+
+```kotlin
+private val usabillaEntriesReceiver: BroadcastReceiver = object : BroadcastReceiver() {
+    override fun onReceive(context: Context, intent: Intent) {
+        // The campaign or feedback form has been closed
+        // `entries` is the `string` implementation of `fieldId` -> `fieldValue` map
+        val entries : String = intent.getStringExtra(FeedbackResult.INTENT_ENTRIES)
+    }
+}
+
+override fun onStart() {
+    super.onStart()
+    LocalBroadcastManager.getInstance(this).registerReceiver(usabillaEntriesReceiver, IntentFilter(UbConstants.INTENT_ENTRIES))
+}
+
+override fun onStop() {
+    super.onStop()
+    LocalBroadcastManager.getInstance(this).unregisterReceiver(usabillaEntriesReceiver)
+}
+```
+
 ### App review on the PlayStore
 If the form has the "Show rating prompt after feedback submit" setting enabled (found in the form-creation dashboard under `Advanced settings`) and the mood/star rating given by the user is 4 or 5 then the official <a href="https://developer.android.com/guide/playcore/in-app-review" target="_blank">In-App review API</a> prompt to rate the app on the PlayStore will be presented.
 
@@ -440,7 +462,7 @@ We allow to specify a parameter in the `initialize` method to introduce a custom
 A sample http client implementation can be seen in the classes `CustomHttpClient.java` or `CustomHttpClient.kt`
 
 ### Localization
-To provide your own translationof some of the strings our SDK uses just overwrite them in your `strings.xml` file
+To provide your own translation of some of the strings our SDK uses just overwrite them in your `strings.xml` file
 
 ```xml
 <string name="ub_field_error">Please check this field</string>
