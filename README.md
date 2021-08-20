@@ -108,7 +108,7 @@ or Maven:
 </dependency>
 ```
 
-If you have ProGuard enabled you will have to add this line to your ProGuard configuration
+If you have obfuscation enabled (ProGuard/R8) and you use a version of our SDK equal or lower than 6.4.0 you need to add this line to your obfuscation configuration
 ```
 -keep public class com.usabilla.sdk.ubform.eventengine.TargetingOptionsModel
 ```
