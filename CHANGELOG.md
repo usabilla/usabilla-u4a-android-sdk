@@ -1,4 +1,9 @@
 ### Changelog:
+## 7.3.1
+#### Fix
+- Exception when app obfuscation is enabled (issue #248)
+- Star component visual problems (issue #250)
+
 ## 7.3.0
 #### Fix
 - Return value from the public `dismiss` method

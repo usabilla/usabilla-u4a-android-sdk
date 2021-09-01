@@ -94,7 +94,7 @@ The following functionalities will only be available on phones running a version
 Grab the latest version via Gradle:
 
 ```
-implementation 'com.usabilla.sdk:ubform:7.3.0'
+implementation 'com.usabilla.sdk:ubform:7.3.1'
 ```
 
 or Maven:
@@ -103,7 +103,7 @@ or Maven:
 <dependency>
   <groupId>com.usabilla.sdk</groupId>
   <artifactId>ubform</artifactId>
-  <version>7.3.0</version>
+  <version>7.3.1</version>
   <type>pom</type>
 </dependency>
 ```
@@ -199,7 +199,7 @@ The data collected content is as follows:
   "reachability": "WiFi",
   "rooted": false,
   "screenSize": "1440x2392",
-  "sdkVersion": "7.3.0",
+  "sdkVersion": "7.3.1",
   "system": "android",
   "totalMemory": "1530604",
   "totalSpace": "793488",
