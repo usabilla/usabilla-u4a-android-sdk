@@ -1,4 +1,11 @@
 ### Changelog:
+## v7.3.2
+#### Fix
+-`NullPointerException` causes random crashes on Flutter
+- Multiple clicks on continue button
+#### Update
+- Maximum lines of a banner paragraph to be five
+
 ## 7.3.1
 #### Fix
 - Exception when app obfuscation is enabled (issue #248)
