@@ -3,11 +3,13 @@ import android.content.Context
 import android.content.Intent
 import android.content.IntentFilter
 import android.os.Bundle
+import android.util.Log
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.localbroadcastmanager.content.LocalBroadcastManager
 import com.usabilla.sdk.ubform.UbConstants.INTENT_CLOSE_CAMPAIGN
 import com.usabilla.sdk.ubform.UbConstants.INTENT_CLOSE_FORM
+import com.usabilla.sdk.ubform.UbConstants.INTENT_ENTRIES
 import com.usabilla.sdk.ubform.Usabilla
 import com.usabilla.sdk.ubform.UsabillaFormCallback
 import com.usabilla.sdk.ubform.UsabillaReadyCallback
@@ -17,31 +19,45 @@ import com.usabilla.sdk.ubform.sdk.form.model.UbFonts
 import com.usabilla.sdk.ubform.sdk.form.model.UbImages
 import com.usabilla.sdk.ubform.sdk.form.model.UsabillaTheme
 
-class MainActivityKotlin : AppCompatActivity(), UsabillaFormCallback, UsabillaReadyCallback {
+class SampleActivity : AppCompatActivity(), UsabillaFormCallback, UsabillaReadyCallback {
 
-    private val closerFilter: IntentFilter = IntentFilter(INTENT_CLOSE_FORM)
-    private val closerCampaignFilter: IntentFilter = IntentFilter(INTENT_CLOSE_CAMPAIGN)
+    private val filter: IntentFilter = IntentFilter().also {
+        it.addAction(INTENT_CLOSE_FORM)
+        it.addAction(INTENT_CLOSE_CAMPAIGN)
+        it.addAction(INTENT_ENTRIES)
+    }
     private val fragmentTag = "MyFragment"
     private val usabilla: Usabilla = Usabilla
-    
-    private val usabillaReceiverClosePassive: BroadcastReceiver = object : BroadcastReceiver() {
+
+    private val usabillaReceiver: BroadcastReceiver = object : BroadcastReceiver() {
         override fun onReceive(context: Context, intent: Intent) {
-            if (formClient != null) {
-                supportFragmentManager.beginTransaction().remove(formClient!!.fragment).commit()
+            when (intent.action) {
+                INTENT_CLOSE_FORM -> {
+                    // Remove fragment from the screen
+                    formClient?.let {
+                        supportFragmentManager.beginTransaction().remove(it.fragment).commit()
+                    }
+                    // Log form data
+                    intent.getParcelableExtra<FeedbackResult>(FeedbackResult.INTENT_FEEDBACK_RESULT)?.let {
+                        Log.i("Form data", "Rating: ${it.rating}, Abandoned page: ${it.abandonedPageIndex}, Is sent: ${it.isSent}")
+                    }
+                }
+                INTENT_CLOSE_CAMPAIGN -> {
+                    // Log form data
+                    intent.getParcelableExtra<FeedbackResult>(FeedbackResult.INTENT_FEEDBACK_RESULT_CAMPAIGN)?.let {
+                        Log.i("Form data", "Rating: ${it.rating}, Abandoned page: ${it.abandonedPageIndex}, Is sent: ${it.isSent}")
+                    }
+                }
+                INTENT_ENTRIES -> {
+                    // Log form components data
+                    intent.getStringExtra(FeedbackResult.INTENT_ENTRIES)?.let { formData ->
+                        Log.i("Form components data", formData)
+                    }
+                }
             }
         }
     }
 
-    private val usabillaReceiverCloseCampaign: BroadcastReceiver = object : BroadcastReceiver() {
-        override fun onReceive(context: Context, intent: Intent) {
-            val res: FeedbackResult? = intent.getParcelableExtra(FeedbackResult.INTENT_FEEDBACK_RESULT_CAMPAIGN)
-            res?.let {
-                val feedbackInfo = "Rating: ${it.rating}, Abandoned page: ${it.abandonedPageIndex}, Is sent: ${it.isSent}"
-                Toast.makeText(context, feedbackInfo, Toast.LENGTH_LONG).show()
-            }
-        }
-    }
-    
     private var formClient: FormClient? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -57,14 +73,12 @@ class MainActivityKotlin : AppCompatActivity(), UsabillaFormCallback, UsabillaRe
 
     override fun onStart() {
         super.onStart()
-        LocalBroadcastManager.getInstance(this).registerReceiver(usabillaReceiverClosePassive, closerFilter)
-        LocalBroadcastManager.getInstance(this).registerReceiver(usabillaReceiverCloseCampaign, closerCampaignFilter)
+        LocalBroadcastManager.getInstance(this).registerReceiver(usabillaReceiver, filter)
     }
 
     override fun onStop() {
         super.onStop()
-        LocalBroadcastManager.getInstance(this).unregisterReceiver(usabillaReceiverClosePassive)
-        LocalBroadcastManager.getInstance(this).unregisterReceiver(usabillaReceiverCloseCampaign)
+        LocalBroadcastManager.getInstance(this).unregisterReceiver(usabillaReceiver)
     }
 
     override fun formLoadSuccess(form: FormClient) {
@@ -88,7 +102,8 @@ class MainActivityKotlin : AppCompatActivity(), UsabillaFormCallback, UsabillaRe
     }
 
     private fun attachFragment() {
-        supportFragmentManager.beginTransaction().replace("use frame layout here", formClient!!.fragment, fragmentTag).commit()
+        supportFragmentManager.beginTransaction()
+            .replace("use frame layout here", formClient!!.fragment, fragmentTag).commit()
     }
 
     private fun initializeSdk() {
