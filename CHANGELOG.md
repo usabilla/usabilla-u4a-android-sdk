@@ -1,4 +1,13 @@
 ### Changelog:
+## v7.3.3
+#### Add
+- Public classes documentation
+#### Fix
+- Camera images not attaching to screenshot for API >= 29
+- Picker showing empty for API <= 21
+- Passive form does not load anew after resuming app from recent apps
+- Camera not launching when hosting app has camera permission in manifest not granted (Issue #252)
+
 ## v7.3.2
 #### Fix
 -`NullPointerException` causes random crashes on Flutter
@@ -176,6 +185,8 @@
 - Close form broadcast being called while Play Store dialog is active
 
 ## 6.4.1
+#### Add
+- ConsumerProguardFiles in the SDK
 #### Fix
 - Crash caused by TargetingOptionsModel when obfuscated
 - Crash when the `body` in `UsabillaHttpResponse` is null
