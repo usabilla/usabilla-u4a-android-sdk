@@ -1,4 +1,8 @@
 ### Changelog:
+## v7.3.4
+#### Fix
+- Merge conflict with app using the default AndroidX FileProvider class
+
 ## v7.3.3
 #### Add
 - Public classes documentation
