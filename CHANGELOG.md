@@ -1,4 +1,8 @@
 ### Changelog:
+## v7.3.5
+#### Fix
+- Duplicate file provider among apps using Usabilla SDK
+
 ## v7.3.4
 #### Fix
 - Merge conflict with app using the default AndroidX FileProvider class
