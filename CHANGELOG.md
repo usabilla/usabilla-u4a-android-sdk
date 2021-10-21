@@ -1,4 +1,13 @@
 ### Changelog:
+## v7.3.6
+#### Add
+- Check to show campaigns only when currently active
+- Check to consider events only for currently active campaigns
+- Deletion of local campaigns when remotely deleted
+#### Fix
+- Fileprovider crash on adding screenshot
+- Wrong top bar colour on campaign form pages
+
 ## v7.3.5
 #### Fix
 - Duplicate file provider among apps using Usabilla SDK
