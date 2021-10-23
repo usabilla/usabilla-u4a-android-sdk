@@ -1,4 +1,8 @@
 ### Changelog:
+## v7.3.7
+#### Fix
+- Theme not applied to campaigns
+
 ## v7.3.6
 #### Add
 - Check to show campaigns only when currently active
