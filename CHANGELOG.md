@@ -1,4 +1,12 @@
 ### Changelog:
+## v7.4.0
+#### Add
+- Dark mode enabled (set during form creation on the web editor)
+- Intercept back click to close forms (and banner) present on screen (Issue #273)
+#### Fix
+- Remove delay due to status check for campaign (Issue #270)
+- Handle connectivity manager security exception on Android 11 (Issue #265)
+
 ## v7.3.7
 #### Fix
 - Theme not applied to campaigns

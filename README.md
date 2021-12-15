@@ -86,7 +86,7 @@ The following functionalities will only be available on phones running Android A
 Grab the latest version using
 
 ```
-implementation 'com.usabilla.sdk:ubform:7.3.7'
+implementation 'com.usabilla.sdk:ubform:7.4.0'
 ```
 
 If you have obfuscation enabled (ProGuard/R8) and you use a version of our SDK <= 6.4.0 you need to add this line to your obfuscation configuration
@@ -243,17 +243,19 @@ Usabilla.setFooterLogoClickable(clickable: Boolean)
 
 ## Miscellaneous
 
-### Close a passive form
-To remove a passive form from the screen you need to register a broadcast receiver with the intent filter
+### Back button intercept
+Our forms (campaign banner included) intercepts the phone's back button clicks and remove themselves from the screen
+
+### Access form data
+You can optionally register broadcast receivers with any of the following filters
 
 ```kotlin
 IntentFilter(UbConstants.INTENT_CLOSE_FORM)
+IntentFilter(UbConstants.INTENT_CLOSE_CAMPAIGN)
+IntentFilter(UbConstants.INTENT_ENTRIES)
 ```
 
-and then perform the form fragment removal actions in its `onReceive` method
-
-### Access form data
-You can also setup broadcast receivers to access form data as follows
+they will trigger respectively when either a campaign or a passive form is closed/dismissed and in their `onReceive` function you can get access to form data (FeedbackResult) or to the String version of all fields present in the form (with their value)
 
 ```kotlin
 private val usabillaGeneralReceiver: BroadcastReceiver = object : BroadcastReceiver() {
@@ -304,7 +306,7 @@ The data collected content is as follows:
   "reachability": "WiFi",
   "rooted": false,
   "screenSize": "1440x2392",
-  "sdkVersion": "7.3.7",
+  "sdkVersion": "7.4.0",
   "system": "android",
   "totalMemory": "1530604",
   "totalSpace": "793488",
