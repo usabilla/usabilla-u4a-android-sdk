@@ -1,4 +1,19 @@
 ### Changelog:
+## v7.5.0
+#### Fix
+- Dark colours appearance bug
+- Star component accessibility instructions
+#### Update
+- Android appCompat dependency to v1.4.1
+- Android exif interface dependency to v1.3.3
+- Android local broadcast manager dependency to v1.1.0
+- Android play core dependency to v1.10.3
+- Kotlin coroutines dependency to v1.6.0
+- Kotlin dependency to v1.6.10
+- Moshi dependency to v1.13.0
+- Volley dependency to v1.2.1
+- Target Android 31
+
 ## v7.4.0
 #### Add
 - Dark mode enabled (set during form creation on the web editor)
