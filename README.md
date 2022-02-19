@@ -226,7 +226,7 @@ Usabilla.dismiss(context: Context)
 Campaigns are dismissed directly by the SDK, whereas passive forms assume the proper broadcast receiver is implemented.
 
 ### Mask PII
-PII (Private Identifiable Information) present in all input text fields can be masked (on submission) using
+PII (Personally Identifiable Information) present in all input text fields can be masked (on submission) using
 
 ```kotlin
 Usabilla.setDataMasking(masks: List<String>, maskCharacter: Char)
