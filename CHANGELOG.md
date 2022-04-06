@@ -1,4 +1,12 @@
 ### Changelog:
+## v7.5.1
+#### Fix
+- Screenshots not uploading.
+- HTML parsing in last page of a survey.
+- Star component accessibility instructions.
+#### Update
+- Mood component to be unselected when initialised.
+- Public README
 ## v7.5.0
 #### Fix
 - Dark colours appearance bug
