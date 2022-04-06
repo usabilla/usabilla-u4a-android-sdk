@@ -86,7 +86,7 @@ The following functionalities will only be available on phones running Android A
 Grab the latest version using
 
 ```
-implementation 'com.usabilla.sdk:ubform:7.5.0'
+implementation 'com.usabilla.sdk:ubform:7.5.1'
 ```
 
 If you have obfuscation enabled (ProGuard/R8) and you use a version of our SDK <= 6.4.0 you need to add this line to your obfuscation configuration
@@ -306,7 +306,7 @@ The data collected content is as follows:
   "reachability": "WiFi",
   "rooted": false,
   "screenSize": "1440x2392",
-  "sdkVersion": "7.5.0",
+  "sdkVersion": "7.5.1",
   "system": "android",
   "totalMemory": "1530604",
   "totalSpace": "793488",
@@ -331,7 +331,7 @@ To provide your own translation of some of the strings our SDK uses just overwri
 ```xml
 <string name="ub_field_error">Please check this field</string>
 <string name="ub_element_screenshot_title">Screenshot (optional)</string>
-<string name="ub_element_screenshot_message">Add screenshot</string>
+<string name="ub_element_screenshot_message">Add an image</string>
 <string name="ub_button_close_default">Close</string>
 <string name="ub_button_continue_default">Continue</string>
 <string name="ub_button_playStore_default">Rate on the play store</string>
