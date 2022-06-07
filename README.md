@@ -86,7 +86,7 @@ The following functionalities will only be available on phones running Android A
 Grab the latest version using
 
 ```
-implementation 'com.usabilla.sdk:ubform:7.5.1'
+implementation 'com.usabilla.sdk:ubform:7.6.0'
 ```
 
 If you have obfuscation enabled (ProGuard/R8) and you use a version of our SDK <= 6.4.0 you need to add this line to your obfuscation configuration
@@ -306,7 +306,7 @@ The data collected content is as follows:
   "reachability": "WiFi",
   "rooted": false,
   "screenSize": "1440x2392",
-  "sdkVersion": "7.5.1",
+  "sdkVersion": "7.6.0",
   "system": "android",
   "totalMemory": "1530604",
   "totalSpace": "793488",

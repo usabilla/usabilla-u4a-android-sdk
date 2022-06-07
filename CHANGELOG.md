@@ -1,4 +1,7 @@
 ### Changelog:
+## v7.6.0
+#### Add
+- Default events.
 ## v7.5.1
 #### Fix
 - Screenshots not uploading.
