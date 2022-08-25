@@ -1,4 +1,7 @@
 ### Changelog:
+## v7.6.1
+#### Fix
+- Text issues with Chinese
 ## v7.6.0
 #### Add
 - Default events.
