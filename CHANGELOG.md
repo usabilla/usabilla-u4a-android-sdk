@@ -1,4 +1,9 @@
 ### Changelog:
+## v7.6.2
+#### Fix
+- Error occurring while showing a standard event when the device is offline
+- Error occurring when the logo is clicked
+- Error message not dismissed when the value of a component changed.
 ## v7.6.1
 #### Fix
 - Text issues with Chinese
