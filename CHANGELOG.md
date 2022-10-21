@@ -1,4 +1,8 @@
 ### Changelog:
+## v7.6.3
+#### Fix
+-  Android 13 inconsistency.
+-  Banners overlapped by navigation bar on Android 11 & above
 ## v7.6.2
 #### Fix
 - Error occurring while showing a standard event when the device is offline
