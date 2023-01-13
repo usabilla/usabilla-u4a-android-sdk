@@ -1,4 +1,9 @@
 ### Changelog:
+## v7.6.4
+#### Fix
+-  Accessibility issue for star rating.
+- Standard event issue (app version and occurrences)
+- The triggers' loading issue for the app ID which is having more that 100 campaigns
 ## v7.6.3
 #### Fix
 -  Android 13 inconsistency.
