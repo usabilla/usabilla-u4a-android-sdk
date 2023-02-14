@@ -1,4 +1,7 @@
 ### Changelog:
+## v7.6.5
+#### Add
+- Campaign reactivation enabled
 ## v7.6.4
 #### Fix
 -  Accessibility issue for star rating.
