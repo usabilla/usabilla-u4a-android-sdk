@@ -1,4 +1,7 @@
 ### Changelog:
+## v7.6.6
+#### Fix
+-  Darkmode issue with custom theme
 ## v7.6.5
 #### Add
 - Campaign reactivation enabled
