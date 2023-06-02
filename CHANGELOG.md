@@ -1,4 +1,15 @@
 ### Changelog:
+## v8.0.0
+#### Fix
+- Remove deprecated safetynet API
+- Update Google android play core API to fix duplicate classes error
+- Fix the radio button issue in dark mode
+#### Update
+- Upgrade androidMinSdkVersion to 21
+- Upgrade androidTargetSdkVersion and androidCompileSdkVersion to 33
+- Replace Localbroadcast manager with the sharedFlow for Kotlin and LiveData for Java
+- Increase the number of lines for questions from 3 to 5
+- Public README
 ## v7.6.6
 #### Fix
 -  Darkmode issue with custom theme

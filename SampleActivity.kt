@@ -28,32 +28,26 @@ class SampleActivity : AppCompatActivity(), UsabillaFormCallback, UsabillaReadyC
     }
     private val fragmentTag = "MyFragment"
     private val usabilla: Usabilla = Usabilla
+    private val uiScope = CoroutineScope(Dispatchers.Main)
+    
+    private fun setUpCollectors() {
+        uiScope.launch {
+            Usabilla.sharedFlowClosingForm.collectLatest {
 
-    private val usabillaReceiver: BroadcastReceiver = object : BroadcastReceiver() {
-        override fun onReceive(context: Context, intent: Intent) {
-            when (intent.action) {
-                INTENT_CLOSE_FORM -> {
-                    // Remove fragment from the screen
-                    formClient?.let {
-                        supportFragmentManager.beginTransaction().remove(it.fragment).commit()
-                    }
+                // Remove fragment from the screen
+                if (it.formType == com.usabilla.sdk.ubform.sdk.form.FormType.PASSIVE_FEEDBACK){
                     // Log form data
-                    intent.getParcelableExtra<FeedbackResult>(FeedbackResult.INTENT_FEEDBACK_RESULT)?.let {
-                        Log.i("Form data", "Rating: ${it.rating}, Abandoned page: ${it.abandonedPageIndex}, Is sent: ${it.isSent}")
-                    }
-                }
-                INTENT_CLOSE_CAMPAIGN -> {
+                    val feedbackResult = it.feedbackResult
+                    Log.i("Form data", "Rating: ${feedbackResult.rating}, Abandoned page: ${feedbackResult.abandonedPageIndex}, Is sent: ${feedbackResult.isSent}")
+                } else if (it.formType == com.usabilla.sdk.ubform.sdk.form.FormType.CAMPAIGN) {
                     // Log form data
-                    intent.getParcelableExtra<FeedbackResult>(FeedbackResult.INTENT_FEEDBACK_RESULT_CAMPAIGN)?.let {
-                        Log.i("Form data", "Rating: ${it.rating}, Abandoned page: ${it.abandonedPageIndex}, Is sent: ${it.isSent}")
-                    }
+                    val feedbackResult = it.feedbackResult
+                    Log.i("Form data", "Rating: ${feedbackResult.rating}, Abandoned page: ${feedbackResult.abandonedPageIndex}, Is sent: ${feedbackResult.isSent}")
                 }
-                INTENT_ENTRIES -> {
-                    // Log form components data
-                    intent.getStringExtra(FeedbackResult.INTENT_ENTRIES)?.let { formData ->
-                        Log.i("Form components data", formData)
-                    }
-                }
+            }
+            Usabilla.sharedFlowEntries.collectLatest {
+                // Log form components data
+                Log.i("Form components data", it)
             }
         }
     }
@@ -73,12 +67,12 @@ class SampleActivity : AppCompatActivity(), UsabillaFormCallback, UsabillaReadyC
 
     override fun onStart() {
         super.onStart()
-        LocalBroadcastManager.getInstance(this).registerReceiver(usabillaReceiver, filter)
+        setUpCollectors()
     }
 
     override fun onStop() {
         super.onStop()
-        LocalBroadcastManager.getInstance(this).unregisterReceiver(usabillaReceiver)
+        uiScope.coroutineContext.cancelChildren()
     }
 
     override fun formLoadSuccess(form: FormClient) {
