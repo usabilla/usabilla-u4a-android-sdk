@@ -86,7 +86,7 @@ The following functionalities will only be available on phones running Android A
 Grab the latest version using
 
 ```
-implementation 'com.usabilla.sdk:ubform:7.6.6'
+implementation 'com.usabilla.sdk:ubform:8.0.0'
 ```
 
 If you have obfuscation enabled (ProGuard/R8) and you use a version of our SDK <= 6.4.0 you need to add this line to your obfuscation configuration
@@ -249,23 +249,94 @@ Our forms (campaign banner included) intercepts the phone's back button clicks a
 ### Access form data
 You can optionally register broadcast receivers with any of the following filters
 
+#### In Kotlin
 ```kotlin
-IntentFilter(UbConstants.INTENT_CLOSE_FORM)
-IntentFilter(UbConstants.INTENT_CLOSE_CAMPAIGN)
-IntentFilter(UbConstants.INTENT_ENTRIES)
+private val uiScope = CoroutineScope(Dispatchers.Main) // you can use your scope of component
+
+private fun collectClosingFormSharedFlow() {
+  uiScope.launch {
+    Usabilla.sharedFlowClosingForm.collectLatest {
+      if (it.formType == com.usabilla.sdk.ubform.sdk.form.FormType.PASSIVE_FEEDBACK) {
+        // The passive feedback form needs to be closed and the feedback result is returned
+        val res: FeedbackResult = it.feedbackResult
+      } else if (it.formType == com.usabilla.sdk.ubform.sdk.form.FormType.CAMPAIGN) {
+        // The campaign feedback form has been closed and the feedback result is returned
+        val res: FeedbackResult = it.feedbackResult
+      }
+    }
+  }
+}
+
+override fun onStart() {
+    super.onStart()
+    collectClosingFormSharedFlow()
+}
+
+override fun onStop() {
+    super.onStop()
+  uiScope.coroutineContext.cancelChildren()
+}
 ```
 
-they will trigger respectively when either a campaign or a passive form is closed/dismissed and in their `onReceive` function you can get access to form data (FeedbackResult) or to the String version of all fields present in the form (with their value)
+#### In Java
+```Java
 
+private final Observer<ClosingFormData> closingObserver = closingFormData -> {
+        if (closingFormData.getFormType().equals(FormType.PASSIVE_FEEDBACK)) {
+          // The passive feedback form needs to be closed and the feedback result is returned
+          FeedbackResult feedbackResult = closingFormData.getFeedbackResult();
+        } else if (closingFormData.getFormType().equals(FormType.CAMPAIGN)) {
+          // The campaign feedback form has been closed and the feedback result is returned
+          FeedbackResult feedbackResult = closingFormData.getFeedbackResult();
+        }
+  };
+
+
+@Override
+protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        Usabilla.INSTANCE.getClosingData().observe(this, closingObserver);
+        }
+
+
+```
+
+Additionally, in order to receive user entries when a form or campaign has been closed, you need to implement another collector :
+
+#### In Kotlin
 ```kotlin
-private val usabillaGeneralReceiver: BroadcastReceiver = object : BroadcastReceiver() {
-    override fun onReceive(context: Context, intent: Intent) {
-        val passiveResult: FeedbackResult? = intent.getParcelableExtra(FeedbackResult.INTENT_FEEDBACK_RESULT)
-        val campaignResult: FeedbackResult? = intent.getParcelableExtra(FeedbackResult.INTENT_FEEDBACK_RESULT_CAMPAIGN)
-        // String version of a map `fieldId` -> `fieldValue` covering all form components
-        val entries: String? = intent.getStringExtra(FeedbackResult.INTENT_ENTRIES)
+private fun collectEntriesSharedFlow() {
+    scope.launch {
+       Usabilla.sharedFlowEntries.collectLatest {
+         // The campaign or feedback form has been closed
+         // `entries` is the `string` implementation of `fieldId` -> `fieldValue` map
+       val entries : String = it
+       }
     }
 }
+
+override fun onStart() {
+    super.onStart()
+    collectEntriesSharedFlow()
+}
+
+override fun onStop() {
+    super.onStop()
+    uiScope.coroutineContext.cancelChildren()
+}
+```
+
+#### In Java
+```Java
+private final Observer<String> entriesObserver = _entries -> {
+        String entries = _entries
+        };
+
+@Override
+protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        Usabilla.INSTANCE.getEntriesData().observe(this, entriesObserver);
+        }
 ```
 
 ### App review on the PlayStore
@@ -306,7 +377,7 @@ The data collected content is as follows:
   "reachability": "WiFi",
   "rooted": false,
   "screenSize": "1440x2392",
-  "sdkVersion": "7.6.6",
+  "sdkVersion": "8.0.0",
   "system": "android",
   "totalMemory": "1530604",
   "totalSpace": "793488",
