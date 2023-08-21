@@ -1,4 +1,11 @@
 ### Changelog:
+## v8.0.2
+#### Update
+- Before displaying a campaign, broadcast a new event to fix navigation buttons overlapping issue
+- Public README
+## v8.0.1
+#### Fix
+- Unity issue
 ## v8.0.0
 #### Fix
 - Remove deprecated safetynet API

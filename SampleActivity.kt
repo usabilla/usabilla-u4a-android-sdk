@@ -49,6 +49,11 @@ class SampleActivity : AppCompatActivity(), UsabillaFormCallback, UsabillaReadyC
                 // Log form components data
                 Log.i("Form components data", it)
             }
+            Usabilla.sharedFlowBeforeShowCampaign.collectLatest {
+                if (it == FormType.CAMPAIGN_BEFORE_SHOW) {
+                    // This will get be called before the campaign is displayed.
+                }
+            }
         }
     }
 

@@ -86,7 +86,7 @@ The following functionalities will only be available on phones running Android A
 Grab the latest version using
 
 ```
-implementation 'com.usabilla.sdk:ubform:8.0.0'
+implementation 'com.usabilla.sdk:ubform:8.0.2'
 ```
 
 If you have obfuscation enabled (ProGuard/R8) and you use a version of our SDK <= 6.4.0 you need to add this line to your obfuscation configuration
@@ -243,11 +243,13 @@ Usabilla.setFooterLogoClickable(clickable: Boolean)
 
 ## Miscellaneous
 
+⚠️ **LocalBroadcastManager is deprecated from v8.0.0 onwards.**
+
 ### Back button intercept
 Our forms (campaign banner included) intercepts the phone's back button clicks and remove themselves from the screen
 
 ### Access form data
-You can optionally register broadcast receivers with any of the following filters
+You can optionally register receivers with any of the following filters
 
 #### In Kotlin
 ```kotlin
@@ -339,6 +341,37 @@ protected void onCreate(Bundle savedInstanceState) {
         }
 ```
 
+### Before show a campaign
+To apply any logic before presenting any campaign, you must construct a collector that listens for the campaign's before show event. You will be notified of this event prior to displaying the campaign.
+
+Inside the `collectLatest` method it's possible to obtain a `FormType` object.
+
+#### In Kotlin
+```kotlin
+ uiScope.launch {
+            Usabilla.sharedFlowBeforeShowCampaign.collectLatest {
+                if (it == FormType.CAMPAIGN_BEFORE_SHOW) {
+                  // Campaign will be displayed.
+                }
+            }
+        }
+```
+
+#### In Java
+```Java
+private final Observer<FormType> beforeShowCampaignObserver = formType -> {
+        if (formType.equals(FormType.CAMPAIGN_BEFORE_SHOW)) {
+            // Campaign will be displayed.
+        }
+    };
+
+@Override
+protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        Usabilla.INSTANCE.getBeforeShowCampaign().observe(this, beforeShowCampaignObserver);
+        }
+```
+
 ### App review on the PlayStore
 When a form is given a 4 or 5 rating in the mood/star component, once closed the official [In-App review API](https://developer.android.com/guide/playcore/in-app-review) prompt to rate the app on the PlayStore will be presented.
 
@@ -377,7 +410,7 @@ The data collected content is as follows:
   "reachability": "WiFi",
   "rooted": false,
   "screenSize": "1440x2392",
-  "sdkVersion": "8.0.0",
+  "sdkVersion": "8.0.2",
   "system": "android",
   "totalMemory": "1530604",
   "totalSpace": "793488",
