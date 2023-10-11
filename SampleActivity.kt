@@ -45,10 +45,14 @@ class SampleActivity : AppCompatActivity(), UsabillaFormCallback, UsabillaReadyC
                     Log.i("Form data", "Rating: ${feedbackResult.rating}, Abandoned page: ${feedbackResult.abandonedPageIndex}, Is sent: ${feedbackResult.isSent}")
                 }
             }
+        }
+        uiScope.launch {
             Usabilla.sharedFlowEntries.collectLatest {
                 // Log form components data
                 Log.i("Form components data", it)
             }
+        }
+        uiScope.launch {
             Usabilla.sharedFlowBeforeShowCampaign.collectLatest {
                 if (it == FormType.CAMPAIGN_BEFORE_SHOW) {
                     // This will get be called before the campaign is displayed.
