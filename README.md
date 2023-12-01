@@ -36,6 +36,7 @@ Usabilla for Apps allows you to collect feedback from your users with great ease
   - [Localization](#localization)
   - [Accessibility](#accessibility)
   - [Devices with notch](#devices-with-notch)
+  - [Support](#support)
 ***
 
 ## Requirements
@@ -498,3 +499,8 @@ view.importantForAccessibility = View.IMPORTANT_FOR_ACCESSIBILITY_YES
 There might be some display issues in devices with a notch, especially if no action bar theme is used. 
 
 This can be handled for devices running Android 9 (API Level 28) and above following [google guidelines](https://developer.android.com/guide/topics/display-cutout).
+
+<a id="support"></a>
+## Support
+
+If you need help, want to report an issue, or have a question please reach out to the support team via our [Help Center](https://help.surveymonkey.com/en/contact/#getfeedback) or email [support@usabilla.com](mailto:support@usabilla.com)
