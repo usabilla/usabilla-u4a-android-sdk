@@ -87,7 +87,7 @@ The following functionalities will only be available on phones running Android A
 Grab the latest version using
 
 ```
-implementation 'com.usabilla.sdk:ubform:8.0.2'
+implementation 'com.usabilla.sdk:ubform:8.1.0'
 ```
 
 If you have obfuscation enabled (ProGuard/R8) and you use a version of our SDK <= 6.4.0 you need to add this line to your obfuscation configuration
