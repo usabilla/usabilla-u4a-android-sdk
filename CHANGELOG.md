@@ -1,4 +1,12 @@
 ### Changelog:
+## v8.1.0
+#### Update
+- Updated public readme file
+- compile and target sdk versions updated to 34
+- kotlin version updated to 1.9.21
+- updated AGP to 7.1.3
+#### Fix
+- Fixed high views on campaigns
 ## v8.0.2
 #### Update
 - Before displaying a campaign, broadcast a new event to fix navigation buttons overlapping issue
