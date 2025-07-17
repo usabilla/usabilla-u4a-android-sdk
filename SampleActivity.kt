@@ -125,6 +125,7 @@ class SampleActivity : AppCompatActivity(), UsabillaFormCallback, UsabillaReadyC
         // Optional theme specific for that passive form
         val newFonts = UbFonts(R.font.indie_flower)
         val theme = UsabillaTheme(newFonts, null)
+        usabilla.prePopulateEmailComponent("user@example.com", true)
         usabilla.loadFeedbackForm("use your personal FormId here", screenshot, theme, this)
     }
 

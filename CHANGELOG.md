@@ -1,4 +1,7 @@
 ### Changelog:
+## v8.2.0
+#### Add
+- Added ```prePopulateEmailComponent```
 ## v8.1.0
 #### Update
 - Updated public readme file

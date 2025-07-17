@@ -15,6 +15,7 @@ Usabilla for Apps allows you to collect feedback from your users with great ease
   - [External navigation](#external-navigation-passive-feedback-only)
   - [Telemetry data submission](#telemetry-data-submission)
   - [Theme](#theme)
+  - [Pre populate email id](#pre-populate-email-id)
 - [Public functions](#public-functions)
   - [Initialize](#initialize)
   - [Load a passive form](#load-a-passive-form)
@@ -87,7 +88,7 @@ The following functionalities will only be available on phones running Android A
 Grab the latest version using
 
 ```
-implementation 'com.usabilla.sdk:ubform:8.1.0'
+implementation 'com.usabilla.sdk:ubform:8.2.0'
 ```
 
 If you have obfuscation enabled (ProGuard/R8) and you use a version of our SDK <= 6.4.0 you need to add this line to your obfuscation configuration
@@ -152,6 +153,29 @@ A custom theme can be applied to both passive forms and campaign forms using
 ```kotlin
 Usabilla.theme = UsabillaTheme(UbFonts(), UbImages())
 ```
+
+### Pre-populate email id
+
+Pre-populates the email component in Usabilla forms or Campaigns with a specified email address and controls whether the user can edit it.
+
+```kotlin
+Usabilla.prePopulateEmailComponent(email: "user@example.com", editable: true)
+```
+
+#### Parameters
+- email: String - The email address to pre-populate in the email field
+- editable: Bool - Whether the user can edit the pre-populated email address
+
+#### Important Notes
+
+⚠️ Email Validation: If the provided email is in an incorrect email format, the editable parameter will always be set to true, regardless of the value passed.
+
+⚠️ Temporary Storage: The email string will be automatically removed once a campaign or form closes. This method should only be used at the first showing of a survey to ensure the email is properly captured.
+
+#### Best Practices
+- Call this method before presenting a form or campaign to ensure the email is available when the user sees the survey
+- Validate email format on your end before calling this method if you need strict control over editability
+- Consider the user experience - if you're unsure about the email validity, allow editing to prevent user frustration
 
 ## Public functions
 
