@@ -2,6 +2,8 @@
 ## v8.2.0
 #### Add
 - Added ```prePopulateEmailComponent```
+#### Fix
+- Fixed feedback on Android shows as 'Complete: FALSE' issue
 ## v8.1.0
 #### Update
 - Updated public readme file
