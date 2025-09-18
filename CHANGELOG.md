@@ -1,4 +1,13 @@
 ### Changelog:
+## v8.3.0
+#### Update
+- Updated public readme file
+- Remove package from manifest.xml and add namespace in build.gradle
+- Code changes related to API 36
+- Updated publish.gradle
+- Updated path for create-release-bundle step of the release pipeline
+#### Fix
+- Added new accessibility labels
 ## v8.2.0
 #### Add
 - Added ```prePopulateEmailComponent```
