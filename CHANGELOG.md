@@ -1,4 +1,11 @@
 ### Changelog:
+## v8.5.0
+#### Update
+- Updated public readme file
+- Merge APIs
+-
+#### Fix
+- Added fallback mechanism to avoid NullPointerException
 ## v8.3.0
 #### Update
 - Updated public readme file
