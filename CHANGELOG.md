@@ -1,4 +1,11 @@
 ### Changelog:
+## v9.0.0
+#### Update
+- Updated public readme file
+- Updated minSDK to 24
+#### Fix
+- Fix edge-to-edge related issue
+
 ## v8.5.0
 #### Update
 - Updated public readme file
