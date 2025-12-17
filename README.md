@@ -3,6 +3,9 @@
 # Usabilla for Apps - Android SDK
 Usabilla for Apps allows you to collect feedback from your users with great ease and flexibility.
 
+### The existing support for our SDK versions prior to v8.5.0, will be discontinued by early next year. For continued support and operations from February 2026, we would request you to please schedule an upgrade to the latest version accordingly at your earliest convenience.
+
+
 ***
 - [Requirements](#requirements)
   - [TLS1.2](#tls1.2)
