@@ -1,4 +1,9 @@
 ### Changelog:
+## v9.0.1
+#### Update
+- Updated public readme file
+#### Fix
+- Code enhancements
 ## v9.0.0
 #### Update
 - Updated public readme file
